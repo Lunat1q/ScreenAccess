@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.329
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScreenAssistant", "ScreenAssistant\ScreenAssistant.csproj", "{12C8925B-60DD-40DB-B30A-FAC31BF86293}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GlobalHook", "..\..\..\GlobalHook\GlobalHook\GlobalHook.csproj", "{B4230040-275D-45D5-9811-0C1841FA6033}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScreenAssistant.ScreenInfoRecognition", "ScreenAssistant.ScreenInfoRecognition\ScreenAssistant.ScreenInfoRecognition.csproj", "{C3B52309-2E61-4CFD-9541-CE13AA26C41E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TiqLauncher.ScreenAssistant", "TiqLauncher.ScreenAssistant\TiqLauncher.ScreenAssistant.csproj", "{3BFCAE87-21A3-4818-B74D-C1AFA082D8B7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TiqUtils", "..\..\..\TiqUtils\TiqUtils\TiqUtils.csproj", "{ADD36AFD-5E81-40E7-93F8-381CF03C5FD2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{12C8925B-60DD-40DB-B30A-FAC31BF86293}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12C8925B-60DD-40DB-B30A-FAC31BF86293}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12C8925B-60DD-40DB-B30A-FAC31BF86293}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12C8925B-60DD-40DB-B30A-FAC31BF86293}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4230040-275D-45D5-9811-0C1841FA6033}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4230040-275D-45D5-9811-0C1841FA6033}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4230040-275D-45D5-9811-0C1841FA6033}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4230040-275D-45D5-9811-0C1841FA6033}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3B52309-2E61-4CFD-9541-CE13AA26C41E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3B52309-2E61-4CFD-9541-CE13AA26C41E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3B52309-2E61-4CFD-9541-CE13AA26C41E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3B52309-2E61-4CFD-9541-CE13AA26C41E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3BFCAE87-21A3-4818-B74D-C1AFA082D8B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3BFCAE87-21A3-4818-B74D-C1AFA082D8B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3BFCAE87-21A3-4818-B74D-C1AFA082D8B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3BFCAE87-21A3-4818-B74D-C1AFA082D8B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADD36AFD-5E81-40E7-93F8-381CF03C5FD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADD36AFD-5E81-40E7-93F8-381CF03C5FD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADD36AFD-5E81-40E7-93F8-381CF03C5FD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADD36AFD-5E81-40E7-93F8-381CF03C5FD2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4830351B-9FC7-45D9-B1BA-BAAC783D318D}
+	EndGlobalSection
+EndGlobal
