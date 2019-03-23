@@ -200,10 +200,10 @@ namespace TiqSoft.ScreenAssistant.Controllers
             _mouseTaskCts = new CancellationTokenSource();
             Task.Run(() => CheckForMouse(_mouseTaskCts.Token));
             _mainTaskCts = new CancellationTokenSource();
-            Task.Run(() => StartPewPew(_mainTaskCts.Token));
+            Task.Run(() => StartProcessingInput(_mainTaskCts.Token));
             _weaponRecognitionCts = new CancellationTokenSource();
             Task.Run(() => StartWeaponRecognition(_weaponRecognitionCts.Token));
-            Task.Run(() => StartActiveWeaponRecognition(_weaponRecognitionCts.Token));
+            Task.Run(() => StartActiveElementRecognition(_weaponRecognitionCts.Token));
         }
 
         private async Task StartWeaponRecognition(CancellationToken token)
@@ -232,7 +232,7 @@ namespace TiqSoft.ScreenAssistant.Controllers
                         }
                     }
 
-                    await Task.Delay(2000, token);
+                    await Task.Delay(3000, token);
                 }
             }
             catch (TaskCanceledException)
@@ -245,7 +245,7 @@ namespace TiqSoft.ScreenAssistant.Controllers
             }
         }
 
-        private async Task StartActiveWeaponRecognition(CancellationToken token)
+        private async Task StartActiveElementRecognition(CancellationToken token)
         {
             try
             {
@@ -257,7 +257,7 @@ namespace TiqSoft.ScreenAssistant.Controllers
                         FirstWeaponActive = WeaponTypeScreenRecognizer.IsFirstWeaponActive();
                     }
 
-                    await Task.Delay(300, token);
+                    await Task.Delay(500, token);
                 }
             }
             catch (TaskCanceledException)
@@ -282,7 +282,7 @@ namespace TiqSoft.ScreenAssistant.Controllers
             return nonAdjustable.HasFlag(weapon);
         }
         
-        private async Task StartPewPew(CancellationToken token)
+        private async Task StartProcessingInput(CancellationToken token)
         {
             try
             {
@@ -296,7 +296,7 @@ namespace TiqSoft.ScreenAssistant.Controllers
                     if (MouseDown)
                     {
                         var weapon = GetCurrentWeapon();
-                        double timeOffset = 1d;
+                        var timeOffset = 1d;
 
                         if (UseWeaponLogic && IsNonAdjustableWeapon(weapon))
                         {
@@ -314,8 +314,6 @@ namespace TiqSoft.ScreenAssistant.Controllers
                             MouseControl.Move((int)horizontalOffset, (int)(verticalOffset * AdjustmentCoefficient));
                             timeOffset = _rnd.NextDouble() * (MaxFireRate - MinFireRate) + MinFireRate;
                         }
-
-                        
 
                         await Task.Delay((int)(timeOffset * 1000), token);
                         simShots++;

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using IronOcr;
 using ImageFormat = System.Drawing.Imaging.ImageFormat;
@@ -9,8 +10,6 @@ namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition
 {
     public static class WeaponTypeScreenRecognizer
     {
-        //private static int c = 1;
-        //private static string prev = "";
         private static readonly Dictionary<string, WeaponAL> WeaponNamesToTypes = new Dictionary<string, WeaponAL>(35);
         private static readonly Random Rnd = new Random();
         static WeaponTypeScreenRecognizer()
@@ -49,7 +48,6 @@ namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition
             {
                 return 0;
             }
-
             using (var db = new DirectBitmap(img.Width, img.Height))
             {
                 using (var graphics = Graphics.FromImage(db.Bitmap))
@@ -85,7 +83,8 @@ namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition
         private static void SaveTestImage(this Image image)
         {
             var fileName = $"{Rnd.Next(0, 999999999)}.tif";
-            image.Save(@"E:\Maxim\Desktop\tempDL\sc\" + fileName, ImageFormat.Tiff);
+            Directory.CreateDirectory("TestSC");
+            image.Save(@"\TestSC\" + fileName, ImageFormat.Tiff);
         }
 
         private static Image AdjustImageForRecognition(Image img)
