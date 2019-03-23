@@ -1,0 +1,6 @@
+[submodule "GlobalHook"]
+	path = GlobalHook
+	url = https://github.com/Lunat1q/GlobalHook
+[submodule "TiqUtils"]
+	path = TiqUtils
+	url = https://github.com/Lunat1q/TiqUtils
