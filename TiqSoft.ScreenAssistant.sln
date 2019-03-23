@@ -5,13 +5,13 @@ VisualStudioVersion = 15.0.28307.329
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScreenAssistant", "ScreenAssistant\ScreenAssistant.csproj", "{12C8925B-60DD-40DB-B30A-FAC31BF86293}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GlobalHook", "..\..\..\GlobalHook\GlobalHook\GlobalHook.csproj", "{B4230040-275D-45D5-9811-0C1841FA6033}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GlobalHook", "GlobalHook\GlobalHook\GlobalHook.csproj", "{B4230040-275D-45D5-9811-0C1841FA6033}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScreenAssistant.ScreenInfoRecognition", "ScreenAssistant.ScreenInfoRecognition\ScreenAssistant.ScreenInfoRecognition.csproj", "{C3B52309-2E61-4CFD-9541-CE13AA26C41E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TiqLauncher.ScreenAssistant", "TiqLauncher.ScreenAssistant\TiqLauncher.ScreenAssistant.csproj", "{3BFCAE87-21A3-4818-B74D-C1AFA082D8B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TiqUtils", "..\..\..\TiqUtils\TiqUtils\TiqUtils.csproj", "{ADD36AFD-5E81-40E7-93F8-381CF03C5FD2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TiqUtils", "TiqUtils\TiqUtils\TiqUtils.csproj", "{ADD36AFD-5E81-40E7-93F8-381CF03C5FD2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
