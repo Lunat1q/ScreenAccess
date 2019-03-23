@@ -112,17 +112,17 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\GlobalHook\GlobalHook\GlobalHook.csproj">
+    <ProjectReference Include="..\GlobalHook\GlobalHook\GlobalHook.csproj">
       <Project>{b4230040-275d-45d5-9811-0c1841fa6033}</Project>
       <Name>GlobalHook</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\TiqUtils\TiqUtils\TiqUtils.csproj">
-      <Project>{add36afd-5e81-40e7-93f8-381cf03c5fd2}</Project>
-      <Name>TiqUtils</Name>
     </ProjectReference>
     <ProjectReference Include="..\ScreenAssistant.ScreenInfoRecognition\ScreenAssistant.ScreenInfoRecognition.csproj">
       <Project>{c3b52309-2e61-4cfd-9541-ce13aa26c41e}</Project>
       <Name>ScreenAssistant.ScreenInfoRecognition</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TiqUtils\TiqUtils\TiqUtils.csproj">
+      <Project>{add36afd-5e81-40e7-93f8-381cf03c5fd2}</Project>
+      <Name>TiqUtils</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
