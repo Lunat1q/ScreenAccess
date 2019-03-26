@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using IronOcr;
 using ImageFormat = System.Drawing.Imaging.ImageFormat;
 
@@ -10,24 +8,9 @@ namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition
 {
     public static class WeaponTypeScreenRecognizer
     {
-        private static readonly Dictionary<string, WeaponAL> WeaponNamesToTypes = new Dictionary<string, WeaponAL>(35);
+        
         private static readonly Random Rnd = new Random();
-        static WeaponTypeScreenRecognizer()
-        {
-            var values = Enum.GetValues(typeof(WeaponAL)).Cast<Enum>();
-            foreach (var value in values)
-            {
-                if (value.GetType().GetField(value.ToString())
-                    .GetCustomAttributes(typeof(WeaponNameAttribute), false).FirstOrDefault() is WeaponNameAttribute nameAttribute)
-                {
-                    WeaponNamesToTypes.Add(nameAttribute.Name.ToUpper(), (WeaponAL)value);
-                    foreach (var extraName in nameAttribute.ExtraRecognitionNames)
-                    {
-                        WeaponNamesToTypes.Add(extraName.ToUpper(), (WeaponAL)value);
-                    }
-                }
-            }
-        }
+        
 
         public static bool IsFirstWeaponActive()
         {
@@ -120,7 +103,7 @@ namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition
             return result;
         }
 
-        public static WeaponAL TestWeapons()
+        public static string TestWeapons()
         {
             var w1Img = GetWeapon1Image();
             var w2Img = GetWeapon2Image();
@@ -128,22 +111,22 @@ namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition
             SaveTestImage(AdjustImageForRecognition(w1Img));
             SaveTestImage(w2Img);
             SaveTestImage(AdjustImageForRecognition(w2Img));
-            return WeaponImageToType(w1Img) | WeaponImageToType(w2Img);
+            return WeaponImageToString(w1Img) + WeaponImageToString(w2Img);
         }
 
-        public static WeaponAL GetWeapon1FromScreen()
+        public static string GetWeapon1FromScreen()
         {
-            return WeaponImageToType(GetWeapon1Image());
+            return WeaponImageToString(GetWeapon1Image());
         }
 
-        public static WeaponAL GetWeapon2FromScreen()
+        public static string GetWeapon2FromScreen()
         {
-            return WeaponImageToType(GetWeapon2Image());
+            return WeaponImageToString(GetWeapon2Image());
         }
 
-        private static WeaponAL WeaponImageToType(Image img)
+        private static string WeaponImageToString(Image img)
         {
-            var result = WeaponAL.Unknown;
+            var result = "";
             try
             {
                 var img2 = AdjustImageForRecognition(img);
@@ -162,10 +145,7 @@ namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition
                     ColorDepth = 8
                 };
                 var res = ocr.Read(img2);
-
-                var name = FindMostSimilar(WeaponNamesToTypes.Keys, res.Text);
-
-                WeaponNamesToTypes.TryGetValue(name, out result);
+                result = res.Text.ToUpper();
             }
             catch
             {
@@ -175,41 +155,6 @@ namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition
             return result;
         }
 
-        public static string FindMostSimilar(IEnumerable<string> words, string searchFor)
-        {
-            return words.Aggregate((x, v) => Compute(x, searchFor) < Compute(v, searchFor) ? x : v);
-        }
-
-        private static int Compute(string s, string t)
-        {
-            int n = s.Length, m = t.Length;
-            var d = new int[n + 1, m + 1];
-
-            if (n == 0)
-                return m;
-
-            if (m == 0)
-                return n;
-
-
-            for (var i = 0; i <= n; d[i, 0] = i++)
-            {
-            }
-
-            for (var j = 0; j <= m; d[0, j] = j++)
-            {
-            }
-
-            for (var i = 1; i <= n; i++)
-            for (var j = 1; j <= m; j++)
-            {
-                var cost = (t[j - 1] == s[i - 1]) ? 0 : 1;
-
-                d[i, j] = Math.Min(
-                    Math.Min(d[i - 1, j] + 1, d[i, j - 1] + 1),
-                    d[i - 1, j - 1] + cost);
-            }
-            return d[n, m];
-        }
+        
     }
 }

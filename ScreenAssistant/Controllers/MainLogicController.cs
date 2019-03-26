@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -7,19 +6,15 @@ using GlobalHook;
 using GlobalHook.Event;
 using TiqSoft.ScreenAssistant.Controllers.BindingControl;
 using TiqSoft.ScreenAssistant.Core;
-using TiqSoft.ScreenAssistant.Helpers;
+using TiqSoft.ScreenAssistant.Games.ApLeg;
 using TiqSoft.ScreenAssistant.Properties;
 using TiqSoft.ScreenAssistant.ScreenInfoRecognition;
+using TiqUtils.TypeSpeccific;
 
 namespace TiqSoft.ScreenAssistant.Controllers
 {
     internal class MainLogicController : INotifyPropertyChanged
     {
-        private const double MinFireRate = 0.04;
-        private const double MaxFireRate = 0.05;
-        readonly double _shotsPerSecond = 1 / ((MaxFireRate + MinFireRate) / 2);
-        readonly int _burstSeconds = 2;
-        private readonly Random _rnd;
         private bool _enabled;
         private int _deltaY;
         private int _deltaX;
@@ -29,11 +24,11 @@ namespace TiqSoft.ScreenAssistant.Controllers
         private CancellationTokenSource _mainTaskCts;
         private CancellationTokenSource _weaponRecognitionCts;
         private double _adjustmentCoefficient = 1;
-        private string _weapon2;
-        private string _weapon1;
+        private string _weapon2Name;
+        private string _weapon1Name;
         private bool _firstWeaponActive;
-        private WeaponAL _weapon1Type;
-        private WeaponAL _weapon2Type;
+        private IWeapon _weapon1;
+        private IWeapon _weapon2;
         private bool _useWeaponLogic;
 
         #region Properties
@@ -59,13 +54,12 @@ namespace TiqSoft.ScreenAssistant.Controllers
             HotKeysController.BindUpToAction(KeyModifier.Ctrl, 'K', Toggle);
             HotKeysController.Start(true);
             ResetEquippedWeapons();
-            _rnd = new Random();
         }
 
         private void ResetEquippedWeapons()
         {
-            Weapon1 = "Unknown";
-            Weapon2 = "Unknown";
+            Weapon1Name = "Unknown";
+            Weapon2Name = "Unknown";
         }
 
         public MainLogicController() : this(2, 3, false)
@@ -102,6 +96,8 @@ namespace TiqSoft.ScreenAssistant.Controllers
                 if (value == _deltaY) return;
                 _deltaY = value;
                 OnPropertyChanged();
+                _weapon1?.SetOffsets(_deltaX, _deltaY);
+                _weapon2?.SetOffsets(_deltaX, _deltaY);
             }
         }
 
@@ -113,6 +109,8 @@ namespace TiqSoft.ScreenAssistant.Controllers
                 if (value == _deltaX) return;
                 _deltaX = value;
                 OnPropertyChanged();
+                _weapon1?.SetOffsets(_deltaX, _deltaY);
+                _weapon2?.SetOffsets(_deltaX, _deltaY);
             }
         }
 
@@ -127,13 +125,13 @@ namespace TiqSoft.ScreenAssistant.Controllers
             }
         }
 
-        public string Weapon1
+        public string Weapon1Name
         {
-            get => _weapon1;
+            get => _weapon1Name;
             set
             {
-                if (value == _weapon1) return;
-                _weapon1 = value;
+                if (value == _weapon1Name) return;
+                _weapon1Name = value;
                 OnPropertyChanged();
             }
         }
@@ -149,13 +147,13 @@ namespace TiqSoft.ScreenAssistant.Controllers
             }
         }
 
-        public string Weapon2
+        public string Weapon2Name
         {
-            get => _weapon2;
+            get => _weapon2Name;
             set
             {
-                if (value == _weapon2) return;
-                _weapon2 = value;
+                if (value == _weapon2Name) return;
+                _weapon2Name = value;
                 OnPropertyChanged();
             }
         }
@@ -197,6 +195,7 @@ namespace TiqSoft.ScreenAssistant.Controllers
         public void Start()
         {
             Enabled = true;
+            CreateDefaultWeapons();
             _mouseTaskCts = new CancellationTokenSource();
             Task.Run(() => CheckForMouse(_mouseTaskCts.Token));
             _mainTaskCts = new CancellationTokenSource();
@@ -204,6 +203,14 @@ namespace TiqSoft.ScreenAssistant.Controllers
             _weaponRecognitionCts = new CancellationTokenSource();
             Task.Run(() => StartWeaponRecognition(_weaponRecognitionCts.Token));
             Task.Run(() => StartActiveElementRecognition(_weaponRecognitionCts.Token));
+        }
+
+        private void CreateDefaultWeapons()
+        {
+            _weapon1 = ApLegFactory.ConstructDefault();
+            _weapon2 = ApLegFactory.ConstructDefault();
+            Weapon1Name = _weapon1.Name;
+            Weapon2Name = _weapon2.Name;
         }
 
         private async Task StartWeaponRecognition(CancellationToken token)
@@ -215,20 +222,38 @@ namespace TiqSoft.ScreenAssistant.Controllers
                 {
                     if (UseWeaponLogic)
                     {
-                        var weapon1 = WeaponTypeScreenRecognizer.GetWeapon1FromScreen();
-                        var weapon2 = WeaponTypeScreenRecognizer.GetWeapon2FromScreen();
-                        if (weapon1 != WeaponAL.Unknown)
+                        var weapon1RecognizedName = WeaponTypeScreenRecognizer.GetWeapon1FromScreen();
+                        var weapon2RecognizedName = WeaponTypeScreenRecognizer.GetWeapon2FromScreen();
+                        if (!weapon1RecognizedName.Empty())
                         {
-                            FirstWeaponActive = true;
-                            Weapon1 = weapon1.GetWeaponName();
-                            _weapon1Type = weapon1;
+                            var newDetectedWeapon = ApLegFactory.ConstructFromRecognizedString(
+                                weapon1RecognizedName, 
+                                _weapon1,
+                                DeltaX, 
+                                DeltaY
+                            );
+                            if (!newDetectedWeapon.IsDefault())
+                            {
+                                FirstWeaponActive = true;
+                                _weapon1 = newDetectedWeapon;
+                                Weapon1Name = _weapon1.Name;
+                            }
                         }
 
-                        if (weapon2 != WeaponAL.Unknown)
+                        if (!weapon2RecognizedName.Empty())
                         {
-                            FirstWeaponActive = false;
-                            Weapon2 = weapon2.GetWeaponName();
-                            _weapon2Type = weapon2;
+                            var newDetectedWeapon = ApLegFactory.ConstructFromRecognizedString(
+                                weapon2RecognizedName,
+                                _weapon2,
+                                DeltaX,
+                                DeltaY
+                            );
+                            if (!newDetectedWeapon.IsDefault())
+                            {
+                                FirstWeaponActive = false;
+                                _weapon2 = newDetectedWeapon;
+                                Weapon2Name = _weapon2.Name;
+                            }
                         }
                     }
 
@@ -270,52 +295,28 @@ namespace TiqSoft.ScreenAssistant.Controllers
             }
         }
 
-        private WeaponAL GetCurrentWeapon()
+        private IWeapon GetCurrentWeapon()
         {
-            return _firstWeaponActive ? _weapon1Type : _weapon2Type;
-        }
-
-        private static bool IsNonAdjustableWeapon(WeaponAL weapon)
-        {
-            const WeaponAL nonAdjustable = WeaponAL.Wingman | WeaponAL.KRABER | WeaponAL.Peacekeeper |
-                                           WeaponAL.MASTIFF | WeaponAL.Longbow | WeaponAL.TripleTake;
-            return nonAdjustable.HasFlag(weapon);
+            return _firstWeaponActive ? _weapon1 : _weapon2;
         }
         
         private async Task StartProcessingInput(CancellationToken token)
         {
             try
             {
-                var minOffsetY = _deltaY * 0.5;
-                var maxOffsetY = _deltaY * 1.5;
+                
                 Working = true;
                 var simShots = 0;
-                var shotsPerBurst = _burstSeconds * _shotsPerSecond;
                 while (Working)
                 {
                     if (MouseDown)
                     {
                         var weapon = GetCurrentWeapon();
-                        var timeOffset = 1d;
 
-                        if (UseWeaponLogic && IsNonAdjustableWeapon(weapon))
-                        {
-                            AdjustmentCoefficient = 0;
-                        }
-                        else if (UseWeaponLogic && ShouldAdjustSpecial(weapon))
-                        {
-                            timeOffset = AdjustSpecial(weapon, simShots++);
-                        }
-                        else
-                        {
-                            AdjustmentCoefficient = CalculateAdjustment(simShots, shotsPerBurst);
-                            var horizontalOffset = _rnd.NextDouble() * _deltaX * 2 - _deltaX;
-                            var verticalOffset = _rnd.NextDouble() * (maxOffsetY - minOffsetY) + minOffsetY;
-                            MouseControl.Move((int)horizontalOffset, (int)(verticalOffset * AdjustmentCoefficient));
-                            timeOffset = _rnd.NextDouble() * (MaxFireRate - MinFireRate) + MinFireRate;
-                        }
+                        var delay = weapon.AdjustMouse(simShots);
+                        AdjustmentCoefficient = weapon.AdjustmentCoefficient;
 
-                        await Task.Delay((int)(timeOffset * 1000), token);
+                        await Task.Delay((int)(delay * 1000), token);
                         simShots++;
                     }
                     else
@@ -335,127 +336,6 @@ namespace TiqSoft.ScreenAssistant.Controllers
             {
                 Working = false;
             }
-        }
-
-        private double AdjustSpecial(WeaponAL weapon, int i)
-        {
-            double adjustTime = 1d;
-
-            switch (weapon)
-            {
-                case WeaponAL.Devotion:
-                {
-                    double horizontalOffset;
-                    double verticalOffset;
-                    if (i < 25)
-                    {
-                        AdjustmentCoefficient = CalculateAdjustment(i, 30);
-                        horizontalOffset = _rnd.NextDouble() * 1 + 1;
-                        verticalOffset = _rnd.NextDouble() * (8 - 6) + 6;
-                    }
-                    else
-                    {
-                        AdjustmentCoefficient = CalculateAdjustment(i, 140);
-                        var hAdj = i > 50 ? -1.3d : 1;
-                        horizontalOffset = hAdj * (_rnd.NextDouble() * 0.5 + 1);
-                        verticalOffset = _rnd.NextDouble() * 0.5 + 2;
-                    }
-
-                    MouseControl.Move((int)horizontalOffset, (int)(verticalOffset * AdjustmentCoefficient));
-                    break;
-                }
-                case WeaponAL.Havoc:
-                {
-                    if (i > 9)
-                    {
-                        AdjustmentCoefficient = CalculateAdjustment(i, 75);
-                        var horizontalOffset = _rnd.NextDouble() * 1 * 2 - 1;
-                        var verticalOffset = _rnd.NextDouble() + 5.5d;
-                        MouseControl.Move((int) horizontalOffset, (int) (verticalOffset * AdjustmentCoefficient));
-                    }
-
-                    break;
-                }
-                case WeaponAL.R99:
-                {
-                    AdjustmentCoefficient = CalculateAdjustment(i, 35);
-                    var horizontalOffset = _rnd.NextDouble() * -1 - 1;
-                    var verticalOffset = _rnd.NextDouble() + 7;
-                    MouseControl.Move((int)horizontalOffset, (int)(verticalOffset * AdjustmentCoefficient));
-                    break;
-                }
-                case WeaponAL.Alternator:
-                {
-                    AdjustmentCoefficient = CalculateAdjustment(i, 45);
-                    var horizontalOffset = _rnd.NextDouble() * 1 * 2 - 1;
-                    var verticalOffset = _rnd.NextDouble() + 5.5d;
-                    MouseControl.Move((int)horizontalOffset, (int)(verticalOffset * AdjustmentCoefficient));
-                    break;
-                }
-                case WeaponAL.R301:
-                {
-                    AdjustmentCoefficient = CalculateAdjustment(i, 30);
-                    var hAdj = i > 15 ? 1 : -1;
-                    var horizontalOffset = hAdj * (_rnd.NextDouble() * 1 + 1);
-                    var verticalOffset = _rnd.NextDouble() + 3.5d;
-                    MouseControl.Move((int)(horizontalOffset), (int)(verticalOffset * AdjustmentCoefficient));
-                    break;
-                }
-                case WeaponAL.RE45:
-                {
-                    AdjustmentCoefficient = CalculateAdjustment(i, 25);
-                    var horizontalOffset = -1 * (_rnd.NextDouble() * 1 + 2d);
-                    var verticalOffset = _rnd.NextDouble() + 5.5d;
-                    MouseControl.Move((int)(horizontalOffset), (int)(verticalOffset * AdjustmentCoefficient));
-                    break;
-                }
-                case WeaponAL.Flatline:
-                {
-                    AdjustmentCoefficient = CalculateAdjustment(i, 40);
-                    var hAdj = i > 20 && i < 25 ? -1d : 1.25;
-                    var horizontalOffset = hAdj * (_rnd.NextDouble() * 1 + 1d);
-                    var verticalOffset = _rnd.NextDouble() + 4d;
-                    MouseControl.Move((int)(horizontalOffset), (int)(verticalOffset * AdjustmentCoefficient));
-                    break;
-                }
-                case WeaponAL.Hemlok:
-                {
-                    AdjustmentCoefficient = CalculateAdjustment(i, 5);
-                    var horizontalOffset = 0;
-                    var verticalOffset = _rnd.NextDouble() + 7d;
-                    MouseControl.Move(horizontalOffset, (int)(verticalOffset * AdjustmentCoefficient));
-                    break;
-                }
-                case WeaponAL.Prowler:
-                {
-                    AdjustmentCoefficient = CalculateAdjustment(i, 14);
-                    var horizontalOffset = 0;
-                    var verticalOffset = _rnd.NextDouble() * 1 + 5.5d;
-                    MouseControl.Move(horizontalOffset, (int)(verticalOffset * AdjustmentCoefficient));
-                    adjustTime = 0.3d;
-                    break;
-                }
-            }
-
-            return adjustTime * (_rnd.NextDouble() * (MaxFireRate - MinFireRate) + MinFireRate);
-        }
-
-        private static bool ShouldAdjustSpecial(WeaponAL weapon)
-        {
-            const WeaponAL nonAdjustable = WeaponAL.Devotion | WeaponAL.Havoc | WeaponAL.R99 |
-                                           WeaponAL.Alternator | WeaponAL.R301 | WeaponAL.RE45 |
-                                           WeaponAL.Flatline | WeaponAL.Hemlok | WeaponAL.Prowler;
-            return nonAdjustable.HasFlag(weapon);
-        }
-
-        private static double CalculateAdjustment(int shotNumber, double shotsPerBurst)
-        {
-            if (shotNumber > shotsPerBurst)
-            {
-                shotsPerBurst = shotNumber;
-            }
-            var result = (1 - shotNumber / shotsPerBurst) * 2;
-            return result > 1 ? 1 : result;
         }
 
         private async Task CheckForMouse(CancellationToken token)

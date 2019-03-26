@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using TiqSoft.ScreenAssistant.Games.ApLeg;
 using TiqSoft.ScreenAssistant.ScreenInfoRecognition;
 
 namespace TiqSoft.ScreenAssistant.Helpers
