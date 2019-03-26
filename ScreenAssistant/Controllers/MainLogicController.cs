@@ -209,6 +209,8 @@ namespace TiqSoft.ScreenAssistant.Controllers
         {
             _weapon1 = ApLegFactory.ConstructDefault();
             _weapon2 = ApLegFactory.ConstructDefault();
+            _weapon1.SetOffsets(_deltaX, _deltaY);
+            _weapon2.SetOffsets(_deltaX, _deltaY);
             Weapon1Name = _weapon1.Name;
             Weapon2Name = _weapon2.Name;
         }
@@ -232,10 +234,11 @@ namespace TiqSoft.ScreenAssistant.Controllers
                                 DeltaX, 
                                 DeltaY
                             );
-                            if (!newDetectedWeapon.IsDefault())
+                            if (!newDetectedWeapon.IsDefault() && !_weapon1.Equals(newDetectedWeapon))
                             {
                                 FirstWeaponActive = true;
                                 _weapon1 = newDetectedWeapon;
+                                _weapon1.SetOffsets(_deltaX, _deltaY);
                                 Weapon1Name = _weapon1.Name;
                             }
                         }
@@ -248,10 +251,11 @@ namespace TiqSoft.ScreenAssistant.Controllers
                                 DeltaX,
                                 DeltaY
                             );
-                            if (!newDetectedWeapon.IsDefault())
+                            if (!newDetectedWeapon.IsDefault() && !_weapon2.Equals(newDetectedWeapon))
                             {
                                 FirstWeaponActive = false;
                                 _weapon2 = newDetectedWeapon;
+                                _weapon2.SetOffsets(_deltaX, _deltaY);
                                 Weapon2Name = _weapon2.Name;
                             }
                         }
