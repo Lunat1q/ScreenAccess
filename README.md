@@ -15,3 +15,5 @@
 - [x] R99
 - [x] R301
 - [x] RE45
+
+Other weapon have generic logic or no correction at all for weapons like `Longbow`, `Peacekeepre`, `Wingman`...
