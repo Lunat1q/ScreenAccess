@@ -1,4 +1,5 @@
-﻿using TiqSoft.ScreenAssistant.Core;
+﻿using System;
+using TiqSoft.ScreenAssistant.Core;
 
 namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
 {
@@ -13,18 +14,18 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
         {
             double horizontalOffset;
             double verticalOffset;
-            if (shotNumber < 25)
+            if (shotNumber < 15)
             {
-                AdjustmentCoefficient = CalculateAdjustment(shotNumber, 30);
+                AdjustmentCoefficient = CalculateAdjustment(shotNumber, 20);
                 horizontalOffset = Rnd.NextDouble() * 1 + 1;
-                verticalOffset = Rnd.NextDouble() * (8 - 6) + 6;
+                verticalOffset = Rnd.NextDouble() * (2) + 5;
             }
             else
             {
-                AdjustmentCoefficient = CalculateAdjustment(shotNumber, 140);
-                var hAdj = shotNumber > 50 ? -1.3d : 1;
+                AdjustmentCoefficient = CalculateAdjustment(shotNumber, 80);
+                var hAdj = shotNumber > 25 ? -1.5d : 1.5d; 
                 horizontalOffset = hAdj * (Rnd.NextDouble() * 0.5 + 1);
-                verticalOffset = Rnd.NextDouble() * 0.5 + 2;
+                verticalOffset = Rnd.NextDouble() * 0.5 + 2d;
             }
 
             MouseControl.Move((int)horizontalOffset, (int)(verticalOffset * AdjustmentCoefficient));

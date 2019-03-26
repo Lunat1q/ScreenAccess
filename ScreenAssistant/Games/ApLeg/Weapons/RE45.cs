@@ -14,7 +14,7 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
         {
             AdjustmentCoefficient = CalculateAdjustment(shotNumber, 25);
             var horizontalOffset = -1 * (Rnd.NextDouble() * 1 + 2d);
-            var verticalOffset = Rnd.NextDouble() + 5.5d;
+            var verticalOffset = Rnd.NextDouble() + 4d;
             MouseControl.Move((int)(horizontalOffset), (int)(verticalOffset * AdjustmentCoefficient));
 
             return GetAdjustmentTime(1d);

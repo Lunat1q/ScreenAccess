@@ -1,4 +1,5 @@
-﻿using TiqSoft.ScreenAssistant.Core;
+﻿using System;
+using TiqSoft.ScreenAssistant.Core;
 
 namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
 {
@@ -11,9 +12,9 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
 
         public override double AdjustMouse(int shotNumber)
         {
-            if (shotNumber > 9)
+            if (shotNumber > 6)
             {
-                AdjustmentCoefficient = CalculateAdjustment(shotNumber, 75);
+                AdjustmentCoefficient = CalculateAdjustment(shotNumber, 40);
                 var horizontalOffset = Rnd.NextDouble() * 1 * 2 - 1;
                 var verticalOffset = Rnd.NextDouble() + 5.5d;
                 MouseControl.Move((int)horizontalOffset, (int)(verticalOffset * AdjustmentCoefficient));

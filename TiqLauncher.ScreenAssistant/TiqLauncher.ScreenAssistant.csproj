@@ -78,4 +78,9 @@
     <Content Include="iconfinder__magic_wand_1679640_hWM_icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>cd $(TargetDir)
+del * /Q
+rmdir bin /S /Q</PreBuildEvent>
+  </PropertyGroup>
 </Project>
