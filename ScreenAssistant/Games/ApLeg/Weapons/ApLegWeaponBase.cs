@@ -56,6 +56,12 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
             return result > 1 ? 1 : result;
         }
 
+        protected void MoveMouse(double horizontalOffset, double verticalOffset)
+        {
+            int hOffset = AdjustmentCoefficient > 0.001 ? (int)horizontalOffset : 0;
+            MouseControl.Move(hOffset, (int)(verticalOffset * AdjustmentCoefficient));
+        }
+
         public override string ToString()
         {
             return$"{Name} : {_recognizedName}";

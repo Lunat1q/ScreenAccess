@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -45,6 +46,8 @@ namespace TiqSoft.ScreenAssistant.Controllers
             }
         }
 
+        public string CurrentVersionInfo { get; }
+
         public MainLogicController(int deltaX, int deltaY, bool useWeaponLogic)
         {
             UseWeaponLogic = useWeaponLogic;
@@ -54,6 +57,7 @@ namespace TiqSoft.ScreenAssistant.Controllers
             HotKeysController.BindUpToAction(KeyModifier.Ctrl, 'K', Toggle);
             HotKeysController.Start(true);
             ResetEquippedWeapons();
+            CurrentVersionInfo = Assembly.GetExecutingAssembly().GetName().Version.ToString();
         }
 
         private void ResetEquippedWeapons()

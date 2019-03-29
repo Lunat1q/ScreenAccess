@@ -1,7 +1,4 @@
-﻿using System;
-using TiqSoft.ScreenAssistant.Core;
-
-namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
+﻿namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
 {
     internal sealed class Devotion : UniqueLogicWeapon
     {
@@ -28,7 +25,7 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
                 verticalOffset = Rnd.NextDouble() * 0.5 + 2d;
             }
 
-            MouseControl.Move((int)horizontalOffset, (int)(verticalOffset * AdjustmentCoefficient));
+            MoveMouse(horizontalOffset, verticalOffset);
 
             return GetAdjustmentTime(1d);
         }

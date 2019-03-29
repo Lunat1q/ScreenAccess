@@ -1,4 +1,4 @@
-﻿using TiqSoft.ScreenAssistant.Core;
+﻿
 // ReSharper disable IdentifierTypo
 
 namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
@@ -14,7 +14,7 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
             AdjustmentCoefficient = CalculateAdjustment(shotNumber, 5);
             var horizontalOffset = 0;
             var verticalOffset = Rnd.NextDouble() + 7d;
-            MouseControl.Move(horizontalOffset, (int)(verticalOffset * AdjustmentCoefficient));
+            MoveMouse(horizontalOffset, verticalOffset);
 
             return GetAdjustmentTime(1d);
         }

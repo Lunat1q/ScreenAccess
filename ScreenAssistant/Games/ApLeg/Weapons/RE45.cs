@@ -1,6 +1,4 @@
-﻿using TiqSoft.ScreenAssistant.Core;
-
-namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
+﻿namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
 {
     // ReSharper disable once InconsistentNaming
     internal sealed class RE45 : UniqueLogicWeapon
@@ -15,7 +13,7 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
             AdjustmentCoefficient = CalculateAdjustment(shotNumber, 25);
             var horizontalOffset = -1 * (Rnd.NextDouble() * 1 + 2d);
             var verticalOffset = Rnd.NextDouble() + 4d;
-            MouseControl.Move((int)(horizontalOffset), (int)(verticalOffset * AdjustmentCoefficient));
+            MoveMouse(horizontalOffset, verticalOffset);
 
             return GetAdjustmentTime(1d);
         }

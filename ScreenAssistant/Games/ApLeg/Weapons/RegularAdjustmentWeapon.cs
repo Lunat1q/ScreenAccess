@@ -1,5 +1,4 @@
 ﻿using System;
-using TiqSoft.ScreenAssistant.Core;
 
 namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
 {
@@ -19,7 +18,7 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
             AdjustmentCoefficient = CalculateAdjustment(shotNumber, ShotsPerBurst);
             var horizontalOffset = Rnd.NextDouble() * DeltaX * 2 - DeltaX;
             var verticalOffset = Rnd.NextDouble() * (MaxOffsetY - MinOffsetY) + MinOffsetY;
-            MouseControl.Move((int)horizontalOffset, (int)(verticalOffset * AdjustmentCoefficient));
+            MoveMouse(horizontalOffset, verticalOffset);
             return Rnd.NextDouble() * (MaxFireRate - MinFireRate) + MinFireRate;
         }
 

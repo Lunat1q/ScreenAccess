@@ -1,6 +1,4 @@
-﻿using TiqSoft.ScreenAssistant.Core;
-
-namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
+﻿namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
 {
     // ReSharper disable once IdentifierTypo
     internal sealed class Flatline : UniqueLogicWeapon
@@ -13,11 +11,12 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
 
         public override double AdjustMouse(int shotNumber)
         {
-            AdjustmentCoefficient = CalculateAdjustment(shotNumber, 40);
-            var hAdj = shotNumber > 20 && shotNumber < 25 ? -1d : 1.25;
+            AdjustmentCoefficient = CalculateAdjustment(shotNumber, 30);
+            var vOffset = shotNumber < 7 ? 4d : 2d;
+            var hAdj = shotNumber > 8 && shotNumber < 12 ? -1d : 1;
             var horizontalOffset = hAdj * (Rnd.NextDouble() * 1 + 1d);
-            var verticalOffset = Rnd.NextDouble() + 4d;
-            MouseControl.Move((int)(horizontalOffset), (int)(verticalOffset * AdjustmentCoefficient));
+            var verticalOffset = Rnd.NextDouble() + vOffset;
+            MoveMouse(horizontalOffset, verticalOffset);
 
             return GetAdjustmentTime(1d);
         }

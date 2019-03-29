@@ -13,6 +13,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" Margin="5" MinHeight="35">
             <Grid.ColumnDefinitions>
@@ -92,6 +93,10 @@
         <Grid Grid.Row="3" Margin="5" Visibility="Collapsed">
             <!-- -->
             <Button Content="TEST" Click="Button_Click_2"/>
+        </Grid>
+        <Grid Grid.Row="4" Margin="5,5,5,0" >
+            <!-- -->
+            <TextBlock Text="{Binding CurrentVersionInfo}" HorizontalAlignment="Right" VerticalAlignment="Center" FontStyle="Italic" Foreground="#FF404040" FontSize="9"/>
         </Grid>
     </Grid>
 </Window>

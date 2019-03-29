@@ -1,6 +1,4 @@
-﻿using TiqSoft.ScreenAssistant.Core;
-
-namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
+﻿namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
 {
     internal sealed class R99 : UniqueLogicWeapon
     {
@@ -14,7 +12,7 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
             AdjustmentCoefficient = CalculateAdjustment(shotNumber, 35);
             var horizontalOffset = Rnd.NextDouble() * -1 - 1;
             var verticalOffset = Rnd.NextDouble() + 7;
-            MouseControl.Move((int)horizontalOffset, (int)(verticalOffset * AdjustmentCoefficient));
+            MoveMouse(horizontalOffset, verticalOffset);
 
             return GetAdjustmentTime(1d);
         }

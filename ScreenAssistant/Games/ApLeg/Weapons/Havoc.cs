@@ -1,7 +1,4 @@
-﻿using System;
-using TiqSoft.ScreenAssistant.Core;
-
-namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
+﻿namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
 {
     internal sealed class Havoc : UniqueLogicWeapon
     {
@@ -17,7 +14,7 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
                 AdjustmentCoefficient = CalculateAdjustment(shotNumber, 40);
                 var horizontalOffset = Rnd.NextDouble() * 1 * 2 - 1;
                 var verticalOffset = Rnd.NextDouble() + 5.5d;
-                MouseControl.Move((int)horizontalOffset, (int)(verticalOffset * AdjustmentCoefficient));
+                MoveMouse(horizontalOffset, verticalOffset);
             }
 
             return GetAdjustmentTime(1d);

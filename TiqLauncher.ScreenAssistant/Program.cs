@@ -34,13 +34,14 @@ namespace TiqLauncher.ScreenAssistant
         private static void CreateSecureBinFolder(string folderPath)
         {
             // Way safer than string comparison against "BUILTIN\\Administrators"
-            IdentityReference builtinAdministrators = new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null);
+            IdentityReference secureSid = new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null);
+            //IdentityReference secureSid = new SecurityIdentifier(WellKnownSidType.LocalSystemSid, null);
             DirectorySecurity dirSec = new DirectorySecurity();
-            dirSec.AddAccessRule(new FileSystemAccessRule(builtinAdministrators, FileSystemRights.FullControl, AccessControlType.Allow));
+            dirSec.AddAccessRule(new FileSystemAccessRule(secureSid, FileSystemRights.FullControl, AccessControlType.Allow));
             Directory.CreateDirectory(folderPath, dirSec);
             // Grab ACL from folder
             var dirAccessControl = Directory.GetAccessControl(folderPath);
-            dirAccessControl.SetOwner(builtinAdministrators);
+            dirAccessControl.SetOwner(secureSid);
         }
 
         private static void PrepareBinaries()
