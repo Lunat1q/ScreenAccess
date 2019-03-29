@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security.AccessControl;
+using System.Security.Principal;
 using System.Threading;
 
 namespace TiqLauncher.ScreenAssistant
@@ -28,22 +29,24 @@ namespace TiqLauncher.ScreenAssistant
 #else
             RunSecretly(DefaultName);
 #endif
-
         }
 
-        private static DirectorySecurity GetAdminOnlyAccessRule()
+        private static void CreateSecureBinFolder(string folderPath)
         {
-            FileSystemAccessRule administratorRule = new FileSystemAccessRule("Administrators", FileSystemRights.FullControl, InheritanceFlags.ContainerInherit | InheritanceFlags.ObjectInherit, PropagationFlags.None, AccessControlType.Allow);
-            
+            // Way safer than string comparison against "BUILTIN\\Administrators"
+            IdentityReference builtinAdministrators = new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null);
             DirectorySecurity dirSec = new DirectorySecurity();
-            dirSec.AddAccessRule(administratorRule);
-            return dirSec;
+            dirSec.AddAccessRule(new FileSystemAccessRule(builtinAdministrators, FileSystemRights.FullControl, AccessControlType.Allow));
+            Directory.CreateDirectory(folderPath, dirSec);
+            // Grab ACL from folder
+            var dirAccessControl = Directory.GetAccessControl(folderPath);
+            dirAccessControl.SetOwner(builtinAdministrators);
         }
 
         private static void PrepareBinaries()
         {
             var launcherAssemblyName = Assembly.GetEntryAssembly().GetName().Name;
-            Directory.CreateDirectory(Path.Combine(CurrentDirectory, SecretSubFolder), GetAdminOnlyAccessRule());
+            CreateSecureBinFolder(Path.Combine(CurrentDirectory, SecretSubFolder));
             foreach (var file in Directory.GetFiles(CurrentDirectory).Where(x => !Path.GetFileName(x).StartsWith(launcherAssemblyName)))
             {
                 var fileName = Path.GetFileName(file);
