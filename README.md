@@ -17,3 +17,9 @@
 - [x] RE45
 
 Other weapon have generic logic or no correction at all for weapons like `Longbow`, `Peacekeeper`, `Wingman`...
+
+Extra Info:
+
+Current version will create admin only access folder inside current directory after build. 
+
+P.S. Some paths may point to my local folders, sorry for that.
