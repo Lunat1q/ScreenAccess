@@ -18,7 +18,7 @@
 
 Other weapon have generic logic or no correction at all for weapons like `Longbow`, `Peacekeeper`, `Wingman`...
 
-Extra Info:
+#### Extra Info:
 
 Current version will create admin only access folder inside current directory after build. 
 
