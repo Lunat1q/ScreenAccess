@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using IronOcr;
@@ -10,7 +11,8 @@ namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition
     {
         
         private static readonly Random Rnd = new Random();
-        
+
+        private static readonly Dictionary<int, string> resultCache = new Dictionary<int, string>();
 
         public static bool IsFirstWeaponActive()
         {
@@ -70,37 +72,33 @@ namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition
             image.Save(@"\TestSC\" + fileName, ImageFormat.Tiff);
         }
 
-        private static Image AdjustImageForRecognition(Image img)
+        private static DirectBitmap GetAdjustedDirectBitmapOfImage(Image img)
         {
-            Image result;
-            using (var db = new DirectBitmap(img.Width, img.Height))
+            var db = new DirectBitmap(img.Width, img.Height);
+
+            using (var graphics = Graphics.FromImage(db.Bitmap))
             {
-                using (var graphics = Graphics.FromImage(db.Bitmap))
-                {
-                    graphics.DrawImage(img, Point.Empty);
-                }
-
-                for (var i = 0; i < img.Width; i++)
-                {
-                    for (var j = 0; j < img.Height; j++)
-                    {
-                        var currentPixel = db.GetPixel(i, j);
-                        var brightness = currentPixel.GetBrightness();
-                        if (brightness < 0.85f)
-                        {
-                            db.SetPixel(i, j, Color.White);
-                        }
-                        else
-                        {
-                            db.SetPixel(i,j, Color.Black);
-                        }
-                    }
-                }
-
-                result = (Bitmap) db.Bitmap.Clone();
+                graphics.DrawImage(img, Point.Empty);
             }
 
-            return result;
+            for (var i = 0; i < img.Width; i++)
+            {
+                for (var j = 0; j < img.Height; j++)
+                {
+                    var currentPixel = db.GetPixel(i, j);
+                    var brightness = currentPixel.GetBrightness();
+                    if (brightness < 0.85f)
+                    {
+                        db.SetPixel(i, j, Color.White);
+                    }
+                    else
+                    {
+                        db.SetPixel(i, j, Color.Black);
+                    }
+                }
+            }
+
+            return db;
         }
 
         public static string TestWeapons()
@@ -108,9 +106,17 @@ namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition
             var w1Img = GetWeapon1Image();
             var w2Img = GetWeapon2Image();
             SaveTestImage(w1Img);
-            SaveTestImage(AdjustImageForRecognition(w1Img));
+            using (var db = GetAdjustedDirectBitmapOfImage(w1Img))
+            {
+                SaveTestImage(db.ToBitmap());
+            }
+
             SaveTestImage(w2Img);
-            SaveTestImage(AdjustImageForRecognition(w2Img));
+            using (var db = GetAdjustedDirectBitmapOfImage(w1Img))
+            {
+                SaveTestImage(db.ToBitmap());
+            }
+
             return WeaponImageToString(w1Img) + WeaponImageToString(w2Img);
         }
 
@@ -129,23 +135,32 @@ namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition
             var result = "";
             try
             {
-                var img2 = AdjustImageForRecognition(img);
-                var ocr = new AdvancedOcr
+                using (var db = GetAdjustedDirectBitmapOfImage(img))
                 {
-                    CleanBackgroundNoise = true,
-                    EnhanceContrast = true,
-                    EnhanceResolution = true,
-                    Language = IronOcr.Languages.English.OcrLanguagePack,
-                    Strategy = AdvancedOcr.OcrStrategy.Advanced,
-                    ColorSpace = AdvancedOcr.OcrColorSpace.GrayScale,
-                    DetectWhiteTextOnDarkBackgrounds = false,
-                    InputImageType = AdvancedOcr.InputTypes.Snippet,
-                    RotateAndStraighten = false,
-                    ReadBarCodes = false,
-                    ColorDepth = 8
-                };
-                var res = ocr.Read(img2);
-                result = res.Text.ToUpper();
+                    if (resultCache.TryGetValue(db.GetHashCode(), out result))
+                    {
+                        return result;
+                    }
+
+                    var img2 = db.ToBitmap();
+                    var ocr = new AdvancedOcr
+                    {
+                        CleanBackgroundNoise = true,
+                        EnhanceContrast = true,
+                        EnhanceResolution = true,
+                        Language = IronOcr.Languages.English.OcrLanguagePack,
+                        Strategy = AdvancedOcr.OcrStrategy.Advanced,
+                        ColorSpace = AdvancedOcr.OcrColorSpace.GrayScale,
+                        DetectWhiteTextOnDarkBackgrounds = false,
+                        InputImageType = AdvancedOcr.InputTypes.Snippet,
+                        RotateAndStraighten = false,
+                        ReadBarCodes = false,
+                        ColorDepth = 8
+                    };
+                    var res = ocr.Read(img2);
+                    result = res.Text.ToUpper();
+                    resultCache.Add(db.GetHashCode(), result);
+                }
             }
             catch
             {
@@ -154,7 +169,5 @@ namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition
 
             return result;
         }
-
-        
     }
 }
