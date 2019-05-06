@@ -20,6 +20,7 @@ Other weapon have generic logic or no correction at all for weapons like `Longbo
 
 #### Extra Info:
 
-Current version will create admin only access folder inside current directory after build. 
+- Current version will create admin only access folder inside current directory after build, do not open it, because it will compromise the EAC protection. If you still did it - delete compiled sources and rebuild.
 
-P.S. Some paths may point to my local folders, sorry for that.
+- [UnknownCheats thread](https://www.unknowncheats.me/forum/apex-legends/334760-apex-legends-recoil.html)
+
