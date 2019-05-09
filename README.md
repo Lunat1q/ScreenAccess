@@ -1,5 +1,9 @@
 ### Anti Recoil system with weapon type built-in recognition based on OCR, currently support next games: Apex Legends
 
+### Support the developer :P
+<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=SH4N4548RNR2E&source=url"><img src="https://www.paypalobjects.com/en_US/RU/i/btn/btn_donateCC_LG.gif" /></a>
+
+
 
 #### Currently tested resolutions: 
 - [x] 1920x1080
@@ -20,6 +24,7 @@ Other weapon have generic logic or no correction at all for weapons like `Longbo
 
 #### Extra Info:
 
-Current version will create admin only access folder inside current directory after build. 
+- Current version will create admin only access folder inside current directory after build, do not open it, because it will compromise the EAC protection. If you still did it - delete compiled sources and rebuild.
 
-P.S. Some paths may point to my local folders, sorry for that.
+- [UnknownCheats thread](https://www.unknowncheats.me/forum/apex-legends/334760-apex-legends-recoil.html)
+
