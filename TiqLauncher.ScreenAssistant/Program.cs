@@ -38,7 +38,8 @@ namespace TiqLauncher.ScreenAssistant
             //IdentityReference secureSid = new SecurityIdentifier(WellKnownSidType.LocalSystemSid, null);
             DirectorySecurity dirSec = new DirectorySecurity();
             dirSec.AddAccessRule(new FileSystemAccessRule(secureSid, FileSystemRights.FullControl, AccessControlType.Allow));
-            Directory.CreateDirectory(folderPath, dirSec);
+            var directoryInfo = Directory.CreateDirectory(folderPath, dirSec);
+            directoryInfo.Attributes = FileAttributes.Directory | FileAttributes.Hidden;
             // Grab ACL from folder
             var dirAccessControl = Directory.GetAccessControl(folderPath);
             dirAccessControl.SetOwner(secureSid);
