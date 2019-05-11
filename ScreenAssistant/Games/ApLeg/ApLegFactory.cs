@@ -34,7 +34,7 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg
             return new RegularAdjustmentWeapon("Default", 2, "Default", WeaponAL.Unknown);
         }
 
-        internal static IWeapon ConstructFromRecognizedString(string recognizedName, IWeapon currentWeapon, int offsetX, int offsetY)
+        internal static IWeapon ConstructFromRecognizedString(string recognizedName, IWeapon currentWeapon, int offsetX, int offsetY, float sensitivityScale)
         {
             var weaponName = recognizedName.FindMostSimilar(WeaponNamesToTypes.Keys);
 
@@ -99,6 +99,7 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg
 
 
             result.SetOffsets(offsetX, offsetY);
+            result.SetSensitivityScale(sensitivityScale);
             return result;
         }
 

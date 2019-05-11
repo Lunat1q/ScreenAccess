@@ -7,96 +7,118 @@
         xmlns:controllers="clr-namespace:TiqSoft.ScreenAssistant.Controllers"
         mc:Ignorable="d" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen"
         Title="ScreenAssistant" d:DataContext="{controllers:MainLogicController}" Topmost="True" ResizeMode="CanMinimize" Closing="Window_Closing">
-    <Grid Margin="5">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        <Grid Grid.Row="0" Margin="5" MinHeight="35">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="1*"/>
-            </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" IsEnabled="{Binding Enabled, Converter={StaticResource InverseBooleanConverter}}" Content="Start" HorizontalAlignment="Center" Margin="10" VerticalAlignment="Center" Width="75" Click="Button_Click"/>
-            <Button Grid.Column="1" IsEnabled="{Binding Enabled}" Content="Stop" HorizontalAlignment="Center" Margin="10" VerticalAlignment="Center" Width="75" Click="Button_Click_1"/>
-            <Grid  Grid.Column="2">
-                <Rectangle Height="32" Width="32" Fill="#FF0097FF" RadiusX="16" RadiusY="16" Visibility="{Binding Working, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                <Rectangle Height="32" Width="32" Fill="#FF00C309" RadiusX="16" RadiusY="16" Visibility="{Binding MouseDown, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                <TextBlock Text="{Binding AdjustmentCoefficient, StringFormat=N2}" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding Working, Converter={StaticResource BooleanToVisibilityConverter}}" Foreground="White" FontWeight="Bold"/>
-            </Grid>
-        </Grid>
-        <Grid Grid.Row="1" Margin="5" MinHeight="35">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="2*"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock Text="{Binding Weapon1Name}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14">
-                <TextBlock.Style>
-                    <Style TargetType="TextBlock">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding FirstWeaponActive}"
-                                         Value="True">
-                                <Setter Property="FontWeight" Value="Bold"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </TextBlock.Style>
-            </TextBlock>
-            <TextBlock Grid.Column="1" Text="{Binding Weapon2Name}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14">
-                <TextBlock.Style>
-                    <Style TargetType="TextBlock">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding FirstWeaponActive, Converter={StaticResource InverseBooleanConverterWeak}}"
-                                         Value="True">
-                                <Setter Property="FontWeight" Value="Bold"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </TextBlock.Style>
-            </TextBlock>
-        </Grid>
-        <Grid Grid.Row="2" Margin="5">
+    <Grid>
+        <Grid Margin="5">
             <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
+            <Grid Grid.Row="0" Margin="5" MinHeight="35">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" IsEnabled="{Binding Enabled, Converter={StaticResource InverseBooleanConverter}}" Content="Start" HorizontalAlignment="Center" Margin="10" VerticalAlignment="Center" Width="75" Click="Button_Click"/>
+                <Button Grid.Column="1" IsEnabled="{Binding Enabled}" Content="Stop" HorizontalAlignment="Center" Margin="10" VerticalAlignment="Center" Width="75" Click="Button_Click_1"/>
+                <Grid  Grid.Column="2">
+                    <Rectangle Height="32" Width="32" Fill="#FF0097FF" RadiusX="16" RadiusY="16" Visibility="{Binding Working, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                    <Rectangle Height="32" Width="32" Fill="#FF00C309" RadiusX="16" RadiusY="16" Visibility="{Binding MouseDown, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                    <TextBlock Text="{Binding AdjustmentCoefficient, StringFormat=N2}" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding Working, Converter={StaticResource BooleanToVisibilityConverter}}" Foreground="White" FontWeight="Bold"/>
+                </Grid>
+            </Grid>
+            <Grid Grid.Row="1" Margin="5" MinHeight="35">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{Binding Weapon1Name}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding FirstWeaponActive}"
+                                         Value="True">
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+                <TextBlock Grid.Column="1" Text="{Binding Weapon2Name}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding FirstWeaponActive, Converter={StaticResource InverseBooleanConverterWeak}}"
+                                         Value="True">
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </Grid>
+            <Grid Grid.Row="3" Margin="5" Visibility="Collapsed">
+                <!-- -->
+                <Button Content="TEST" Click="Button_Click_2"/>
+            </Grid>
+            <Grid Grid.Row="4" Margin="5,5,5,0" >
+                <!-- -->
+                <TextBlock Text="{Binding CurrentVersionInfo}" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontStyle="Italic" Foreground="#FF404040" FontSize="9"/>
+                <Button Content="Settings" Margin="5,0,5,0" Padding="5,2" HorizontalAlignment="Left" Click="Button_Click_3" />
+            </Grid>
+        </Grid>
+        <Grid x:Name="SettingsGrid">
+            <Grid.RenderTransform>
+                <ScaleTransform ScaleY="1"/>
+            </Grid.RenderTransform>
+            <Rectangle Fill="White"/>
             <Grid Margin="5">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="1*"/>
-                </Grid.ColumnDefinitions>
-                <TextBlock Text="Average Y Offset" VerticalAlignment="Center" Margin="5, 0"/>
-                <Slider Grid.Column="1" MinWidth="150" Value="{Binding DeltaY}" Maximum="10" Minimum="1" AutoToolTipPlacement="TopLeft"/>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid Margin="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Average Y Offset" VerticalAlignment="Center" Margin="5, 0"/>
+                    <Slider Grid.Column="1" MinWidth="150" Value="{Binding DeltaY}" Maximum="10" Minimum="1" AutoToolTipPlacement="TopLeft"/>
+                </Grid>
+                <Grid Grid.Row="1" Margin="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="Average X Offset" VerticalAlignment="Center"  Margin="5, 0"/>
+                    <Slider Grid.Column="1" MinWidth="150" Value="{Binding DeltaX}" Maximum="10" Minimum="1" AutoToolTipPlacement="TopLeft"/>
+                </Grid>
+                <Grid Grid.Row="2" Margin="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="Unique weapon logic" VerticalAlignment="Center"  Margin="5, 0"/>
+                    <CheckBox Grid.Column="1" IsChecked="{Binding UseWeaponLogic}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Grid>
+                <Grid Grid.Row="3" Margin="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="Sensitivity adjustment" VerticalAlignment="Center"  Margin="5, 0"/>
+                    <Slider Grid.Column="1" MinWidth="150" Value="{Binding SensitivityScale}" Maximum="5" Minimum="0.1" AutoToolTipPrecision="1" AutoToolTipPlacement="TopLeft" LargeChange="0.1" TickFrequency="0.1"/>
+                </Grid>
+                <Grid Grid.Row="4">
+                    <Button Content="OK" Margin="116,0,115,5" Padding="5,2" HorizontalAlignment="Center" VerticalAlignment="Bottom" Click="Button_Click_4" />
+                </Grid>
             </Grid>
-            <Grid Grid.Row="1" Margin="5">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="1*"/>
-                </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0" Text="Average X Offset" VerticalAlignment="Center"  Margin="5, 0"/>
-                <Slider Grid.Column="1" MinWidth="150" Value="{Binding DeltaX}" Maximum="10" Minimum="1" AutoToolTipPlacement="TopLeft"/>
-            </Grid>
-            <Grid Grid.Row="2" Margin="5">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="1*"/>
-                </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0" Text="Unique weapon logic" VerticalAlignment="Center"  Margin="5, 0"/>
-                <CheckBox Grid.Column="1" IsChecked="{Binding UseWeaponLogic}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            </Grid>
-        </Grid>
-        <Grid Grid.Row="3" Margin="5" Visibility="Collapsed">
-            <!-- -->
-            <Button Content="TEST" Click="Button_Click_2"/>
-        </Grid>
-        <Grid Grid.Row="4" Margin="5,5,5,0" >
-            <!-- -->
-            <TextBlock Text="{Binding CurrentVersionInfo}" HorizontalAlignment="Right" VerticalAlignment="Center" FontStyle="Italic" Foreground="#FF404040" FontSize="9"/>
         </Grid>
     </Grid>
 </Window>

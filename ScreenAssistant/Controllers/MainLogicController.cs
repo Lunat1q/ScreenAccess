@@ -31,6 +31,7 @@ namespace TiqSoft.ScreenAssistant.Controllers
         private IWeapon _weapon1;
         private IWeapon _weapon2;
         private bool _useWeaponLogic;
+        private float _sensitivityScale;
 
         #region Properties
         private BindingController HotKeysController { get; }
@@ -48,11 +49,12 @@ namespace TiqSoft.ScreenAssistant.Controllers
 
         public string CurrentVersionInfo { get; }
 
-        public MainLogicController(int deltaX, int deltaY, bool useWeaponLogic)
+        public MainLogicController(int deltaX, int deltaY, float sensitivityScale, bool useWeaponLogic)
         {
             UseWeaponLogic = useWeaponLogic;
             DeltaX = deltaX;
             DeltaY = deltaY;
+            SensitivityScale = sensitivityScale;
             HotKeysController = new BindingController();
             HotKeysController.BindUpToAction(KeyModifier.Ctrl, 'K', Toggle);
             HotKeysController.Start(true);
@@ -66,7 +68,7 @@ namespace TiqSoft.ScreenAssistant.Controllers
             Weapon2Name = "Unknown";
         }
 
-        public MainLogicController() : this(2, 3, false)
+        public MainLogicController() : this(2, 3, 1, false)
         {
         }
 
@@ -173,6 +175,19 @@ namespace TiqSoft.ScreenAssistant.Controllers
             }
         }
 
+        public float SensitivityScale
+        {
+            get => _sensitivityScale;
+            set
+            {
+                if (value.Equals(_sensitivityScale)) return;
+                _sensitivityScale = value;
+                OnPropertyChanged();
+                _weapon1?.SetSensitivityScale(_sensitivityScale);
+                _weapon2?.SetSensitivityScale(_sensitivityScale);
+            }
+        }
+
         #endregion
 
         #region INotify
@@ -236,7 +251,8 @@ namespace TiqSoft.ScreenAssistant.Controllers
                                 weapon1RecognizedName, 
                                 _weapon1,
                                 DeltaX, 
-                                DeltaY
+                                DeltaY,
+                                SensitivityScale
                             );
                             if (!newDetectedWeapon.IsDefault() && !_weapon1.Equals(newDetectedWeapon))
                             {
@@ -253,7 +269,8 @@ namespace TiqSoft.ScreenAssistant.Controllers
                                 weapon2RecognizedName,
                                 _weapon2,
                                 DeltaX,
-                                DeltaY
+                                DeltaY,
+                                SensitivityScale
                             );
                             if (!newDetectedWeapon.IsDefault() && !_weapon2.Equals(newDetectedWeapon))
                             {

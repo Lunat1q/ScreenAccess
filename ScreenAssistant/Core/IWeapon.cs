@@ -12,6 +12,8 @@
 
         void SetOffsets(int deltaX, int deltaY);
 
+        void SetSensitivityScale(float sensitivityScale);
+
         bool IsDefault();
     }
 }

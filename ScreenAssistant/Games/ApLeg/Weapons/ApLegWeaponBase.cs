@@ -13,6 +13,7 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
         protected double MaxOffsetY;
         protected readonly double ShotsPerBurst;
         private readonly string _recognizedName;
+        private float _sensitivityScale;
 
         protected ApLegWeaponBase(string name, double burstSeconds, string recognizedName, WeaponAL weaponType) // recognized name is for test purpose
         {
@@ -44,6 +45,11 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
             DeltaX = deltaX;
         }
 
+        public void SetSensitivityScale(float sensitivityScale)
+        {
+            _sensitivityScale = sensitivityScale;
+        }
+
         public abstract bool IsDefault();
 
         protected static double CalculateAdjustment(int shotNumber, double shotsPerBurst)
@@ -59,7 +65,7 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
         protected void MoveMouse(double horizontalOffset, double verticalOffset)
         {
             int hOffset = AdjustmentCoefficient > 0.001 ? (int)horizontalOffset : 0;
-            MouseControl.Move(hOffset, (int)(verticalOffset * AdjustmentCoefficient));
+            MouseControl.Move((int)(hOffset * _sensitivityScale), (int)(verticalOffset * AdjustmentCoefficient * _sensitivityScale));
         }
 
         public override string ToString()
