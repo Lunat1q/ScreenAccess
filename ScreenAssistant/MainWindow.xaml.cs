@@ -45,9 +45,9 @@ namespace TiqSoft.ScreenAssistant
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            // ReSharper disable once UnusedVariable
-            var w = WeaponTypeScreenRecognizer.IsFirstWeaponActive();
-
+            ImageTestController.Instance.Toggle();
+            var testBtn = (Button) sender;
+            testBtn.Background = new SolidColorBrush(ImageTestController.Instance.Running ? Color.FromRgb(25, 225, 25) : Color.FromRgb(225, 25, 25));
         }
 
         private void Button_Click_3(object sender, RoutedEventArgs e)

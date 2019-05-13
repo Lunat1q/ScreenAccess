@@ -81,6 +81,7 @@
     </Compile>
     <Compile Include="Controllers\BindingControl\BindingController.cs" />
     <Compile Include="Controllers\BindingControl\KeyListener.cs" />
+    <Compile Include="Controllers\ImageTestController.cs" />
     <Compile Include="Controllers\MainLogicController.cs" />
     <Compile Include="Core\IWeapon.cs" />
     <Compile Include="Core\MouseControl.cs" />

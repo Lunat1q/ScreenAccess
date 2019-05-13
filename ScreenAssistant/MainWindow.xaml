@@ -65,14 +65,17 @@
                 <Button Content="TEST" Click="Button_Click_2"/>
             </Grid>
             <Grid Grid.Row="4" Margin="5,5,5,0" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
                 <!-- -->
-                <TextBlock Text="{Binding CurrentVersionInfo}" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontStyle="Italic" Foreground="#FF404040" FontSize="9"/>
-                <Button Content="Settings" Margin="5,0,5,0" Padding="5,2" HorizontalAlignment="Left" Click="Button_Click_3" />
+                <TextBlock Text="{Binding CurrentVersionInfo}" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontStyle="Italic" Foreground="#FF404040" FontSize="9" Margin="0,0,-1,0"/>
+                <Button Content="Settings" Margin="5,0,0,0" Padding="5,2" HorizontalAlignment="Left" Click="Button_Click_3" />
             </Grid>
         </Grid>
         <Grid x:Name="SettingsGrid">
             <Grid.RenderTransform>
-                <ScaleTransform ScaleY="1"/>
+                <ScaleTransform ScaleY="0"/>
             </Grid.RenderTransform>
             <Rectangle Fill="White"/>
             <Grid Margin="5">
