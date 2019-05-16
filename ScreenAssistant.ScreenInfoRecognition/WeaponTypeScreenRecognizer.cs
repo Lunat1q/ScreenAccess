@@ -68,8 +68,8 @@ namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition
         private static void SaveTestImage(this Image image)
         {
             var fileName = $"{Rnd.Next(0, 999999999)}.tif";
-            Directory.CreateDirectory("TestSC");
-            image.Save(@"\TestSC\" + fileName, ImageFormat.Tiff);
+            var dir = Directory.CreateDirectory("TestSC");
+            image.Save(Path.Combine(dir.FullName, fileName), ImageFormat.Tiff);
         }
 
         private static DirectBitmap GetAdjustedDirectBitmapOfImage(Image img)
@@ -105,7 +105,7 @@ namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition
         {
             var w1Img = GetWeapon1Image();
             var w2Img = GetWeapon2Image();
-            SaveTestImage(w1Img);
+            w1Img.SaveTestImage();
             using (var db = GetAdjustedDirectBitmapOfImage(w1Img))
             {
                 SaveTestImage(db.ToBitmap());

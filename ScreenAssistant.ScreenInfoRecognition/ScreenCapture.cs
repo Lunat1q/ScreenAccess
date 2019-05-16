@@ -26,7 +26,8 @@ namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition
         /// <returns></returns>
         public static Image CaptureScreenRelatively(float startX, float endX, float startY, float endY)
         {
-            return CaptureWindow(User32.GetDesktopWindow(), startX, endX, startY, endY);
+            //return CaptureWindow(User32.GetDesktopWindow(), startX, endX, startY, endY);
+            return CaptureWindow(User32.GetForegroundWindow(), startX, endX, startY, endY);
         }
 
         /// <summary>
@@ -135,6 +136,8 @@ namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition
             public static extern IntPtr ReleaseDC(IntPtr hWnd, IntPtr hDC);
             [DllImport("user32.dll")]
             public static extern IntPtr GetWindowRect(IntPtr hWnd, ref RECT rect);
+            [DllImport("user32.dll")]
+            public static extern IntPtr GetForegroundWindow();
         }
     }
 }
