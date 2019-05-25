@@ -1,0 +1,2 @@
+Start-Process -FilePath "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\amd64\MSBuild.exe" -ArgumentList "/t:Build /p:Configuration=Release"
+explorer .\TiqLauncher.ScreenAssistant\bin\Release
