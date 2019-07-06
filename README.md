@@ -1,5 +1,7 @@
 ### Anti Recoil system with weapon type built-in recognition based on OCR, currently support next games: Apex Legends
 
+[![Github Downloads (total)](https://img.shields.io/github/downloads/Lunat1q/ScreenAccess/total.svg)]()
+
 ### Support the developer :P
 <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=SH4N4548RNR2E&source=url"><img src="https://www.paypalobjects.com/en_US/RU/i/btn/btn_donateCC_LG.gif" /></a>
 
