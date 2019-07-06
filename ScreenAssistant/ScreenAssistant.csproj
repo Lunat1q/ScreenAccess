@@ -91,6 +91,7 @@
     <Compile Include="Games\ApLeg\WeaponAL.cs" />
     <Compile Include="Games\ApLeg\Weapons\Alternator.cs" />
     <Compile Include="Games\ApLeg\Weapons\ApLegWeaponBase.cs" />
+    <Compile Include="Games\ApLeg\Weapons\LStar.cs" />
     <Compile Include="Games\ApLeg\Weapons\Devotion.cs" />
     <Compile Include="Games\ApLeg\Weapons\Flatline.cs" />
     <Compile Include="Games\ApLeg\Weapons\Havoc.cs" />

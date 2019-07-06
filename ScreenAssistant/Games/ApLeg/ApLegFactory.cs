@@ -64,6 +64,9 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg
                 case WeaponAL.Devotion:
                     result = new Devotion(inGameName, 2, recognizedName);
                     break;
+                case WeaponAL.LStar:
+                    result = new LStar(inGameName, 2, recognizedName);
+                    break;
                 case WeaponAL.Flatline:
                     result = new Flatline(inGameName, 2, recognizedName);
                     break;

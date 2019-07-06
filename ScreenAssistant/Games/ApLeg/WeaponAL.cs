@@ -52,7 +52,9 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg
         [WeaponName("MASTIFF")]
         MASTIFF = 1 << 19,
         [WeaponName("KRABER", "HRABER")]
-        KRABER = 1 << 20
+        KRABER = 1 << 20,
+        [WeaponName("L-STAR", "LSTAR")]
+        LStar = 1 << 21
     }
 
     public static class WeaponAlExtensions

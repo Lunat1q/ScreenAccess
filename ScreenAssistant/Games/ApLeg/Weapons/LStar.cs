@@ -1,0 +1,37 @@
+﻿using System.Diagnostics;
+
+namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
+{
+    internal class LStar : UniqueLogicWeapon
+    {
+        public LStar(string name, double burstSeconds, string recognizedName) 
+            : base(name, burstSeconds, recognizedName, WeaponAL.LStar)
+        {
+        }
+
+        public override double AdjustMouse(int shotNumber)
+        {
+            double horizontalOffset;
+            var verticalOffset = Rnd.NextDouble() * (2) + 5;
+            AdjustmentCoefficient = CalculateAdjustment(shotNumber, 30);
+            if (shotNumber < 7)
+            {
+                horizontalOffset = Rnd.NextDouble() * 1 + 1.5;
+            }
+            else if (shotNumber < 16)
+            {
+                horizontalOffset = -1 * (Rnd.NextDouble() * 1 + 2.25);
+            }
+            else
+            {
+                horizontalOffset = Rnd.NextDouble() * 1 + 1.5;
+            }
+
+            Debug.WriteLine($"{shotNumber}, {horizontalOffset:F2}");
+
+            MoveMouse(horizontalOffset, verticalOffset);
+
+            return GetAdjustmentTime(1d);
+        }
+    }
+}
