@@ -19,6 +19,7 @@
 - [x] R99
 - [x] R301
 - [x] RE45
+- [x] L-Star
 
 Other weapon have generic logic or no correction at all for weapons like `Longbow`, `Peacekeeper`, `Wingman`...
 
