@@ -11,7 +11,7 @@
         <Grid Margin="5">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition />
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -31,40 +31,13 @@
                 </Grid>
             </Grid>
             <Grid Grid.Row="1" Margin="5" MinHeight="35">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2*"/>
-                    <ColumnDefinition Width="2*"/>
-                </Grid.ColumnDefinitions>
-                <TextBlock Text="{Binding Weapon1Name}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14">
-                    <TextBlock.Style>
-                        <Style TargetType="TextBlock">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding FirstWeaponActive}"
-                                         Value="True">
-                                    <Setter Property="FontWeight" Value="Bold"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBlock.Style>
-                </TextBlock>
-                <TextBlock Grid.Column="1" Text="{Binding Weapon2Name}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14">
-                    <TextBlock.Style>
-                        <Style TargetType="TextBlock">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding FirstWeaponActive, Converter={StaticResource InverseBooleanConverterWeak}}"
-                                         Value="True">
-                                    <Setter Property="FontWeight" Value="Bold"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBlock.Style>
-                </TextBlock>
+                <ListBox ItemsSource ="{Binding Weapons}" Background="{x:Null}" BorderBrush="{x:Null}" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalAlignment="Center"/>
             </Grid>
             <Grid Grid.Row="3" Margin="5" Visibility="Collapsed">
                 <!-- -->
                 <Button Content="TEST" Click="Button_Click_2"/>
             </Grid>
-            <Grid Grid.Row="4" Margin="5,5,5,0" >
+            <Grid Grid.Row="4" Margin="5,5,5,0" VerticalAlignment="Bottom" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
@@ -78,14 +51,16 @@
                 <ScaleTransform ScaleY="0"/>
             </Grid.RenderTransform>
             <Rectangle Fill="White"/>
-            <Grid Margin="5">
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
+            <StackPanel Orientation="Vertical" Margin="5">
+                <Grid Margin="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Select the game:" VerticalAlignment="Center" Margin="5, 0"/>
+                    <!-- TODO: Should be using binding, but too lazy for now to rewrite it -->
+                    <ComboBox x:Name="GameSelector" Grid.Column="1" SelectedValuePath="Name" DisplayMemberPath="Name" SelectedIndex="1" SelectionChanged="GameSelector_SelectionChanged" />
+                </Grid>
                 <Grid Margin="5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*"/>
@@ -94,7 +69,7 @@
                     <TextBlock Text="Average Y Offset" VerticalAlignment="Center" Margin="5, 0"/>
                     <Slider Grid.Column="1" MinWidth="150" Value="{Binding DeltaY}" Maximum="10" Minimum="1" AutoToolTipPlacement="TopLeft"/>
                 </Grid>
-                <Grid Grid.Row="1" Margin="5">
+                <Grid Margin="5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*"/>
                         <ColumnDefinition Width="1*"/>
@@ -102,7 +77,7 @@
                     <TextBlock Grid.Column="0" Text="Average X Offset" VerticalAlignment="Center"  Margin="5, 0"/>
                     <Slider Grid.Column="1" MinWidth="150" Value="{Binding DeltaX}" Maximum="10" Minimum="1" AutoToolTipPlacement="TopLeft"/>
                 </Grid>
-                <Grid Grid.Row="2" Margin="5">
+                <Grid Margin="5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*"/>
                         <ColumnDefinition Width="1*"/>
@@ -110,7 +85,7 @@
                     <TextBlock Grid.Column="0" Text="Unique weapon logic" VerticalAlignment="Center"  Margin="5, 0"/>
                     <CheckBox Grid.Column="1" IsChecked="{Binding UseWeaponLogic}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </Grid>
-                <Grid Grid.Row="3" Margin="5">
+                <Grid Margin="5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*"/>
                         <ColumnDefinition Width="1*"/>
@@ -118,10 +93,10 @@
                     <TextBlock Grid.Column="0" Text="Sensitivity adjustment" VerticalAlignment="Center"  Margin="5, 0"/>
                     <Slider Grid.Column="1" MinWidth="150" Value="{Binding SensitivityScale}" Maximum="5" Minimum="0.1" AutoToolTipPrecision="1" AutoToolTipPlacement="TopLeft" LargeChange="0.1" TickFrequency="0.1"/>
                 </Grid>
-                <Grid Grid.Row="4">
+                <Grid>
                     <Button Content="OK" Margin="116,0,115,5" Padding="5,2" HorizontalAlignment="Center" VerticalAlignment="Bottom" Click="Button_Click_4" />
                 </Grid>
-            </Grid>
+            </StackPanel>
         </Grid>
     </Grid>
 </Window>

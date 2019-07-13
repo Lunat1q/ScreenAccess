@@ -11,49 +11,49 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg
     [Flags]
     public enum WeaponAL
     {
-        [WeaponName("", " ")]
+        [WeaponData("", 0, " ")]
         Unknown = 1 << 0,
-        [WeaponName("Havoc", "HAVUC")]
+        [WeaponData("Havoc", 5, "HAVUC")]
         Havoc = 1 << 1,
-        [WeaponName("Triple take")]
+        [WeaponData("Triple take", 5)]
         TripleTake = 1 << 2,
-        [WeaponName("Devotion", "DEVUTIUN")]
+        [WeaponData("Devotion", 5, "DEVUTIUN")]
         Devotion = 1 << 3,
-        [WeaponName("Flatline")]
+        [WeaponData("Flatline", 4)]
         Flatline = 1 << 4,
-        [WeaponName("Hemlok", "HEMLUH")]
+        [WeaponData("Hemlok", 4, "HEMLUH")]
         Hemlok = 1 << 5,
-        [WeaponName("Prowler", "DRUWLEP")]
+        [WeaponData("Prowler", 5, "DRUWLEP")]
         Prowler = 1 << 6,
-        [WeaponName("Longbow", "LUNGBUW")]
+        [WeaponData("Longbow", 5, "LUNGBUW")]
         Longbow = 1 << 7,
-        [WeaponName("Spitfire", "SDITFIRE")]
+        [WeaponData("Spitfire", 4, "SDITFIRE")]
         Spitfire = 1 << 8,
-        [WeaponName("Wingman")]
+        [WeaponData("Wingman", 3)]
         Wingman = 1 << 9,
-        [WeaponName("RE-45", "p E-z15")]
+        [WeaponData("RE-45", 4, "p E-z15")]
         RE45 = 1 << 10,
-        [WeaponName("P2020", "P2o2o")]
+        [WeaponData("P2020", 3, "P2o2o")]
         P2020 = 1 << 11,
-        [WeaponName("R-301", "R-3 Ol", "9-501")]
+        [WeaponData("R-301", 4, "R-3 Ol", "9-501")]
         R301 = 1 << 12,
-        [WeaponName("R-99", "9-99")]
+        [WeaponData("R-99", 4, "9-99")]
         R99 = 1 << 13,
-        [WeaponName("Alternator")]
+        [WeaponData("Alternator", 5)]
         Alternator = 1 << 14,
-        [WeaponName("G7 Scout", "G7SCOUT")]
+        [WeaponData("G7 Scout", 4, "G7SCOUT")]
         G7Scout = 1 << 15,
-        [WeaponName("EVA-8 AUTO")]
+        [WeaponData("EVA-8 AUTO", 2)]
         EVA8Auto = 1 << 16,
-        [WeaponName("Peacekeeper", "PEACEHEEDER")]
+        [WeaponData("Peacekeeper", 3, "PEACEHEEDER")]
         Peacekeeper = 1 << 17,
-        [WeaponName("MOZAMBIQUE")]
+        [WeaponData("MOZAMBIQUE", 3)]
         Mozambique = 1 << 18,
-        [WeaponName("MASTIFF")]
+        [WeaponData("MASTIFF", 0)]
         MASTIFF = 1 << 19,
-        [WeaponName("KRABER", "HRABER")]
+        [WeaponData("KRABER", 0, "HRABER")]
         KRABER = 1 << 20,
-        [WeaponName("L-STAR", "LSTAR")]
+        [WeaponData("L-STAR", 0, "LSTAR")]
         LStar = 1 << 21
     }
 

@@ -2,8 +2,8 @@
 {
     internal sealed class R301 : UniqueLogicWeapon
     {
-        public R301(string name, double burstSeconds, string recognizedName) 
-            : base(name, burstSeconds, recognizedName, WeaponAL.R301)
+        public R301(string name, double burstSeconds, string recognizedName, int numOfMods) 
+            : base(name, burstSeconds, recognizedName, numOfMods)
         {
         }
 

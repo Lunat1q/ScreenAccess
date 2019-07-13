@@ -4,7 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using TiqSoft.ScreenAssistant.Controllers;
-using TiqSoft.ScreenAssistant.ScreenInfoRecognition;
+using TiqSoft.ScreenAssistant.Games;
 using static TiqSoft.ScreenAssistant.Core.Settings.ScreenAssistantSettings;
 
 namespace TiqSoft.ScreenAssistant
@@ -19,9 +19,11 @@ namespace TiqSoft.ScreenAssistant
 
         public MainWindow()
         {
-            _controller = new MainLogicController(Settings.DeltaX, Settings.DeltaY, Settings.SensitivityScale, Settings.UseUniqueWeaponLogic);
+            _controller = new MainLogicController(Settings.DeltaX, Settings.DeltaY, Settings.SensitivityScale, Settings.UseUniqueWeaponLogic, Dispatcher);
             DataContext = _controller;
             InitializeComponent();
+            GameSelector.ItemsSource = GamesHelper.GetListOfSupportedGames();
+            GameSelector.SelectedValue = Settings.SelectedGameName;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -71,6 +73,14 @@ namespace TiqSoft.ScreenAssistant
                 Duration = TimeSpan.FromSeconds(0.5),
             };
             SettingsGrid.RenderTransform.BeginAnimation(ScaleTransform.ScaleYProperty, downScaleY);
+        }
+
+        private void GameSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var cb = (ComboBox)sender;
+            var game = (Game)cb.SelectedItem;
+            _controller.SetGameFactory(GamesHelper.GetFactoryByGameName(game.Name));
+            Settings.SelectedGameName = game.Name;
         }
     }
 }

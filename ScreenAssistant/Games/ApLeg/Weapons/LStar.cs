@@ -2,10 +2,10 @@
 
 namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
 {
-    internal class LStar : UniqueLogicWeapon
+    internal sealed class LStar : UniqueLogicWeapon
     {
-        public LStar(string name, double burstSeconds, string recognizedName) 
-            : base(name, burstSeconds, recognizedName, WeaponAL.LStar)
+        public LStar(string name, double burstSeconds, string recognizedName, int numOfMods) 
+            : base(name, burstSeconds, recognizedName, numOfMods)
         {
         }
 

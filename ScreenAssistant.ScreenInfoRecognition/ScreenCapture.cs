@@ -26,8 +26,8 @@ namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition
         /// <returns></returns>
         public static Image CaptureScreenRelatively(float startX, float endX, float startY, float endY)
         {
-            //return CaptureWindow(User32.GetDesktopWindow(), startX, endX, startY, endY);
-            return CaptureWindow(User32.GetForegroundWindow(), startX, endX, startY, endY);
+            return CaptureWindow(User32.GetDesktopWindow(), startX, endX, startY, endY);
+            //return CaptureWindow(User32.GetForegroundWindow(), startX, endX, startY, endY);
         }
 
         /// <summary>

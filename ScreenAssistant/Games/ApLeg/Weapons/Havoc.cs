@@ -2,8 +2,8 @@
 {
     internal sealed class Havoc : UniqueLogicWeapon
     {
-        public Havoc(string name, double burstSeconds, string recognizedName) 
-            : base(name, burstSeconds, recognizedName, WeaponAL.Havoc)
+        public Havoc(string name, double burstSeconds, string recognizedName, int numOfMods) 
+            : base(name, burstSeconds, recognizedName, numOfMods)
         {
         }
 

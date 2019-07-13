@@ -5,7 +5,8 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
 {
     internal sealed class Hemlok : UniqueLogicWeapon
     {
-        public Hemlok(string name, double burstSeconds, string recognizedName) : base(name, burstSeconds, recognizedName, WeaponAL.Hemlok)
+        public Hemlok(string name, double burstSeconds, string recognizedName, int numOfMods) 
+            : base(name, burstSeconds, recognizedName, numOfMods)
         {
         }
 

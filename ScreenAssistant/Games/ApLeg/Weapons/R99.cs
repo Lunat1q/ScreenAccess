@@ -2,8 +2,8 @@
 {
     internal sealed class R99 : UniqueLogicWeapon
     {
-        public R99(string name, double burstSeconds, string recognizedName) 
-            : base(name, burstSeconds, recognizedName, WeaponAL.R99)
+        public R99(string name, double burstSeconds, string recognizedName, int numOfMods) 
+            : base(name, burstSeconds, recognizedName, numOfMods)
         {
         }
 

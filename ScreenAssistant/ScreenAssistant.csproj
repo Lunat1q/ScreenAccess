@@ -83,14 +83,18 @@
     <Compile Include="Controllers\BindingControl\KeyListener.cs" />
     <Compile Include="Controllers\ImageTestController.cs" />
     <Compile Include="Controllers\MainLogicController.cs" />
+    <Compile Include="Core\GameName.cs" />
     <Compile Include="Core\IWeapon.cs" />
     <Compile Include="Core\MouseControl.cs" />
     <Compile Include="Core\Settings\ScreenAssistantSettings.cs" />
     <Compile Include="Core\StringHelper.cs" />
     <Compile Include="Games\ApLeg\ApLegFactory.cs" />
     <Compile Include="Games\ApLeg\WeaponAL.cs" />
+    <Compile Include="Games\ApLeg\WeaponMock.cs" />
+    <Compile Include="Games\ApLeg\WeaponModule.cs" />
     <Compile Include="Games\ApLeg\Weapons\Alternator.cs" />
     <Compile Include="Games\ApLeg\Weapons\ApLegWeaponBase.cs" />
+    <Compile Include="Games\ApLeg\Weapons\G7Scout.cs" />
     <Compile Include="Games\ApLeg\Weapons\LStar.cs" />
     <Compile Include="Games\ApLeg\Weapons\Devotion.cs" />
     <Compile Include="Games\ApLeg\Weapons\Flatline.cs" />
@@ -103,15 +107,27 @@
     <Compile Include="Games\ApLeg\Weapons\RE45.cs" />
     <Compile Include="Games\ApLeg\Weapons\RegularAdjustmentWeapon.cs" />
     <Compile Include="Games\ApLeg\Weapons\UniqueLogicWeapon.cs" />
+    <Compile Include="Games\GamesHelper.cs" />
+    <Compile Include="Games\IWeaponFactory.cs" />
     <Compile Include="Helpers\Converters\InverseBooleanConverter.cs" />
+    <Compile Include="Helpers\Converters\ModuleTypeConverter.cs" />
     <Compile Include="Helpers\EnumHelper.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Converters.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WeaponTemplates.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Properties\Annotations1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
