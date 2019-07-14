@@ -5,14 +5,14 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
 {
     internal sealed class RegularAdjustmentWeapon : ApLegWeaponBase
     {
-        private bool isDefault = false;
+        private readonly bool _isDefault = false;
 
         public RegularAdjustmentWeapon(string name, double burstSeconds, string recognizedName, int numOfMods) 
             : base(name, burstSeconds, recognizedName, numOfMods)
         {
             if (Name.Empty())
             {
-                isDefault = true;
+                _isDefault = true;
                 Name = "Default";
             }
             else
@@ -32,7 +32,7 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
 
         public override bool IsDefault()
         {
-            return isDefault;
+            return _isDefault;
         }
     }
 }

@@ -27,7 +27,7 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
                 horizontalOffset = Rnd.NextDouble() * 1 + 1.5;
             }
 
-            Debug.WriteLine($"{shotNumber}, {horizontalOffset:F2}");
+            //Debug.WriteLine($"{shotNumber}, {horizontalOffset:F2}");
 
             MoveMouse(horizontalOffset, verticalOffset);
 

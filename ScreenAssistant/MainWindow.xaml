@@ -93,6 +93,14 @@
                     <TextBlock Grid.Column="0" Text="Sensitivity adjustment" VerticalAlignment="Center"  Margin="5, 0"/>
                     <Slider Grid.Column="1" MinWidth="150" Value="{Binding SensitivityScale}" Maximum="5" Minimum="0.1" AutoToolTipPrecision="1" AutoToolTipPlacement="TopLeft" LargeChange="0.1" TickFrequency="0.1"/>
                 </Grid>
+                <Grid Margin="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="Lock to game window" VerticalAlignment="Center"  Margin="5, 0"/>
+                    <CheckBox Grid.Column="1" IsChecked="{Binding LockToGameWindow}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Grid>
                 <Grid>
                     <Button Content="OK" Margin="116,0,115,5" Padding="5,2" HorizontalAlignment="Center" VerticalAlignment="Bottom" Click="Button_Click_4" />
                 </Grid>

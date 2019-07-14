@@ -10,6 +10,7 @@ using TiqSoft.ScreenAssistant.ScreenInfoRecognition.Recognizers.ApexLegends;
 namespace TiqSoft.ScreenAssistant.Games.ApLeg
 {
     [GameName("Apex Legends")]
+    // ReSharper disable once UnusedMember.Global
     internal class ApLegFactory : IWeaponFactory
     {
         private static readonly Dictionary<string, WeaponAL> WeaponNamesToTypes = new Dictionary<string, WeaponAL>(40);
@@ -96,7 +97,7 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg
                     result = new R301(inGameName, 2, recognizedName, numOfMods);
                     break;
                 case WeaponAL.R99:
-                    result = new R99(inGameName, 2, recognizedName, numOfMods);
+                    result = new R99(inGameName, 1.5, recognizedName, numOfMods);
                     break;
                 case WeaponAL.Alternator:
                     result = new Alternator(inGameName, 2, recognizedName, numOfMods);
@@ -136,6 +137,7 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg
 
         public void WeaponPostProcess(IWeapon weapon)
         {
+            if (weapon.IsDefault()) return;
             var apexWeapon = (ApLegWeaponBase)weapon;
             var modulesState = IntRecognizer.GetModulesState(weapon.NumberOfModules);
             for (var i = 0; i < weapon.NumberOfModules; i++)
@@ -143,5 +145,7 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg
                 apexWeapon.InstalledModules[i].Type = modulesState[i];
             }
         }
+
+        public string LockedToApplication { get; } = "r5apex";
     }
 }

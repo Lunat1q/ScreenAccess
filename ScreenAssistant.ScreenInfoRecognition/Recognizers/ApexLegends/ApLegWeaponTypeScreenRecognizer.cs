@@ -9,6 +9,11 @@ namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition.Recognizers.ApexLegends
     {
 
         private static readonly Dictionary<int, string> ResultCache = new Dictionary<int, string>();
+        private static readonly Color RareColor = Color.FromArgb(25, 70, 110);
+        private static readonly Color Rare2Color = Color.FromArgb(60, 70, 110);
+        private static readonly Color EpicColor = Color.FromArgb(80, 40, 115);
+        private static readonly Color CommonColor = Color.FromArgb(80, 80, 80);
+        private static readonly Color LegendaryColor = Color.FromArgb(100, 80, 10);
 
         public bool IsFirstWeaponActive()
         {
@@ -152,36 +157,40 @@ namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition.Recognizers.ApexLegends
         public WeaponModuleType[] GetModulesState(int weaponNumberOfModules)
         {
             var ret = new WeaponModuleType[weaponNumberOfModules];
+
+            var baseColors = new[]
+            {
+                CommonColor,
+                RareColor,
+                Rare2Color,
+                EpicColor,
+                LegendaryColor
+            };
+
             for (var i = 0; i < weaponNumberOfModules; i++)
             {
-                var offsetX = i * 1.45f;
-                var image = ScreenCapture.CaptureScreenRelatively(79.25f + offsetX, 80.5f + offsetX, 92.6f, 94.7f);
-                //image.SaveTestImage(i.ToString());
+                var offsetX = i * 1.46f;
+                var image = ScreenCapture.CaptureScreenRelatively(79.3f + offsetX, 79.5f + offsetX, 92.8f, 93.2f);
+                image.SaveTestImage(i.ToString());
                 var avColor = image.GetAverageColor();
 
-                if (avColor.R > 100 && avColor.R < 150 &&
-                    avColor.G > 85 && avColor.G < 110 &&
-                    avColor.B > 125 && avColor.B < 170)
+                var closestColor = ImageUtils.GetClosestColor(baseColors, avColor);
+
+                if (closestColor == CommonColor)
                 {
-                    ret[i] = WeaponModuleType.Epic;
+                    ret[i] = WeaponModuleType.Common;
                 }
-                else if (avColor.R > 125 && avColor.R < 150 &&
-                    avColor.G > 105 && avColor.G < 130 &&
-                    avColor.B > 50 && avColor.B < 80)
-                {
-                    ret[i] = WeaponModuleType.Legendary;
-                }
-                else if (avColor.R > 45 && avColor.R < 75 &&
-                         avColor.G > 80 && avColor.G < 110 &&
-                         avColor.B > 115 && avColor.B < 150)
+                else if (closestColor == RareColor || closestColor == Rare2Color)
                 {
                     ret[i] = WeaponModuleType.Rare;
                 }
-                else if (avColor.R > 85 && avColor.R < 105 &&
-                         avColor.G > 85 && avColor.G < 105 &&
-                         avColor.B > 85 && avColor.B < 105)
+                else if (closestColor == EpicColor)
                 {
-                    ret[i] = WeaponModuleType.Common;
+                    ret[i] = WeaponModuleType.Epic;
+                }
+                else if (closestColor == LegendaryColor)
+                {
+                    ret[i] = WeaponModuleType.Legendary;
                 }
                 else
                 {

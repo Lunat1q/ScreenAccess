@@ -15,7 +15,7 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg
         Unknown = 1 << 0,
         [WeaponData("Havoc", 5, "HAVUC")]
         Havoc = 1 << 1,
-        [WeaponData("Triple take", 5)]
+        [WeaponData("Triple take", 4)]
         TripleTake = 1 << 2,
         [WeaponData("Devotion", 5, "DEVUTIUN")]
         Devotion = 1 << 3,

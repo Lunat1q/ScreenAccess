@@ -15,5 +15,8 @@ namespace TiqSoft.ScreenAssistant.Games
         void WeaponPostProcess(IWeapon weapon);
 
         int NumberOfWeapons { get; }
+
+        //Leave empty if no lock needed
+        string LockedToApplication { get; }
     }
 }

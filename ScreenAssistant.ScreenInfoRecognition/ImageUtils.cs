@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
 
 namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition
 {
@@ -60,6 +62,30 @@ namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition
             }
             var dir = Directory.CreateDirectory("TestSC");
             image.Save(Path.Combine(dir.FullName, fileName), ImageFormat.Tiff);
+        }
+
+        internal static Color GetClosestColor(IEnumerable<Color> colors, Color baseColor, int maxDist = 255)
+        {
+            var res = Color.Empty;
+            var minDif = int.MaxValue;
+            foreach (var c in colors)
+            {
+                var curDif = baseColor.GetDiff(c);
+                if (curDif >= minDif) continue;
+                minDif = curDif;
+                res = c;
+            }
+
+            return minDif < maxDist ? res : Color.Empty;
+        }
+
+        private static int GetDiff(this Color baseColor, Color color)
+        {
+            int a = color.A - baseColor.A,
+                r = color.R - baseColor.R,
+                g = color.G - baseColor.G,
+                b = color.B - baseColor.B;
+            return a * a + r * r + g * g + b * b;
         }
     }
 }

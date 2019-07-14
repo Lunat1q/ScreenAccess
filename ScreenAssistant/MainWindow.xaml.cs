@@ -19,7 +19,7 @@ namespace TiqSoft.ScreenAssistant
 
         public MainWindow()
         {
-            _controller = new MainLogicController(Settings.DeltaX, Settings.DeltaY, Settings.SensitivityScale, Settings.UseUniqueWeaponLogic, Dispatcher);
+            _controller = new MainLogicController(LogicSettings.ConstructFromSettings(Settings), Dispatcher);
             DataContext = _controller;
             InitializeComponent();
             GameSelector.ItemsSource = GamesHelper.GetListOfSupportedGames();

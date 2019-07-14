@@ -82,12 +82,14 @@
     <Compile Include="Controllers\BindingControl\BindingController.cs" />
     <Compile Include="Controllers\BindingControl\KeyListener.cs" />
     <Compile Include="Controllers\ImageTestController.cs" />
+    <Compile Include="Controllers\LogicSettings.cs" />
     <Compile Include="Controllers\MainLogicController.cs" />
     <Compile Include="Core\GameName.cs" />
     <Compile Include="Core\IWeapon.cs" />
     <Compile Include="Core\MouseControl.cs" />
     <Compile Include="Core\Settings\ScreenAssistantSettings.cs" />
     <Compile Include="Core\StringHelper.cs" />
+    <Compile Include="Core\WinApiHelper.cs" />
     <Compile Include="Games\ApLeg\ApLegFactory.cs" />
     <Compile Include="Games\ApLeg\WeaponAL.cs" />
     <Compile Include="Games\ApLeg\WeaponMock.cs" />
