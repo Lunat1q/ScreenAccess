@@ -19,7 +19,7 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg
         TripleTake = 1 << 2,
         [WeaponData("Devotion", 5, "DEVUTIUN")]
         Devotion = 1 << 3,
-        [WeaponData("Flatline", 4)]
+        [WeaponData("Flatline", 3)]
         Flatline = 1 << 4,
         [WeaponData("Hemlok", 4, "HEMLUH")]
         Hemlok = 1 << 5,
@@ -37,7 +37,7 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg
         P2020 = 1 << 11,
         [WeaponData("R-301", 4, "R-3 Ol", "9-501")]
         R301 = 1 << 12,
-        [WeaponData("R-99", 4, "9-99")]
+        [WeaponData("R-99", 4, "9-99", "R - SEI")]
         R99 = 1 << 13,
         [WeaponData("Alternator", 5)]
         Alternator = 1 << 14,
@@ -55,13 +55,5 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg
         KRABER = 1 << 20,
         [WeaponData("L-STAR", 0, "LSTAR")]
         LStar = 1 << 21
-    }
-
-    public static class WeaponAlExtensions
-    {
-        public static bool HasFlagFast(this WeaponAL value, WeaponAL flag)
-        {
-            return (value & flag) != 0;
-        }
     }
 }
