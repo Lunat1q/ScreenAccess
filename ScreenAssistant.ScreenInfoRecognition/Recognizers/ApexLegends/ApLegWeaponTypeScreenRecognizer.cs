@@ -171,7 +171,7 @@ namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition.Recognizers.ApexLegends
             {
                 var offsetX = i * 1.46f;
                 var image = ScreenCapture.CaptureScreenRelatively(79.3f + offsetX, 79.5f + offsetX, 92.8f, 93.2f);
-                image.SaveTestImage(i.ToString());
+                //image.SaveTestImage(i.ToString());
                 var avColor = image.GetAverageColor();
 
                 var closestColor = ImageUtils.GetClosestColor(baseColors, avColor);
