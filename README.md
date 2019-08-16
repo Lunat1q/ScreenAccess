@@ -6,7 +6,8 @@
 
 ### Support the developers
 If you really like this project, feel free to buy pizza🍕 or 🍻 for devs.
-<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=SH4N4548RNR2E&source=url"><img src="https://www.paypalobjects.com/en_US/RU/i/btn/btn_donateCC_LG.gif" /></a>
+
+<p align="center"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=SH4N4548RNR2E&source=url"><img src="https://www.paypalobjects.com/en_US/RU/i/btn/btn_donateCC_LG.gif" /></a></p>
 
 
 
