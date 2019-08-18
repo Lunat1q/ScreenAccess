@@ -5,8 +5,11 @@
              xmlns:converters="clr-namespace:TiqSoft.ScreenAssistant.Helpers.Converters"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-        <converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
-        <converters:InverseBooleanConverterWeak x:Key="InverseBooleanConverterWeak" />
+        <ResourceDictionary >
+            <ResourceDictionary.MergedDictionaries >
+                <ResourceDictionary Source="Converters.xaml"/>
+                <ResourceDictionary Source="WeaponTemplates.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

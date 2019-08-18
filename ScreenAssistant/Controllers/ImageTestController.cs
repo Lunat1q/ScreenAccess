@@ -4,6 +4,7 @@ using GlobalHook.Event;
 using TiqSoft.ScreenAssistant.Controllers.BindingControl;
 using TiqSoft.ScreenAssistant.Properties;
 using TiqSoft.ScreenAssistant.ScreenInfoRecognition;
+using TiqSoft.ScreenAssistant.ScreenInfoRecognition.Recognizers.ApexLegends;
 
 namespace TiqSoft.ScreenAssistant.Controllers
 {
@@ -11,19 +12,20 @@ namespace TiqSoft.ScreenAssistant.Controllers
     {
         private static ImageTestController _instance;
         private bool _running;
+        private readonly IWeaponRecognizer _weaponRecognizer;
 
-        public ImageTestController()
+        public ImageTestController(IWeaponRecognizer weaponRecognizer)
         {
-
+            _weaponRecognizer = weaponRecognizer;
             HotKeysController = new BindingController();
             HotKeysController.BindUpToAction(KeyModifier.Ctrl, 'T', MakeTestScreenShots);
         }
 
-        public static ImageTestController Instance => _instance ?? (_instance = new ImageTestController());
+        public static ImageTestController Instance => _instance ?? (_instance = new ImageTestController(new ApLegWeaponTypeScreenRecognizer())); // rework to make it non-game specific
 
         private void MakeTestScreenShots()
         {
-            WeaponTypeScreenRecognizer.TestWeapons();
+            _weaponRecognizer.TestWeapons();
         }
 
         private BindingController HotKeysController { get; }

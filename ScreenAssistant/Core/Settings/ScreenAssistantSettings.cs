@@ -33,6 +33,14 @@ namespace TiqSoft.ScreenAssistant.Core.Settings
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public bool UseUniqueWeaponLogic { get; set; } = true;
 
+        [DefaultValue(true)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public bool LockToGameWindow { get; set; } = true;
+
+        [DefaultValue("Apex Legends")]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public string SelectedGameName { get; set; } = "Apex Legends";
+
         public void Save()
         {
             if (Settings == this)
@@ -44,5 +52,7 @@ namespace TiqSoft.ScreenAssistant.Core.Settings
                 throw new NotImplementedException();
             }
         }
+
+
     }
 }

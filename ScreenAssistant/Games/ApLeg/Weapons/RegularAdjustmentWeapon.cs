@@ -1,15 +1,23 @@
 ﻿using System;
+using TiqUtils.TypeSpeccific;
 
 namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
 {
     internal sealed class RegularAdjustmentWeapon : ApLegWeaponBase
     {
-        public RegularAdjustmentWeapon(string name, double burstSeconds, string recognizedName, WeaponAL type) 
-            : base(name, burstSeconds, recognizedName, type)
+        private readonly bool _isDefault = false;
+
+        public RegularAdjustmentWeapon(string name, double burstSeconds, string recognizedName, int numOfMods) 
+            : base(name, burstSeconds, recognizedName, numOfMods)
         {
-            if (Name == String.Empty)
+            if (Name.Empty())
             {
+                _isDefault = true;
                 Name = "Default";
+            }
+            else
+            {
+                Name += " [Reg]";
             }
         }
 
@@ -24,7 +32,7 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
 
         public override bool IsDefault()
         {
-            return WeaponType == WeaponAL.Unknown;
+            return _isDefault;
         }
     }
 }

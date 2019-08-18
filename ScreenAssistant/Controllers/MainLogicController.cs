@@ -1,37 +1,34 @@
-﻿using System.ComponentModel;
+﻿using GlobalHook;
+using GlobalHook.Event;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
-using GlobalHook;
-using GlobalHook.Event;
+using System.Windows.Threading;
 using TiqSoft.ScreenAssistant.Controllers.BindingControl;
 using TiqSoft.ScreenAssistant.Core;
-using TiqSoft.ScreenAssistant.Games.ApLeg;
+using TiqSoft.ScreenAssistant.Games;
 using TiqSoft.ScreenAssistant.Properties;
-using TiqSoft.ScreenAssistant.ScreenInfoRecognition;
 using TiqUtils.TypeSpeccific;
 
 namespace TiqSoft.ScreenAssistant.Controllers
 {
     internal class MainLogicController : INotifyPropertyChanged
     {
+        private readonly Dispatcher _dispatcher;
+        private IWeaponFactory _weaponFactory;
         private bool _enabled;
-        private int _deltaY;
-        private int _deltaX;
         private bool _working;
         private bool _mouseDown;
         private CancellationTokenSource _mouseTaskCts;
         private CancellationTokenSource _mainTaskCts;
         private CancellationTokenSource _weaponRecognitionCts;
         private double _adjustmentCoefficient = 1;
-        private string _weapon2Name;
-        private string _weapon1Name;
-        private bool _firstWeaponActive;
-        private IWeapon _weapon1;
-        private IWeapon _weapon2;
-        private bool _useWeaponLogic;
-        private float _sensitivityScale;
+        private ObservableCollection<IWeapon> _weapons;
+        private readonly LogicSettings _logicSettings;
 
         #region Properties
         private BindingController HotKeysController { get; }
@@ -49,27 +46,28 @@ namespace TiqSoft.ScreenAssistant.Controllers
 
         public string CurrentVersionInfo { get; }
 
-        public MainLogicController(int deltaX, int deltaY, float sensitivityScale, bool useWeaponLogic)
+        public MainLogicController(LogicSettings logicSettings, Dispatcher dispatcher)
         {
-            UseWeaponLogic = useWeaponLogic;
-            DeltaX = deltaX;
-            DeltaY = deltaY;
-            SensitivityScale = sensitivityScale;
+            _dispatcher = dispatcher;
+            _logicSettings = logicSettings;
             HotKeysController = new BindingController();
             HotKeysController.BindUpToAction(KeyModifier.Ctrl, 'K', Toggle);
             HotKeysController.Start(true);
-            ResetEquippedWeapons();
             CurrentVersionInfo = Assembly.GetExecutingAssembly().GetName().Version.ToString();
         }
 
-        private void ResetEquippedWeapons()
+        public MainLogicController() : this(new LogicSettings(), null)
         {
-            Weapon1Name = "Unknown";
-            Weapon2Name = "Unknown";
         }
 
-        public MainLogicController() : this(2, 3, 1, false)
+        public void SetGameFactory(IWeaponFactory factory)
         {
+            if (Enabled || Working)
+            {
+                Stop();
+            }
+            _weaponFactory = factory;
+            CreateDefaultWeapons();
         }
 
         public bool Enabled
@@ -96,70 +94,54 @@ namespace TiqSoft.ScreenAssistant.Controllers
 
         public int DeltaY
         {
-            get => _deltaY;
+            get => _logicSettings.DeltaY;
             set
             {
-                if (value == _deltaY) return;
-                _deltaY = value;
+                if (value == _logicSettings.DeltaY) return;
+                _logicSettings.DeltaY = value;
                 OnPropertyChanged();
-                _weapon1?.SetOffsets(_deltaX, _deltaY);
-                _weapon2?.SetOffsets(_deltaX, _deltaY);
+                if (Weapons == null) return;
+                foreach (var weapon in Weapons)
+                {
+                    weapon.SetOffsets(_logicSettings.DeltaX, _logicSettings.DeltaY);
+                }
             }
         }
 
         public int DeltaX
         {
-            get => _deltaX;
+            get => _logicSettings.DeltaX;
             set
             {
-                if (value == _deltaX) return;
-                _deltaX = value;
+                if (value == _logicSettings.DeltaX) return;
+                _logicSettings.DeltaX = value;
                 OnPropertyChanged();
-                _weapon1?.SetOffsets(_deltaX, _deltaY);
-                _weapon2?.SetOffsets(_deltaX, _deltaY);
-            }
-        }
-
-        public bool FirstWeaponActive
-        {
-            get => _firstWeaponActive;
-            set
-            {
-                if (value == _firstWeaponActive) return;
-                _firstWeaponActive = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string Weapon1Name
-        {
-            get => _weapon1Name;
-            set
-            {
-                if (value == _weapon1Name) return;
-                _weapon1Name = value;
-                OnPropertyChanged();
+                if (Weapons == null) return;
+                foreach (var weapon in Weapons)
+                {
+                    weapon.SetOffsets(_logicSettings.DeltaX, _logicSettings.DeltaY);
+                }
             }
         }
 
         public bool UseWeaponLogic
         {
-            get => _useWeaponLogic;
+            get => _logicSettings.UseWeaponLogic;
             set
             {
-                if (value == _useWeaponLogic) return;
-                _useWeaponLogic = value;
+                if (value == _logicSettings.UseWeaponLogic) return;
+                _logicSettings.UseWeaponLogic = value;
                 OnPropertyChanged();
             }
         }
 
-        public string Weapon2Name
+        public bool LockToGameWindow
         {
-            get => _weapon2Name;
+            get => _logicSettings.LockToGameWindow;
             set
             {
-                if (value == _weapon2Name) return;
-                _weapon2Name = value;
+                if (value == _logicSettings.LockToGameWindow) return;
+                _logicSettings.LockToGameWindow = value;
                 OnPropertyChanged();
             }
         }
@@ -177,14 +159,27 @@ namespace TiqSoft.ScreenAssistant.Controllers
 
         public float SensitivityScale
         {
-            get => _sensitivityScale;
+            get => _logicSettings.SensitivityScale;
             set
             {
-                if (value.Equals(_sensitivityScale)) return;
-                _sensitivityScale = value;
+                if (value.Equals(_logicSettings.SensitivityScale)) return;
+                _logicSettings.SensitivityScale = value;
                 OnPropertyChanged();
-                _weapon1?.SetSensitivityScale(_sensitivityScale);
-                _weapon2?.SetSensitivityScale(_sensitivityScale);
+                if (Weapons == null) return;
+                foreach (var weapon in Weapons)
+                {
+                    weapon.SetSensitivityScale(_logicSettings.SensitivityScale);
+                }
+            }
+        }
+
+        public ObservableCollection<IWeapon> Weapons
+        {
+            get => _weapons;
+            set
+            {
+                _weapons = value;
+                OnPropertyChanged();
             }
         }
 
@@ -214,7 +209,6 @@ namespace TiqSoft.ScreenAssistant.Controllers
         public void Start()
         {
             Enabled = true;
-            CreateDefaultWeapons();
             _mouseTaskCts = new CancellationTokenSource();
             Task.Run(() => CheckForMouse(_mouseTaskCts.Token));
             _mainTaskCts = new CancellationTokenSource();
@@ -226,58 +220,49 @@ namespace TiqSoft.ScreenAssistant.Controllers
 
         private void CreateDefaultWeapons()
         {
-            _weapon1 = ApLegFactory.ConstructDefault();
-            _weapon2 = ApLegFactory.ConstructDefault();
-            _weapon1.SetOffsets(_deltaX, _deltaY);
-            _weapon2.SetOffsets(_deltaX, _deltaY);
-            Weapon1Name = _weapon1.Name;
-            Weapon2Name = _weapon2.Name;
+            Weapons = new ObservableCollection<IWeapon>();
+            for (var i = 0; i < _weaponFactory.NumberOfWeapons; i++)
+            {
+                var newWeapon = _weaponFactory.Default();
+                newWeapon.SetOffsets(_logicSettings.DeltaX, _logicSettings.DeltaY);
+                Weapons.Add(newWeapon);
+            }
         }
 
         private async Task StartWeaponRecognition(CancellationToken token)
         {
             try
             {
-
+                CreateDefaultWeapons();
                 while (true)
                 {
-                    if (UseWeaponLogic)
+                    if (UseWeaponLogic && CheckWindowLock())
                     {
-                        var weapon1RecognizedName = WeaponTypeScreenRecognizer.GetWeapon1FromScreen();
-                        var weapon2RecognizedName = WeaponTypeScreenRecognizer.GetWeapon2FromScreen();
-                        if (!weapon1RecognizedName.Empty())
+                        for (var i = 1; i <= _weaponFactory.NumberOfWeapons; i++)
                         {
-                            var newDetectedWeapon = ApLegFactory.ConstructFromRecognizedString(
-                                weapon1RecognizedName, 
-                                _weapon1,
-                                DeltaX, 
-                                DeltaY,
-                                SensitivityScale
-                            );
-                            if (!newDetectedWeapon.IsDefault() && !_weapon1.Equals(newDetectedWeapon))
+                            var weaponRecognizedName = _weaponFactory.Recognizer.GetWeaponFromScreen(i);
+                            if (!weaponRecognizedName.Empty())
                             {
-                                FirstWeaponActive = true;
-                                _weapon1 = newDetectedWeapon;
-                                _weapon1.SetOffsets(_deltaX, _deltaY);
-                                Weapon1Name = _weapon1.Name;
-                            }
-                        }
+                                var currentWeapon = Weapons[i - 1];
+                                var newDetectedWeapon = _weaponFactory.FromRecognizedString(
+                                    weaponRecognizedName,
+                                    currentWeapon,
+                                    DeltaX,
+                                    DeltaY,
+                                    SensitivityScale
+                                );
 
-                        if (!weapon2RecognizedName.Empty())
-                        {
-                            var newDetectedWeapon = ApLegFactory.ConstructFromRecognizedString(
-                                weapon2RecognizedName,
-                                _weapon2,
-                                DeltaX,
-                                DeltaY,
-                                SensitivityScale
-                            );
-                            if (!newDetectedWeapon.IsDefault() && !_weapon2.Equals(newDetectedWeapon))
-                            {
-                                FirstWeaponActive = false;
-                                _weapon2 = newDetectedWeapon;
-                                _weapon2.SetOffsets(_deltaX, _deltaY);
-                                Weapon2Name = _weapon2.Name;
+                                if (!newDetectedWeapon.IsDefault() && !currentWeapon.Equals(newDetectedWeapon))
+                                {
+                                    currentWeapon.IsActive = true;
+                                    currentWeapon.SetOffsets(_logicSettings.DeltaX, _logicSettings.DeltaY);
+                                    var i1 = i;
+                                    _dispatcher.Invoke(() =>
+                                        {
+                                            return Weapons[i1 - 1] = newDetectedWeapon;
+                                        }
+                                    );
+                                }
                             }
                         }
                     }
@@ -291,20 +276,40 @@ namespace TiqSoft.ScreenAssistant.Controllers
             }
             finally
             {
-                ResetEquippedWeapons();
+                CreateDefaultWeapons();
             }
+        }
+
+        private bool CheckWindowLock()
+        {
+            return !_logicSettings.LockToGameWindow ||
+                   _weaponFactory.LockedToApplication.Empty() ||
+                   _weaponFactory.LockedToApplication.Equals(WinApiHelper.GetActiveProcessName())
+                ;
         }
 
         private async Task StartActiveElementRecognition(CancellationToken token)
         {
+            var currentActiveWeapon = 0;
             try
             {
-
                 while (true)
                 {
-                    if (UseWeaponLogic)
+                    if (UseWeaponLogic && CheckWindowLock())
                     {
-                        FirstWeaponActive = WeaponTypeScreenRecognizer.IsFirstWeaponActive();
+                        var activeWeapon = _weaponFactory.Recognizer.GetActiveWeapon();
+                        
+                        for (var i = 0; i < Weapons.Count; i++)
+                        {
+                            var weapon = Weapons[i];
+                            weapon.IsActive = (i + 1) == activeWeapon;
+                            if (weapon.IsActive && currentActiveWeapon == activeWeapon)
+                            {
+                                _weaponFactory.WeaponPostProcess(weapon);
+                            }
+                        }
+
+                        currentActiveWeapon = activeWeapon;
                     }
 
                     await Task.Delay(500, token);
@@ -316,13 +321,8 @@ namespace TiqSoft.ScreenAssistant.Controllers
             }
             finally
             {
-                FirstWeaponActive = true;
+                Weapons[0].IsActive = true;
             }
-        }
-
-        private IWeapon GetCurrentWeapon()
-        {
-            return _firstWeaponActive ? _weapon1 : _weapon2;
         }
         
         private async Task StartProcessingInput(CancellationToken token)
@@ -334,14 +334,15 @@ namespace TiqSoft.ScreenAssistant.Controllers
                 var simShots = 0;
                 while (Working)
                 {
-                    if (MouseDown)
+                    if (MouseDown && CheckWindowLock())
                     {
-                        var weapon = GetCurrentWeapon();
-
-                        var delay = weapon.AdjustMouse(simShots);
-                        AdjustmentCoefficient = weapon.AdjustmentCoefficient;
-
-                        await Task.Delay((int)(delay * 1000), token);
+                        var weapon = Weapons.FirstOrDefault(x => x.IsActive);
+                        if (weapon != null)
+                        {
+                            var delay = weapon.AdjustMouse(simShots);
+                            AdjustmentCoefficient = weapon.AdjustmentCoefficient;
+                            await Task.Delay((int)(delay * 1000), token);
+                        }
                         simShots++;
                     }
                     else

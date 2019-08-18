@@ -2,8 +2,8 @@
 {
     internal sealed class NonAdjustableWeapon : ApLegWeaponBase
     {
-        public NonAdjustableWeapon(string name, double burstSeconds, string recognizedName, WeaponAL type) 
-            : base(name, burstSeconds, recognizedName, type)
+        public NonAdjustableWeapon(string name, double burstSeconds, string recognizedName, int numOfMods) 
+            : base(name, burstSeconds, recognizedName, numOfMods)
         {
             AdjustmentCoefficient = 0;
         }
