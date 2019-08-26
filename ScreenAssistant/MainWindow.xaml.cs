@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -45,13 +46,6 @@ namespace TiqSoft.ScreenAssistant
             Settings.Save();
         }
 
-        private void Button_Click_2(object sender, RoutedEventArgs e)
-        {
-            ImageTestController.Instance.Toggle();
-            var testBtn = (Button) sender;
-            testBtn.Background = new SolidColorBrush(ImageTestController.Instance.Running ? Color.FromRgb(25, 225, 25) : Color.FromRgb(225, 25, 25));
-        }
-
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
             var scaleY = new DoubleAnimation
@@ -81,6 +75,18 @@ namespace TiqSoft.ScreenAssistant
             var game = (Game)cb.SelectedItem;
             _controller.SetGameFactory(GamesHelper.GetFactoryByGameName(game.Name));
             Settings.SelectedGameName = game.Name;
+        }
+
+        public void ShowLauncherError()
+        {
+            ErrorPanel.Visibility = Visibility.Visible;
+            ErrorMessage.Text = "Please restart via TiQ Launcher";
+
+            Task.Run(async () =>
+            {
+                await Task.Delay(10000);
+                Environment.Exit(0);
+            });
         }
     }
 }

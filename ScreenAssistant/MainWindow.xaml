@@ -33,15 +33,10 @@
             <Grid Grid.Row="1" Margin="5" MinHeight="35">
                 <ListBox ItemsSource ="{Binding Weapons}" Background="{x:Null}" BorderBrush="{x:Null}" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalAlignment="Center"/>
             </Grid>
-            <Grid Grid.Row="3" Margin="5" Visibility="Collapsed">
-                <!-- -->
-                <Button Content="TEST" Click="Button_Click_2"/>
+            <Grid Grid.Row="3" Margin="5" Visibility="{Binding TestController.Running, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <TextBlock FontSize="16" FontWeight="Bold" Text="Test screen capture mode" HorizontalAlignment="Center" Foreground="#FFCC0000"/>
             </Grid>
             <Grid Grid.Row="4" Margin="5,5,5,0" VerticalAlignment="Bottom" >
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <!-- -->
                 <TextBlock Text="{Binding CurrentVersionInfo}" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontStyle="Italic" Foreground="#FF404040" FontSize="9" Margin="0,0,-1,0"/>
                 <Button Content="Settings" Margin="5,0,0,0" Padding="5,2" HorizontalAlignment="Left" Click="Button_Click_3" />
             </Grid>
@@ -101,10 +96,22 @@
                     <TextBlock Grid.Column="0" Text="Lock to game window" VerticalAlignment="Center"  Margin="5, 0"/>
                     <CheckBox Grid.Column="1" IsChecked="{Binding LockToGameWindow}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </Grid>
+                <Grid Margin="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="Full screen mode" VerticalAlignment="Center"  Margin="5, 0"/>
+                    <CheckBox Grid.Column="1" IsChecked="{Binding FullScreenMode}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Grid>
                 <Grid>
                     <Button Content="OK" Margin="116,0,115,5" Padding="5,2" HorizontalAlignment="Center" VerticalAlignment="Bottom" Click="Button_Click_4" />
                 </Grid>
             </StackPanel>
+        </Grid>
+        <Grid x:Name="ErrorPanel" Visibility="Collapsed">
+            <Rectangle Fill="#72000000" />
+            <TextBlock MaxWidth="300" x:Name="ErrorMessage" VerticalAlignment="Center" Foreground="White" FontWeight="Bold" FontSize="18" TextWrapping="Wrap" HorizontalAlignment="Center"/>
         </Grid>
     </Grid>
 </Window>

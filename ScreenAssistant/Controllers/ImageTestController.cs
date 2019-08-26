@@ -2,6 +2,7 @@
 using System.Runtime.CompilerServices;
 using GlobalHook.Event;
 using TiqSoft.ScreenAssistant.Controllers.BindingControl;
+using TiqSoft.ScreenAssistant.Games;
 using TiqSoft.ScreenAssistant.Properties;
 using TiqSoft.ScreenAssistant.ScreenInfoRecognition;
 using TiqSoft.ScreenAssistant.ScreenInfoRecognition.Recognizers.ApexLegends;
@@ -12,23 +13,30 @@ namespace TiqSoft.ScreenAssistant.Controllers
     {
         private static ImageTestController _instance;
         private bool _running;
-        private readonly IWeaponRecognizer _weaponRecognizer;
 
-        public ImageTestController(IWeaponRecognizer weaponRecognizer)
+        public ImageTestController()
         {
-            _weaponRecognizer = weaponRecognizer;
+#if DEBUG
             HotKeysController = new BindingController();
+            HotKeysController.BindUpToAction(KeyModifier.Ctrl, 'Y', Toggle);
             HotKeysController.BindUpToAction(KeyModifier.Ctrl, 'T', MakeTestScreenShots);
+            HotKeysController.Start(true);
+#endif
         }
 
-        public static ImageTestController Instance => _instance ?? (_instance = new ImageTestController(new ApLegWeaponTypeScreenRecognizer())); // rework to make it non-game specific
+        public static ImageTestController Instance => _instance ?? (_instance = new ImageTestController()); // rework to make it non-game specific
 
         private void MakeTestScreenShots()
         {
-            _weaponRecognizer.TestWeapons();
+            if (Running)
+            {
+                WeaponFactory?.Recognizer.TestWeapons();
+            }
         }
 
         private BindingController HotKeysController { get; }
+
+        internal IWeaponFactory WeaponFactory { get; set; }
 
         public bool Running
         {
@@ -41,17 +49,8 @@ namespace TiqSoft.ScreenAssistant.Controllers
             }
         }
 
-        public void Toggle()
+        private void Toggle()
         {
-            if (!Running)
-            {
-                HotKeysController.Start(true);
-            }
-            else
-            {
-                HotKeysController.Stop();
-            }
-
             Running = !Running;
         }
         

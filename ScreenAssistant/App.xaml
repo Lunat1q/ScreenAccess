@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:TiqSoft.ScreenAssistant"
              xmlns:converters="clr-namespace:TiqSoft.ScreenAssistant.Helpers.Converters"
-             StartupUri="MainWindow.xaml">
+             Startup="AppStartup">
     <Application.Resources>
         <ResourceDictionary >
             <ResourceDictionary.MergedDictionaries >

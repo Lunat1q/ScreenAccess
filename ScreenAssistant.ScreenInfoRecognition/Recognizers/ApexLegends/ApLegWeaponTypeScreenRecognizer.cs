@@ -17,8 +17,8 @@ namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition.Recognizers.ApexLegends
 
         public bool IsFirstWeaponActive()
         {
-            var image1 = ScreenCapture.CaptureScreenRelatively(82f, 84f, 95.5f, 96);
-            var image2 = ScreenCapture.CaptureScreenRelatively(90f, 92f, 95.5f, 96);
+            var image1 = ScreenCapture.CaptureScreenRelatively(82f, 84f, 95.5f, 96, FullScreenMode);
+            var image2 = ScreenCapture.CaptureScreenRelatively(90f, 92f, 95.5f, 96, FullScreenMode);
 
             //image1.SaveTestImage();
             //image2.SaveTestImage();
@@ -26,15 +26,15 @@ namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition.Recognizers.ApexLegends
             return image1.GetAverageBrightness() > image2.GetAverageBrightness();
         }
 
-        private static Image GetWeapon1Image()
+        private static Image GetWeapon1Image(bool fullScreen)
         {
-            var image = ScreenCapture.CaptureScreenRelatively(81f, 87f, 95.5f, 98);//77, 97, 95, 99);
+            var image = ScreenCapture.CaptureScreenRelatively(81f, 87f, 95.5f, 98, fullScreen);//77, 97, 95, 99);
             return image;
         }
 
-        private static Image GetWeapon2Image()
+        private static Image GetWeapon2Image(bool fullScreen)
         {
-            var image = ScreenCapture.CaptureScreenRelatively(88.3f, 95f, 95.5f, 98);//77, 97, 95, 99);
+            var image = ScreenCapture.CaptureScreenRelatively(88.3f, 95f, 95.5f, 98, fullScreen);//77, 97, 95, 99);
             return image;
         }
 
@@ -69,8 +69,8 @@ namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition.Recognizers.ApexLegends
 
         public string TestWeapons()
         {
-            var w1Img = GetWeapon1Image();
-            var w2Img = GetWeapon2Image();
+            var w1Img = GetWeapon1Image(FullScreenMode);
+            var w2Img = GetWeapon2Image(FullScreenMode);
             w1Img.SaveTestImage();
             using (var db = GetAdjustedDirectBitmapOfImage(w1Img))
             {
@@ -78,7 +78,7 @@ namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition.Recognizers.ApexLegends
             }
 
             w2Img.SaveTestImage();
-            using (var db = GetAdjustedDirectBitmapOfImage(w1Img))
+            using (var db = GetAdjustedDirectBitmapOfImage(w2Img))
             {
                 db.ToBitmap().SaveTestImage();
             }
@@ -91,27 +91,29 @@ namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition.Recognizers.ApexLegends
             return IsFirstWeaponActive() ? 1 : 2;
         }
 
+        public bool FullScreenMode { get; set; }
+
         public string GetWeaponFromScreen(int no)
         {
             switch (no)
             {
                 case 1:
-                    return GetWeapon1FromScreen();
+                    return GetWeapon1FromScreen(FullScreenMode);
                 case 2:
-                    return GetWeapon2FromScreen();
+                    return GetWeapon2FromScreen(FullScreenMode);
                 default:
                     throw new ArgumentOutOfRangeException(nameof(no));
             }
         }
 
-        private static string GetWeapon1FromScreen()
+        private static string GetWeapon1FromScreen(bool fullScreen)
         {
-            return WeaponImageToString(GetWeapon1Image());
+            return WeaponImageToString(GetWeapon1Image(fullScreen));
         }
 
-        private static string GetWeapon2FromScreen()
+        private static string GetWeapon2FromScreen(bool fullScreen)
         {
-            return WeaponImageToString(GetWeapon2Image());
+            return WeaponImageToString(GetWeapon2Image(fullScreen));
         }
 
         private static string WeaponImageToString(Image img)
@@ -170,7 +172,7 @@ namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition.Recognizers.ApexLegends
             for (var i = 0; i < weaponNumberOfModules; i++)
             {
                 var offsetX = i * 1.46f;
-                var image = ScreenCapture.CaptureScreenRelatively(79.3f + offsetX, 79.5f + offsetX, 92.8f, 93.2f);
+                var image = ScreenCapture.CaptureScreenRelatively(79.3f + offsetX, 79.5f + offsetX, 92.8f, 93.2f, FullScreenMode);
                 //image.SaveTestImage(i.ToString());
                 var avColor = image.GetAverageColor();
 
@@ -209,5 +211,7 @@ namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition.Recognizers.ApexLegends
         string TestWeapons();
 
         int GetActiveWeapon();
+
+        bool FullScreenMode { get; set; }
     }
 }

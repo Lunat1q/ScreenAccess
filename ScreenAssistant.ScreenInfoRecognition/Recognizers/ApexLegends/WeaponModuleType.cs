@@ -1,5 +1,8 @@
-﻿namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition.Recognizers.ApexLegends
+﻿using System;
+
+namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition.Recognizers.ApexLegends
 {
+    [Flags]
     public enum WeaponModuleType
     {
         None = 0,

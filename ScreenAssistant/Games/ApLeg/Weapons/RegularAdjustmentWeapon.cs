@@ -1,5 +1,5 @@
 ﻿using System;
-using TiqUtils.TypeSpeccific;
+using TiqUtils.TypeSpecific;
 
 namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
 {

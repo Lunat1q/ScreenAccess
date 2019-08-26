@@ -12,7 +12,7 @@ using TiqSoft.ScreenAssistant.Controllers.BindingControl;
 using TiqSoft.ScreenAssistant.Core;
 using TiqSoft.ScreenAssistant.Games;
 using TiqSoft.ScreenAssistant.Properties;
-using TiqUtils.TypeSpeccific;
+using TiqUtils.TypeSpecific;
 
 namespace TiqSoft.ScreenAssistant.Controllers
 {
@@ -29,6 +29,7 @@ namespace TiqSoft.ScreenAssistant.Controllers
         private double _adjustmentCoefficient = 1;
         private ObservableCollection<IWeapon> _weapons;
         private readonly LogicSettings _logicSettings;
+        private ImageTestController _testController;
 
         #region Properties
         private BindingController HotKeysController { get; }
@@ -54,6 +55,7 @@ namespace TiqSoft.ScreenAssistant.Controllers
             HotKeysController.BindUpToAction(KeyModifier.Ctrl, 'K', Toggle);
             HotKeysController.Start(true);
             CurrentVersionInfo = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            TestController = ImageTestController.Instance;
         }
 
         public MainLogicController() : this(new LogicSettings(), null)
@@ -67,6 +69,8 @@ namespace TiqSoft.ScreenAssistant.Controllers
                 Stop();
             }
             _weaponFactory = factory;
+            TestController.WeaponFactory = _weaponFactory;
+            _weaponFactory.Recognizer.FullScreenMode = this.FullScreenMode;
             CreateDefaultWeapons();
         }
 
@@ -88,6 +92,15 @@ namespace TiqSoft.ScreenAssistant.Controllers
             {
                 if (value == _working) return;
                 _working = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ImageTestController TestController
+        {
+            get => _testController;
+            set {
+                _testController = value;
                 OnPropertyChanged();
             }
         }
@@ -142,6 +155,18 @@ namespace TiqSoft.ScreenAssistant.Controllers
             {
                 if (value == _logicSettings.LockToGameWindow) return;
                 _logicSettings.LockToGameWindow = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool FullScreenMode
+        {
+            get => _logicSettings.FullScreenMode;
+            set
+            {
+                if (value == _logicSettings.FullScreenMode) return;
+                _logicSettings.FullScreenMode = value;
+                _weaponFactory.Recognizer.FullScreenMode = value;
                 OnPropertyChanged();
             }
         }
@@ -209,6 +234,7 @@ namespace TiqSoft.ScreenAssistant.Controllers
         public void Start()
         {
             Enabled = true;
+            _weaponFactory.Recognizer.FullScreenMode = FullScreenMode;
             _mouseTaskCts = new CancellationTokenSource();
             Task.Run(() => CheckForMouse(_mouseTaskCts.Token));
             _mainTaskCts = new CancellationTokenSource();

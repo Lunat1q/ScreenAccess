@@ -14,6 +14,8 @@ namespace TiqSoft.ScreenAssistant.Controllers
 
         public float SensitivityScale { get; internal set; }
 
+        public bool FullScreenMode { get; internal set; }
+
         public static LogicSettings ConstructFromSettings(ScreenAssistantSettings settings)
         {
             return new LogicSettings
