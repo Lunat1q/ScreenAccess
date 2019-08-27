@@ -23,7 +23,7 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg
         Flatline = 1 << 4,
         [WeaponData("Hemlok", 4, "HEMLUH")]
         Hemlok = 1 << 5,
-        [WeaponData("Prowler", 5, "DRUWLEP")]
+        [WeaponData("Prowler", 4, "DRUWLEP")]
         Prowler = 1 << 6,
         [WeaponData("Longbow", 5, "LUNGBUW")]
         Longbow = 1 << 7,
