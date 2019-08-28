@@ -45,6 +45,8 @@ namespace TiqSoft.ScreenAssistant.Controllers
             }
         }
 
+        public bool MouseCentered { get; set; } // no need for notification for now.
+
         public string CurrentVersionInfo { get; }
 
         public MainLogicController(LogicSettings logicSettings, Dispatcher dispatcher)
@@ -237,6 +239,7 @@ namespace TiqSoft.ScreenAssistant.Controllers
             _weaponFactory.Recognizer.FullScreenMode = FullScreenMode;
             _mouseTaskCts = new CancellationTokenSource();
             Task.Run(() => CheckForMouse(_mouseTaskCts.Token));
+            Task.Run(() => CheckForMousePos(_mouseTaskCts.Token));
             _mainTaskCts = new CancellationTokenSource();
             Task.Run(() => StartProcessingInput(_mainTaskCts.Token));
             _weaponRecognitionCts = new CancellationTokenSource();
@@ -360,7 +363,7 @@ namespace TiqSoft.ScreenAssistant.Controllers
                 var simShots = 0;
                 while (Working)
                 {
-                    if (MouseDown && CheckWindowLock())
+                    if (MouseDown && MouseCentered && CheckWindowLock())
                     {
                         var weapon = Weapons.FirstOrDefault(x => x.IsActive);
                         if (weapon != null)
@@ -398,6 +401,28 @@ namespace TiqSoft.ScreenAssistant.Controllers
                 {
                     MouseDown = KeyStatesHook.IsLeftMouseDown();
                     await Task.Delay(10, token);
+                }
+            }
+            catch (TaskCanceledException)
+            {
+                //ignore
+            }
+            finally
+            {
+                MouseDown = false;
+            }
+        }
+
+
+
+        private async Task CheckForMousePos(CancellationToken token)
+        {
+            try
+            {
+                while (true)
+                {
+                    MouseCentered = WinApiHelper.IsCursorAtTheCenter();
+                    await Task.Delay(340, token);
                 }
             }
             catch (TaskCanceledException)

@@ -1,24 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\Costura.Fody.3.3.3\build\Costura.Fody.props" Condition="Exists('..\packages\Costura.Fody.3.3.3\build\Costura.Fody.props')" />
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{12C8925B-60DD-40DB-B30A-FAC31BF86293}</ProjectGuid>
+    <TargetFramework>net46</TargetFramework>
+	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>TiqSoft.ScreenAssistant</RootNamespace>
-    <AssemblyName>ScreenAssistant</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <WarningLevel>4</WarningLevel>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <Deterministic>true</Deterministic>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
+    <StartupObject />
+  </PropertyGroup> 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
@@ -40,17 +27,12 @@
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>icon.ico</ApplicationIcon>
-  </PropertyGroup>
-  <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+    <RootNamespace>TiqSoft.ScreenAssistant</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Costura, Version=3.3.3.0, Culture=neutral, PublicKeyToken=9919ef960d84173d, processorArchitecture=MSIL">
-      <HintPath>..\packages\Costura.Fody.3.3.3\lib\net40\Costura.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
+    <PackageReference Include="Costura.Fody" Version="3.3.3.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -67,108 +49,48 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <!-- App.xaml -->
     <ApplicationDefinition Include="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </ApplicationDefinition>
-    <Page Include="MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
+
+    <!-- XAML elements -->
+    <Page Include="**\*.xaml" Exclude="App.xaml">
       <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </Page>
-    <Compile Include="App.xaml.cs">
-      <DependentUpon>App.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Controllers\BindingControl\BindingController.cs" />
-    <Compile Include="Controllers\BindingControl\KeyListener.cs" />
-    <Compile Include="Controllers\ImageTestController.cs" />
-    <Compile Include="Controllers\LogicSettings.cs" />
-    <Compile Include="Controllers\MainLogicController.cs" />
-    <Compile Include="Core\GameName.cs" />
-    <Compile Include="Core\IWeapon.cs" />
-    <Compile Include="Core\MouseControl.cs" />
-    <Compile Include="Core\Settings\ScreenAssistantSettings.cs" />
-    <Compile Include="Core\StringHelper.cs" />
-    <Compile Include="Core\WinApiHelper.cs" />
-    <Compile Include="Games\ApLeg\ApLegFactory.cs" />
-    <Compile Include="Games\ApLeg\WeaponAL.cs" />
-    <Compile Include="Games\ApLeg\WeaponMock.cs" />
-    <Compile Include="Games\ApLeg\WeaponModule.cs" />
-    <Compile Include="Games\ApLeg\Weapons\Alternator.cs" />
-    <Compile Include="Games\ApLeg\Weapons\ApLegWeaponBase.cs" />
-    <Compile Include="Games\ApLeg\Weapons\G7Scout.cs" />
-    <Compile Include="Games\ApLeg\Weapons\LStar.cs" />
-    <Compile Include="Games\ApLeg\Weapons\Devotion.cs" />
-    <Compile Include="Games\ApLeg\Weapons\Flatline.cs" />
-    <Compile Include="Games\ApLeg\Weapons\Havoc.cs" />
-    <Compile Include="Games\ApLeg\Weapons\Hemlok.cs" />
-    <Compile Include="Games\ApLeg\Weapons\NonAdjustableWeapon.cs" />
-    <Compile Include="Games\ApLeg\Weapons\Prowler.cs" />
-    <Compile Include="Games\ApLeg\Weapons\R301.cs" />
-    <Compile Include="Games\ApLeg\Weapons\R99.cs" />
-    <Compile Include="Games\ApLeg\Weapons\RE45.cs" />
-    <Compile Include="Games\ApLeg\Weapons\RegularAdjustmentWeapon.cs" />
-    <Compile Include="Games\ApLeg\Weapons\UniqueLogicWeapon.cs" />
-    <Compile Include="Games\GamesHelper.cs" />
-    <Compile Include="Games\IWeaponFactory.cs" />
-    <Compile Include="Helpers\Converters\InverseBooleanConverter.cs" />
-    <Compile Include="Helpers\Converters\ModuleTypeConverter.cs" />
-    <Compile Include="Helpers\EnumHelper.cs" />
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Page Include="Converters.xaml">
+    <Compile Update="**\*.xaml.cs" SubType="Code" DependentUpon="%(Filename)" />
+
+    <!-- Resources -->
+    <EmbeddedResource Update="Properties\Resources.resx" Generator="ResXFileCodeGenerator" LastGenOutput="Resources.Designer.cs" />
+    <Compile Update="Properties\Resources.Designer.cs" AutoGen="True" DependentUpon="Resources.resx" DesignTime="True" />
+
+    <!-- Settings -->
+    <None Update="Properties\Settings.settings" Generator="SettingsSingleFileGenerator" LastGenOutput="Settings.Designer.cs" />
+    <None Update="WeaponTemplates.xaml">
       <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="WeaponTemplates.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Properties\Annotations.cs" />
-    <Compile Include="Properties\Annotations1.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    </None>
+    <Compile Update="Properties\Settings.Designer.cs" AutoGen="True" DependentUpon="Settings.settings" />
+	
     <None Include="app.manifest" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GlobalHook\GlobalHook\GlobalHook.csproj">
-      <Project>{b4230040-275d-45d5-9811-0c1841fa6033}</Project>
-      <Name>GlobalHook</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ScreenAssistant.ScreenInfoRecognition\ScreenAssistant.ScreenInfoRecognition.csproj">
-      <Project>{c3b52309-2e61-4cfd-9541-ce13aa26c41e}</Project>
-      <Name>ScreenAssistant.ScreenInfoRecognition</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TiqUtils\TiqUtils\TiqUtils.csproj">
-      <Project>{add36afd-5e81-40e7-93f8-381cf03c5fd2}</Project>
-      <Name>TiqUtils</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\GlobalHook\GlobalHook\GlobalHook.csproj" />
+    <ProjectReference Include="..\ScreenAssistant.ScreenInfoRecognition\ScreenAssistant.ScreenInfoRecognition.csproj" />
+    <ProjectReference Include="..\TiqUtils\TiqUtils\TiqUtils.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="icon.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="FodyWeavers.xml" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <ApplicationDefinition Update="D:\Coding\GitHub\ScreenAccess\ScreenAssistant/App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </ApplicationDefinition>
+  </ItemGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
