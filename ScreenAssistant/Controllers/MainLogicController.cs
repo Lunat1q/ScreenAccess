@@ -30,6 +30,7 @@ namespace TiqSoft.ScreenAssistant.Controllers
         private ObservableCollection<IWeapon> _weapons;
         private readonly LogicSettings _logicSettings;
         private ImageTestController _testController;
+        private bool _mouseCentered;
 
         #region Properties
         private BindingController HotKeysController { get; }
@@ -45,7 +46,20 @@ namespace TiqSoft.ScreenAssistant.Controllers
             }
         }
 
-        public bool MouseCentered { get; set; } // no need for notification for now.
+        public bool MouseCentered
+        {
+            get => _mouseCentered;
+            set
+            {
+#if DEBUG
+                if (value == _mouseCentered) return;
+                _mouseCentered = value;
+                OnPropertyChanged();
+#else
+                _mouseCentered = value;
+#endif
+            }
+        } // no need for notification for now.
 
         public string CurrentVersionInfo { get; }
 
@@ -210,16 +224,16 @@ namespace TiqSoft.ScreenAssistant.Controllers
             }
         }
 
-        #endregion
+#endregion
 
-        #region INotify
+#region INotify
         public event PropertyChangedEventHandler PropertyChanged;
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-        #endregion
+#endregion
 
         private void Toggle()
         {

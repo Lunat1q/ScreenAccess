@@ -28,6 +28,7 @@
                     <Rectangle Height="32" Width="32" Fill="#FF0097FF" RadiusX="16" RadiusY="16" Visibility="{Binding Working, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                     <Rectangle Height="32" Width="32" Fill="#FF00C309" RadiusX="16" RadiusY="16" Visibility="{Binding MouseDown, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                     <TextBlock Text="{Binding AdjustmentCoefficient, StringFormat=N2}" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding Working, Converter={StaticResource BooleanToVisibilityConverter}}" Foreground="White" FontWeight="Bold"/>
+                    <!--<TextBlock Text="C" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="{Binding MouseCentered, Converter={StaticResource BooleanToVisibilityConverter}}" Foreground="White" FontWeight="Bold"/>-->
                 </Grid>
             </Grid>
             <Grid Grid.Row="1" Margin="5" MinHeight="35">

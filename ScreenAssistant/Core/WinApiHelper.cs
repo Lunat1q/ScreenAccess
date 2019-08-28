@@ -64,7 +64,7 @@ namespace TiqSoft.ScreenAssistant.Core
         public static bool IsCursorAtTheCenter()
         {
             var pos = GetCursorPosition();
-            var res =  Math.Abs(pos.X - WidthCenter) < WidthOffset / 10 && Math.Abs(pos.Y - HeightCenter) < HeightOffset / 10;
+            var res = Math.Abs(pos.X - WidthCenter) < WidthOffset && Math.Abs(pos.Y - HeightCenter) < HeightOffset;
             return res;
         }
     }

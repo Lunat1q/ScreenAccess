@@ -142,7 +142,14 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg
             var modulesState = IntRecognizer.GetModulesState(weapon.NumberOfModules);
             for (var i = 0; i < weapon.NumberOfModules; i++)
             {
-                apexWeapon.InstalledModules[i].Type = modulesState[i];
+                /*
+                 * temp solution to prevent flickering, considering out of scope scenario when you remove a module from a weapon
+                 * Common / None mods are quite similar as color, still looking for a way to detect them a bit more precisely. 
+                */
+                if (modulesState[i] != WeaponModuleType.None || apexWeapon.InstalledModules[i].Type == WeaponModuleType.Common) 
+                {
+                    apexWeapon.InstalledModules[i].Type = modulesState[i];
+                }
             }
         }
 
