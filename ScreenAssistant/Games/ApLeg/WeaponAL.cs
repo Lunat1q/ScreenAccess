@@ -37,7 +37,7 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg
         P2020 = 1 << 11,
         [WeaponData("R-301", 4, "R-3 Ol", "9-501")]
         R301 = 1 << 12,
-        [WeaponData("R-99", 4, "9-99", "R - SEI")]
+        [WeaponData("R-99", 4, "9-99", "R - SEI", "R-SEI")]
         R99 = 1 << 13,
         [WeaponData("Alternator", 5)]
         Alternator = 1 << 14,

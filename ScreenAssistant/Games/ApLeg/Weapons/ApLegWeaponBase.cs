@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using TiqSoft.ScreenAssistant.Annotations;
 using TiqSoft.ScreenAssistant.Core;
+using TiqSoft.ScreenAssistant.ScreenInfoRecognition.Recognizers.ApexLegends;
 
 namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
 {
@@ -61,6 +62,11 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
             {
                 InstalledModules.Add(new WeaponModule());
             }
+        }
+
+        public WeaponModuleType GetModuleType(int idx)
+        {
+            return idx < InstalledModules.Count ? InstalledModules[idx].Type : WeaponModuleType.None;
         }
 
         public void SetOffsets(int deltaX, int deltaY)
