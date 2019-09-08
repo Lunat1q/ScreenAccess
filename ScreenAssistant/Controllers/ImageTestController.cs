@@ -4,8 +4,6 @@ using GlobalHook.Event;
 using TiqSoft.ScreenAssistant.Controllers.BindingControl;
 using TiqSoft.ScreenAssistant.Games;
 using TiqSoft.ScreenAssistant.Properties;
-using TiqSoft.ScreenAssistant.ScreenInfoRecognition;
-using TiqSoft.ScreenAssistant.ScreenInfoRecognition.Recognizers.ApexLegends;
 
 namespace TiqSoft.ScreenAssistant.Controllers
 {

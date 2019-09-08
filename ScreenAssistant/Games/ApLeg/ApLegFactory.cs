@@ -123,6 +123,7 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg
         }
 
         public IWeaponRecognizer Recognizer { get; }
+
         public IWeapon Default()
         {
             return CreateDefaultWeapon();

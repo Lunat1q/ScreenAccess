@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="DirectBitmap.cs" />
     <Compile Include="ImageUtils.cs" />
+    <Compile Include="Logger\DebugLogger.cs" />
     <Compile Include="Recognizers\ApexLegends\WeaponModuleType.cs" />
     <Compile Include="WeaponDataAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -62,5 +63,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

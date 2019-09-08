@@ -2,10 +2,10 @@
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
+using TiqSoft.ScreenAssistant.Builders;
 using TiqSoft.ScreenAssistant.Controllers;
 using TiqSoft.ScreenAssistant.Games;
+using TiqUtils.Wpf.UIBuilders;
 using static TiqSoft.ScreenAssistant.Core.Settings.ScreenAssistantSettings;
 
 namespace TiqSoft.ScreenAssistant
@@ -20,11 +20,11 @@ namespace TiqSoft.ScreenAssistant
 
         public MainWindow()
         {
-            _controller = new MainLogicController(LogicSettings.ConstructFromSettings(Settings), Dispatcher);
+            _controller = new MainLogicController(Settings, Dispatcher);
             DataContext = _controller;
             InitializeComponent();
-            GameSelector.ItemsSource = GamesHelper.GetListOfSupportedGames();
-            GameSelector.SelectedValue = Settings.SelectedGameName;
+            //GameSelector.ItemsSource = GamesHelper.GetListOfSupportedGames();
+            //GameSelector.SelectedValue = Settings.SelectedGameName;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -39,34 +39,13 @@ namespace TiqSoft.ScreenAssistant
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            Settings.DeltaX = _controller.DeltaX;
-            Settings.DeltaY = _controller.DeltaY;
-            Settings.UseUniqueWeaponLogic = _controller.UseWeaponLogic;
-            Settings.SensitivityScale = _controller.SensitivityScale;
             Settings.Save();
         }
 
-        private void Button_Click_3(object sender, RoutedEventArgs e)
+        private void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
-            var scaleY = new DoubleAnimation
-            {
-                From = 0,
-                To = 1,
-                Duration = TimeSpan.FromSeconds(0.5),
-            };
-            SettingsGrid.RenderTransform.BeginAnimation(ScaleTransform.ScaleYProperty, scaleY);
-
-        }
-
-        private void Button_Click_4(object sender, RoutedEventArgs e)
-        {
-            var downScaleY = new DoubleAnimation
-            {
-                From = 1,
-                To = 0,
-                Duration = TimeSpan.FromSeconds(0.5),
-            };
-            SettingsGrid.RenderTransform.BeginAnimation(ScaleTransform.ScaleYProperty, downScaleY);
+            //new ScreenAssistantSettingsBuilder(Settings).ShowDialog();
+            Settings.OpenAutoUISettingsDialog();
         }
 
         private void GameSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)

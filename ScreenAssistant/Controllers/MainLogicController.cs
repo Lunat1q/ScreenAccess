@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Threading;
 using TiqSoft.ScreenAssistant.Controllers.BindingControl;
 using TiqSoft.ScreenAssistant.Core;
+using TiqSoft.ScreenAssistant.Core.Settings;
 using TiqSoft.ScreenAssistant.Games;
 using TiqSoft.ScreenAssistant.Properties;
 using TiqUtils.TypeSpecific;
@@ -28,7 +29,7 @@ namespace TiqSoft.ScreenAssistant.Controllers
         private CancellationTokenSource _weaponRecognitionCts;
         private double _adjustmentCoefficient = 1;
         private ObservableCollection<IWeapon> _weapons;
-        private readonly LogicSettings _logicSettings;
+        private readonly ScreenAssistantSettings _settings;
         private ImageTestController _testController;
         private bool _mouseCentered;
 
@@ -63,18 +64,53 @@ namespace TiqSoft.ScreenAssistant.Controllers
 
         public string CurrentVersionInfo { get; }
 
-        public MainLogicController(LogicSettings logicSettings, Dispatcher dispatcher)
+        public MainLogicController(ScreenAssistantSettings logicSettings, Dispatcher dispatcher)
         {
             _dispatcher = dispatcher;
-            _logicSettings = logicSettings;
+            _settings = logicSettings;
             HotKeysController = new BindingController();
             HotKeysController.BindUpToAction(KeyModifier.Ctrl, 'K', Toggle);
             HotKeysController.Start(true);
             CurrentVersionInfo = Assembly.GetExecutingAssembly().GetName().Version.ToString();
             TestController = ImageTestController.Instance;
+            this.SetGameFactory(GamesHelper.GetFactoryByGameName(logicSettings.SelectedGameName));
+            logicSettings.PropertyChanged += LogicSettings_PropertyChanged;
         }
 
-        public MainLogicController() : this(new LogicSettings(), null)
+        private void LogicSettings_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            var settings = (ScreenAssistantSettings)sender;
+            if (e.PropertyName.Equals(nameof(_settings.SelectedGameName)))
+            {
+                this.SetGameFactory(GamesHelper.GetFactoryByGameName(settings.SelectedGameName));
+            }
+            else if (e.PropertyName.Equals(nameof(_settings.FullScreenMode)) && _weaponFactory?.Recognizer != null)
+            {
+                _weaponFactory.Recognizer.FullScreenMode = this._settings.FullScreenMode;
+            }
+            else if (e.PropertyName.Equals(nameof(_settings.BrightnessScale)))
+            {
+                _weaponFactory?.Recognizer?.SetBrightness(this._settings.BrightnessScale);
+            }
+            else if (e.PropertyName.Equals(nameof(_settings.DeltaY)) || e.PropertyName.Equals(nameof(_settings.DeltaX)))
+            {
+                if (Weapons == null) return;
+                foreach (var weapon in Weapons)
+                {
+                    weapon.SetOffsets(this._settings.DeltaX, this._settings.DeltaY);
+                }
+            }
+            else if (e.PropertyName.Equals(nameof(_settings.SensitivityScale)))
+            {
+                if (Weapons == null) return;
+                foreach (var weapon in Weapons)
+                {
+                    weapon.SetSensitivityScale(this._settings.SensitivityScale);
+                }
+            }
+        }
+
+        public MainLogicController() : this(new ScreenAssistantSettings(), null)
         {
         }
 
@@ -86,10 +122,11 @@ namespace TiqSoft.ScreenAssistant.Controllers
             }
             _weaponFactory = factory;
             TestController.WeaponFactory = _weaponFactory;
-            _weaponFactory.Recognizer.FullScreenMode = this.FullScreenMode;
+            _weaponFactory.Recognizer.FullScreenMode = this._settings.FullScreenMode;
+            _weaponFactory.Recognizer.SetBrightness(this._settings.BrightnessScale);
             CreateDefaultWeapons();
         }
-
+        
         public bool Enabled
         {
             get => _enabled;
@@ -121,72 +158,6 @@ namespace TiqSoft.ScreenAssistant.Controllers
             }
         }
 
-        public int DeltaY
-        {
-            get => _logicSettings.DeltaY;
-            set
-            {
-                if (value == _logicSettings.DeltaY) return;
-                _logicSettings.DeltaY = value;
-                OnPropertyChanged();
-                if (Weapons == null) return;
-                foreach (var weapon in Weapons)
-                {
-                    weapon.SetOffsets(_logicSettings.DeltaX, _logicSettings.DeltaY);
-                }
-            }
-        }
-
-        public int DeltaX
-        {
-            get => _logicSettings.DeltaX;
-            set
-            {
-                if (value == _logicSettings.DeltaX) return;
-                _logicSettings.DeltaX = value;
-                OnPropertyChanged();
-                if (Weapons == null) return;
-                foreach (var weapon in Weapons)
-                {
-                    weapon.SetOffsets(_logicSettings.DeltaX, _logicSettings.DeltaY);
-                }
-            }
-        }
-
-        public bool UseWeaponLogic
-        {
-            get => _logicSettings.UseWeaponLogic;
-            set
-            {
-                if (value == _logicSettings.UseWeaponLogic) return;
-                _logicSettings.UseWeaponLogic = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool LockToGameWindow
-        {
-            get => _logicSettings.LockToGameWindow;
-            set
-            {
-                if (value == _logicSettings.LockToGameWindow) return;
-                _logicSettings.LockToGameWindow = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool FullScreenMode
-        {
-            get => _logicSettings.FullScreenMode;
-            set
-            {
-                if (value == _logicSettings.FullScreenMode) return;
-                _logicSettings.FullScreenMode = value;
-                _weaponFactory.Recognizer.FullScreenMode = value;
-                OnPropertyChanged();
-            }
-        }
-
         public double AdjustmentCoefficient
         {
             get => _adjustmentCoefficient;
@@ -195,22 +166,6 @@ namespace TiqSoft.ScreenAssistant.Controllers
                 if (value.Equals(_adjustmentCoefficient)) return;
                 _adjustmentCoefficient = value;
                 OnPropertyChanged();
-            }
-        }
-
-        public float SensitivityScale
-        {
-            get => _logicSettings.SensitivityScale;
-            set
-            {
-                if (value.Equals(_logicSettings.SensitivityScale)) return;
-                _logicSettings.SensitivityScale = value;
-                OnPropertyChanged();
-                if (Weapons == null) return;
-                foreach (var weapon in Weapons)
-                {
-                    weapon.SetSensitivityScale(_logicSettings.SensitivityScale);
-                }
             }
         }
 
@@ -250,7 +205,7 @@ namespace TiqSoft.ScreenAssistant.Controllers
         public void Start()
         {
             Enabled = true;
-            _weaponFactory.Recognizer.FullScreenMode = FullScreenMode;
+            _weaponFactory.Recognizer.FullScreenMode = _settings.FullScreenMode;
             _mouseTaskCts = new CancellationTokenSource();
             Task.Run(() => CheckForMouse(_mouseTaskCts.Token));
             Task.Run(() => CheckForMousePos(_mouseTaskCts.Token));
@@ -267,7 +222,7 @@ namespace TiqSoft.ScreenAssistant.Controllers
             for (var i = 0; i < _weaponFactory.NumberOfWeapons; i++)
             {
                 var newWeapon = _weaponFactory.Default();
-                newWeapon.SetOffsets(_logicSettings.DeltaX, _logicSettings.DeltaY);
+                newWeapon.SetOffsets(_settings.DeltaX, _settings.DeltaY);
                 Weapons.Add(newWeapon);
             }
         }
@@ -279,7 +234,7 @@ namespace TiqSoft.ScreenAssistant.Controllers
                 CreateDefaultWeapons();
                 while (true)
                 {
-                    if (UseWeaponLogic && CheckWindowLock())
+                    if (_settings.UseUniqueWeaponLogic && CheckWindowLock())
                     {
                         for (var i = 1; i <= _weaponFactory.NumberOfWeapons; i++)
                         {
@@ -290,15 +245,15 @@ namespace TiqSoft.ScreenAssistant.Controllers
                                 var newDetectedWeapon = _weaponFactory.FromRecognizedString(
                                     weaponRecognizedName,
                                     currentWeapon,
-                                    DeltaX,
-                                    DeltaY,
-                                    SensitivityScale
+                                    _settings.DeltaX,
+                                    _settings.DeltaY,
+                                    _settings.SensitivityScale
                                 );
 
                                 if (!newDetectedWeapon.IsDefault() && !currentWeapon.Equals(newDetectedWeapon))
                                 {
                                     currentWeapon.IsActive = true;
-                                    currentWeapon.SetOffsets(_logicSettings.DeltaX, _logicSettings.DeltaY);
+                                    currentWeapon.SetOffsets(_settings.DeltaX, _settings.DeltaY);
                                     var i1 = i;
                                     _dispatcher.Invoke(() =>
                                         {
@@ -325,7 +280,7 @@ namespace TiqSoft.ScreenAssistant.Controllers
 
         private bool CheckWindowLock()
         {
-            return !_logicSettings.LockToGameWindow ||
+            return !_settings.LockToGameWindow ||
                    _weaponFactory.LockedToApplication.Empty() ||
                    _weaponFactory.LockedToApplication.Equals(WinApiHelper.GetActiveProcessName())
                 ;
@@ -338,7 +293,7 @@ namespace TiqSoft.ScreenAssistant.Controllers
             {
                 while (true)
                 {
-                    if (UseWeaponLogic && CheckWindowLock())
+                    if (_settings.UseUniqueWeaponLogic && CheckWindowLock())
                     {
                         var activeWeapon = _weaponFactory.Recognizer.GetActiveWeapon();
                         

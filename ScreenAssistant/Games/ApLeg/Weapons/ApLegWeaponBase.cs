@@ -108,7 +108,7 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
 
         protected void MoveMouse(double horizontalOffset, double verticalOffset)
         {
-            int hOffset = AdjustmentCoefficient > 0.001 ? (int)horizontalOffset : 0;
+            var hOffset = AdjustmentCoefficient > 0.001 ? horizontalOffset : 0;
             MouseControl.Move((int)(hOffset * _sensitivityScale), (int)(verticalOffset * AdjustmentCoefficient * _sensitivityScale));
         }
 

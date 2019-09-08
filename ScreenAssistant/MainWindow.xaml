@@ -6,7 +6,10 @@
         xmlns:local="clr-namespace:TiqSoft.ScreenAssistant"
         xmlns:controllers="clr-namespace:TiqSoft.ScreenAssistant.Controllers"
         mc:Ignorable="d" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen"
-        Title="ScreenAssistant" d:DataContext="{controllers:MainLogicController}" Topmost="True" ResizeMode="CanMinimize" Closing="Window_Closing">
+        Title="ScreenAssistant" d:DataContext="{controllers:MainLogicController}" 
+        Topmost="True" ResizeMode="CanMinimize" Closing="Window_Closing"
+        MinHeight="200" MinWidth="333"
+        >
     <Grid>
         <Grid Margin="5">
             <Grid.RowDefinitions>
@@ -39,76 +42,8 @@
             </Grid>
             <Grid Grid.Row="4" Margin="5,5,5,0" VerticalAlignment="Bottom" >
                 <TextBlock Text="{Binding CurrentVersionInfo}" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontStyle="Italic" Foreground="#FF404040" FontSize="9" Margin="0,0,-1,0"/>
-                <Button Content="Settings" Margin="5,0,0,0" Padding="5,2" HorizontalAlignment="Left" Click="Button_Click_3" />
+                <Button Content="Settings" Margin="5,0,0,0" Padding="5,2" HorizontalAlignment="Left" Click="SettingsButton_Click" />
             </Grid>
-        </Grid>
-        <Grid x:Name="SettingsGrid">
-            <Grid.RenderTransform>
-                <ScaleTransform ScaleY="0"/>
-            </Grid.RenderTransform>
-            <Rectangle Fill="White"/>
-            <StackPanel Orientation="Vertical" Margin="5">
-                <Grid Margin="5">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="1*"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Text="Select the game:" VerticalAlignment="Center" Margin="5, 0"/>
-                    <!-- TODO: Should be using binding, but too lazy for now to rewrite it -->
-                    <ComboBox x:Name="GameSelector" Grid.Column="1" SelectedValuePath="Name" DisplayMemberPath="Name" SelectedIndex="1" SelectionChanged="GameSelector_SelectionChanged" />
-                </Grid>
-                <Grid Margin="5">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="1*"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Text="Average Y Offset" VerticalAlignment="Center" Margin="5, 0"/>
-                    <Slider Grid.Column="1" MinWidth="150" Value="{Binding DeltaY}" Maximum="10" Minimum="1" AutoToolTipPlacement="TopLeft"/>
-                </Grid>
-                <Grid Margin="5">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="1*"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="Average X Offset" VerticalAlignment="Center"  Margin="5, 0"/>
-                    <Slider Grid.Column="1" MinWidth="150" Value="{Binding DeltaX}" Maximum="10" Minimum="1" AutoToolTipPlacement="TopLeft"/>
-                </Grid>
-                <Grid Margin="5">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="1*"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="Unique weapon logic" VerticalAlignment="Center"  Margin="5, 0"/>
-                    <CheckBox Grid.Column="1" IsChecked="{Binding UseWeaponLogic}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                </Grid>
-                <Grid Margin="5">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="1*"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="Sensitivity adjustment" VerticalAlignment="Center"  Margin="5, 0"/>
-                    <Slider Grid.Column="1" MinWidth="150" Value="{Binding SensitivityScale}" Maximum="5" Minimum="0.1" AutoToolTipPrecision="1" AutoToolTipPlacement="TopLeft" LargeChange="0.1" TickFrequency="0.1"/>
-                </Grid>
-                <Grid Margin="5">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="1*"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="Lock to game window" VerticalAlignment="Center"  Margin="5, 0"/>
-                    <CheckBox Grid.Column="1" IsChecked="{Binding LockToGameWindow}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                </Grid>
-                <Grid Margin="5">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="1*"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="Full screen mode" VerticalAlignment="Center"  Margin="5, 0"/>
-                    <CheckBox Grid.Column="1" IsChecked="{Binding FullScreenMode}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                </Grid>
-                <Grid>
-                    <Button Content="OK" Margin="116,0,115,5" Padding="5,2" HorizontalAlignment="Center" VerticalAlignment="Bottom" Click="Button_Click_4" />
-                </Grid>
-            </StackPanel>
         </Grid>
         <Grid x:Name="ErrorPanel" Visibility="Collapsed">
             <Rectangle Fill="#72000000" />

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using IronOcr;
+using TiqSoft.ScreenAssistant.ScreenInfoRecognition.Logger;
 
 namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition.Recognizers.ApexLegends
 {
@@ -14,15 +15,22 @@ namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition.Recognizers.ApexLegends
         private static readonly Color EpicColor = Color.FromArgb(80, 40, 115);
         private static readonly Color CommonColor = Color.FromArgb(80, 80, 80);
         private static readonly Color LegendaryColor = Color.FromArgb(100, 80, 10);
+#pragma warning disable 649
+        private readonly DebugLogger _logger;
+#pragma warning restore 649
+        private float _brightnessAdj;
+
+        public ApLegWeaponTypeScreenRecognizer()
+        {
+#if DEBUG
+            _logger = new DebugLogger(AppDomain.CurrentDomain.BaseDirectory);
+#endif
+        }
 
         public bool IsFirstWeaponActive()
         {
             var image1 = ScreenCapture.CaptureScreenRelatively(82f, 84f, 95.5f, 96, FullScreenMode);
             var image2 = ScreenCapture.CaptureScreenRelatively(90f, 92f, 95.5f, 96, FullScreenMode);
-
-            //image1.SaveTestImage();
-            //image2.SaveTestImage();
-
             return image1.GetAverageBrightness() > image2.GetAverageBrightness();
         }
 
@@ -38,7 +46,7 @@ namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition.Recognizers.ApexLegends
             return image;
         }
 
-        private static DirectBitmap GetAdjustedDirectBitmapOfImage(Image img)
+        private static DirectBitmap GetAdjustedDirectBitmapOfImage(Image img, float brightnessAdj)
         {
             var db = new DirectBitmap(img.Width, img.Height);
 
@@ -53,7 +61,7 @@ namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition.Recognizers.ApexLegends
                 {
                     var currentPixel = db.GetPixel(i, j);
                     var brightness = currentPixel.GetBrightness();
-                    if (brightness < 0.85f)
+                    if (brightness < 0.85f * brightnessAdj)
                     {
                         db.SetPixel(i, j, Color.White);
                     }
@@ -72,13 +80,13 @@ namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition.Recognizers.ApexLegends
             var w1Img = GetWeapon1Image(FullScreenMode);
             var w2Img = GetWeapon2Image(FullScreenMode);
             w1Img.SaveTestImage();
-            using (var db = GetAdjustedDirectBitmapOfImage(w1Img))
+            using (var db = GetAdjustedDirectBitmapOfImage(w1Img, _brightnessAdj))
             {
                 db.ToBitmap().SaveTestImage();
             }
 
             w2Img.SaveTestImage();
-            using (var db = GetAdjustedDirectBitmapOfImage(w2Img))
+            using (var db = GetAdjustedDirectBitmapOfImage(w2Img, _brightnessAdj))
             {
                 db.ToBitmap().SaveTestImage();
             }
@@ -92,12 +100,17 @@ namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition.Recognizers.ApexLegends
         }
 
         public bool FullScreenMode { get; set; }
+        public void SetBrightness(float brightnessScale)
+        {
+            this._brightnessAdj = brightnessScale;
+        }
 
         public string GetWeaponFromScreen(int no)
         {
             switch (no)
             {
                 case 1:
+                    _logger?.NewSnapshot();
                     return GetWeapon1FromScreen(FullScreenMode);
                 case 2:
                     return GetWeapon2FromScreen(FullScreenMode);
@@ -106,29 +119,30 @@ namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition.Recognizers.ApexLegends
             }
         }
 
-        private static string GetWeapon1FromScreen(bool fullScreen)
+        private string GetWeapon1FromScreen(bool fullScreen)
         {
             return WeaponImageToString(GetWeapon1Image(fullScreen));
         }
 
-        private static string GetWeapon2FromScreen(bool fullScreen)
+        private string GetWeapon2FromScreen(bool fullScreen)
         {
             return WeaponImageToString(GetWeapon2Image(fullScreen));
         }
 
-        private static string WeaponImageToString(Image img)
+        private string WeaponImageToString(Image img)
         {
             var result = "";
             try
             {
-                using (var db = GetAdjustedDirectBitmapOfImage(img))
+                using (var db = GetAdjustedDirectBitmapOfImage(img, _brightnessAdj))
                 {
                     if (ResultCache.TryGetValue(db.GetHashCode(), out result))
                     {
                         return result;
                     }
-
+                    _logger?.SaveImage(img);
                     var img2 = db.ToBitmap();
+                    _logger?.SaveImage(img2, "adj");
                     var ocr = new AdvancedOcr
                     {
                         CleanBackgroundNoise = true,
@@ -145,6 +159,7 @@ namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition.Recognizers.ApexLegends
                     };
                     var res = ocr.Read(img2);
                     result = res.Text.ToUpper();
+                    _logger?.SaveRecognitionInfo(result);
                     ResultCache.Add(db.GetHashCode(), result);
                 }
             }
@@ -213,5 +228,7 @@ namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition.Recognizers.ApexLegends
         int GetActiveWeapon();
 
         bool FullScreenMode { get; set; }
+
+        void SetBrightness(float brightnessScale);
     }
 }

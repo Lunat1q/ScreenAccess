@@ -80,6 +80,7 @@
   <ItemGroup>
     <ProjectReference Include="..\GlobalHook\GlobalHook\GlobalHook.csproj" />
     <ProjectReference Include="..\ScreenAssistant.ScreenInfoRecognition\ScreenAssistant.ScreenInfoRecognition.csproj" />
+    <ProjectReference Include="..\TiqUtils.Wpf\TiqUtils.Wpf\TiqUtils.Wpf.csproj" />
     <ProjectReference Include="..\TiqUtils\TiqUtils\TiqUtils.csproj" />
   </ItemGroup>
   <ItemGroup>
