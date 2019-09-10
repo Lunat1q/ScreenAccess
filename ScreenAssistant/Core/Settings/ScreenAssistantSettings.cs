@@ -14,7 +14,14 @@ namespace TiqSoft.ScreenAssistant.Core.Settings
     [DisplayName("Settings"), UIBuilder(nameof(ScreenAssistantSettingsBuilder))]
     internal class ScreenAssistantSettings : INotifyPropertyChanged
     {
+        #region Groups
+        private const string RecoilGroup = "Recoil settings";
+        private const string RecognitionGroup = "Recognition settings";
+        #endregion
+
         private static readonly SettingsController<ScreenAssistantSettings> SettingsController;
+        internal static ScreenAssistantSettings Settings => SettingsController.Settings;
+
         private int _deltaX = 2;
         private int _deltaY = 3;
         private float _sensitivityScale = 1;
@@ -23,14 +30,13 @@ namespace TiqSoft.ScreenAssistant.Core.Settings
         private bool _lockToGameWindow = true;
         private bool _fullScreenMode;
         private string _selectedGameName = "Apex Legends";
-        internal static ScreenAssistantSettings Settings => SettingsController.Settings;
 
         static ScreenAssistantSettings()
         {
             SettingsController = new SettingsController<ScreenAssistantSettings>(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
         }
 
-        [PropertyMember]
+        [PropertyMember, PropertyGroup(RecoilGroup)]
         [DisplayName("Average X Offset")]
         [SliderLimits(1, 10, 0, 1, 1)]
         [DefaultValue(2)]
@@ -46,7 +52,7 @@ namespace TiqSoft.ScreenAssistant.Core.Settings
             }
         }
 
-        [PropertyMember]
+        [PropertyMember, PropertyGroup(RecoilGroup)]
         [DisplayName("Average Y Offset")]
         [SliderLimits(1, 10, 0, 1, 1)]
         [DefaultValue(3)]
@@ -62,7 +68,7 @@ namespace TiqSoft.ScreenAssistant.Core.Settings
             }
         }
 
-        [PropertyMember]
+        [PropertyMember, PropertyGroup(RecoilGroup)]
         [DisplayName("Sensitivity adjustment")]
         [SliderLimits(0.1f, 5)]
         [DefaultValue(1)]
@@ -78,7 +84,7 @@ namespace TiqSoft.ScreenAssistant.Core.Settings
             }
         }
 
-        [PropertyMember]
+        [PropertyMember, PropertyGroup(RecognitionGroup)]
         [DisplayName("Brightness adjustment")]
         [SliderLimits(0.3f, 1.18f, 2, 0.01f, 0.01f)]
         [DefaultValue(1)]
@@ -94,7 +100,7 @@ namespace TiqSoft.ScreenAssistant.Core.Settings
             }
         }
 
-        [PropertyMember]
+        [PropertyMember, PropertyGroup(RecoilGroup)]
         [DisplayName("Unique weapon logic")]
         [DefaultValue(true)]
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
@@ -123,7 +129,7 @@ namespace TiqSoft.ScreenAssistant.Core.Settings
             }
         }
 
-        [PropertyMember]
+        [PropertyMember, PropertyGroup(RecognitionGroup)]
         [DefaultValue(false)]
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public bool FullScreenMode

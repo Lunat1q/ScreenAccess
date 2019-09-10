@@ -16,6 +16,10 @@ namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition
 
         protected GCHandle BitsHandle { get; }
 
+        public float GetMeaningfulPixelsCoefficient => (float)PixelsWithData / (Height * Width);
+
+        internal int PixelsWithData { get; set; }
+
         public DirectBitmap(int width, int height)
         {
             Width = width;

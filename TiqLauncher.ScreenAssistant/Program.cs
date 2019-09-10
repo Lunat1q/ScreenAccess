@@ -23,12 +23,12 @@ namespace TiqLauncher.ScreenAssistant
         {
 
             PrepareBinaries();
-#if !DEBUG
+//#if !DEBUG
             var lastName = Properties.Settings.Default.ScreenAssistantName;
             if (!RunSecretly(lastName)) RunSecretly(DefaultName);
-#else
-            RunSecretly(DefaultName);
-#endif
+//#else
+//            RunSecretly(DefaultName);
+//#endif
         }
 
         private static void CreateSecureBinFolder(string folderPath)

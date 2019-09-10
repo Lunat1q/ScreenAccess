@@ -68,6 +68,7 @@ namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition.Recognizers.ApexLegends
                     else
                     {
                         db.SetPixel(i, j, Color.Black);
+                        db.PixelsWithData++;
                     }
                 }
             }
@@ -143,23 +144,28 @@ namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition.Recognizers.ApexLegends
                     _logger?.SaveImage(img);
                     var img2 = db.ToBitmap();
                     _logger?.SaveImage(img2, "adj");
-                    var ocr = new AdvancedOcr
+                    var pixelsCoefficient = db.GetMeaningfulPixelsCoefficient;
+                    if (pixelsCoefficient < 0.7 && pixelsCoefficient > 0.05)
                     {
-                        CleanBackgroundNoise = true,
-                        EnhanceContrast = true,
-                        EnhanceResolution = true,
-                        Language = IronOcr.Languages.English.OcrLanguagePack,
-                        Strategy = AdvancedOcr.OcrStrategy.Advanced,
-                        ColorSpace = AdvancedOcr.OcrColorSpace.GrayScale,
-                        DetectWhiteTextOnDarkBackgrounds = false,
-                        InputImageType = AdvancedOcr.InputTypes.Snippet,
-                        RotateAndStraighten = false,
-                        ReadBarCodes = false,
-                        ColorDepth = 8
-                    };
-                    var res = ocr.Read(img2);
-                    result = res.Text.ToUpper();
-                    _logger?.SaveRecognitionInfo(result);
+                        var ocr = new AdvancedOcr
+                        {
+                            CleanBackgroundNoise = true,
+                            EnhanceContrast = true,
+                            EnhanceResolution = true,
+                            Language = IronOcr.Languages.English.OcrLanguagePack,
+                            Strategy = AdvancedOcr.OcrStrategy.Advanced,
+                            ColorSpace = AdvancedOcr.OcrColorSpace.GrayScale,
+                            DetectWhiteTextOnDarkBackgrounds = false,
+                            InputImageType = AdvancedOcr.InputTypes.Snippet,
+                            RotateAndStraighten = false,
+                            ReadBarCodes = false,
+                            ColorDepth = 8
+                        };
+                        var res = ocr.Read(img2);
+                        result = res.Text.ToUpper();
+                        _logger?.SaveRecognitionInfo(result);
+                    }
+
                     ResultCache.Add(db.GetHashCode(), result);
                 }
             }
