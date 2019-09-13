@@ -3,6 +3,7 @@
 <p align="center"><a href="https://discord.gg/CEyMbZN"><img src="https://discordapp.com/api/guilds/611077651184222226/widget.png?style=banner2"/></a></p>
 
 [![Github Downloads (total)](https://img.shields.io/github/downloads/Lunat1q/ScreenAccess/total.svg)](https://github.com/Lunat1q/ScreenAccess/releases/)
+<p align='center'><img src='https://ci.appveyor.com/api/projects/status/github/Lunat1q/ScreenAccess'/></p>
 
 ### Support the developers
 If you really like this project, feel free to buy pizza🍕 or 🍻 for devs.
