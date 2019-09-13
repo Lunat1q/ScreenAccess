@@ -8,7 +8,6 @@ namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition.Recognizers.ApexLegends
 {
     public class ApLegWeaponTypeScreenRecognizer : IWeaponRecognizer
     {
-
         private static readonly Dictionary<int, string> ResultCache = new Dictionary<int, string>();
         private static readonly Color RareColor = Color.FromArgb(25, 70, 110);
         private static readonly Color Rare2Color = Color.FromArgb(60, 70, 110);
@@ -145,7 +144,7 @@ namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition.Recognizers.ApexLegends
                     var img2 = db.ToBitmap();
                     _logger?.SaveImage(img2, "adj");
                     var pixelsCoefficient = db.GetMeaningfulPixelsCoefficient;
-                    if (pixelsCoefficient < 0.7 && pixelsCoefficient > 0.05)
+                    if (pixelsCoefficient < 0.6 && pixelsCoefficient > 0.01)
                     {
                         var ocr = new AdvancedOcr
                         {

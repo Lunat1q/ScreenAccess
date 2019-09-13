@@ -5,7 +5,6 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using TiqSoft.ScreenAssistant.Core.Settings;
 using TiqSoft.ScreenAssistant.Games;
-using TiqUtils.Wpf.Converters;
 using TiqUtils.Wpf.UIBuilders;
 
 namespace TiqSoft.ScreenAssistant.Builders
