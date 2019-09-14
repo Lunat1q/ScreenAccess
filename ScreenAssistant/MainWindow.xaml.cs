@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
+using TiqSoft.ScreenAssistant.Builders;
 using TiqSoft.ScreenAssistant.Controllers;
-using TiqSoft.ScreenAssistant.ScreenInfoRecognition;
+using TiqSoft.ScreenAssistant.Games;
+using TiqUtils.Wpf.UIBuilders;
 using static TiqSoft.ScreenAssistant.Core.Settings.ScreenAssistantSettings;
 
 namespace TiqSoft.ScreenAssistant
@@ -19,9 +20,16 @@ namespace TiqSoft.ScreenAssistant
 
         public MainWindow()
         {
-            _controller = new MainLogicController(Settings.DeltaX, Settings.DeltaY, Settings.SensitivityScale, Settings.UseUniqueWeaponLogic);
+            _controller = new MainLogicController(Settings, Dispatcher);
             DataContext = _controller;
             InitializeComponent();
+            if (_controller.PatternController.Canvas != null)
+            {
+                PatternControl.Children.Add(_controller.PatternController.Canvas);
+            }
+
+            //GameSelector.ItemsSource = GamesHelper.GetListOfSupportedGames();
+            //GameSelector.SelectedValue = Settings.SelectedGameName;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -36,41 +44,33 @@ namespace TiqSoft.ScreenAssistant
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            Settings.DeltaX = _controller.DeltaX;
-            Settings.DeltaY = _controller.DeltaY;
-            Settings.UseUniqueWeaponLogic = _controller.UseWeaponLogic;
-            Settings.SensitivityScale = _controller.SensitivityScale;
             Settings.Save();
         }
 
-        private void Button_Click_2(object sender, RoutedEventArgs e)
+        private void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
-            ImageTestController.Instance.Toggle();
-            var testBtn = (Button) sender;
-            testBtn.Background = new SolidColorBrush(ImageTestController.Instance.Running ? Color.FromRgb(25, 225, 25) : Color.FromRgb(225, 25, 25));
+            //new ScreenAssistantSettingsBuilder(Settings).ShowDialog();
+            Settings.OpenAutoUISettingsDialog();
         }
 
-        private void Button_Click_3(object sender, RoutedEventArgs e)
+        private void GameSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var scaleY = new DoubleAnimation
-            {
-                From = 0,
-                To = 1,
-                Duration = TimeSpan.FromSeconds(0.5),
-            };
-            SettingsGrid.RenderTransform.BeginAnimation(ScaleTransform.ScaleYProperty, scaleY);
-
+            var cb = (ComboBox)sender;
+            var game = (Game)cb.SelectedItem;
+            _controller.SetGameFactory(GamesHelper.GetFactoryByGameName(game.Name));
+            Settings.SelectedGameName = game.Name;
         }
 
-        private void Button_Click_4(object sender, RoutedEventArgs e)
+        public void ShowLauncherError()
         {
-            var downScaleY = new DoubleAnimation
+            ErrorPanel.Visibility = Visibility.Visible;
+            ErrorMessage.Text = "Please restart via TiQ Launcher";
+
+            Task.Run(async () =>
             {
-                From = 1,
-                To = 0,
-                Duration = TimeSpan.FromSeconds(0.5),
-            };
-            SettingsGrid.RenderTransform.BeginAnimation(ScaleTransform.ScaleYProperty, downScaleY);
+                await Task.Delay(10000);
+                Environment.Exit(0);
+            });
         }
     }
 }

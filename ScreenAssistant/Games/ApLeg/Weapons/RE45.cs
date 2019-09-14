@@ -3,8 +3,8 @@
     // ReSharper disable once InconsistentNaming
     internal sealed class RE45 : UniqueLogicWeapon
     {
-        public RE45(string name, double burstSeconds, string recognizedName) 
-            : base(name, burstSeconds, recognizedName, WeaponAL.RE45)
+        public RE45(string name, double burstSeconds, string recognizedName, int numOfMods) 
+            : base(name, burstSeconds, recognizedName, numOfMods)
         {
         }
 

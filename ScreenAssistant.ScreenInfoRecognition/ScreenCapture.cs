@@ -13,7 +13,7 @@ namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition
         /// <returns></returns>
         public static Image CaptureScreen()
         {
-            return CaptureScreenRelatively(0, 100, 0, 100);
+            return CaptureScreenRelatively(0, 100, 0, 100, true);
         }
 
         /// <summary>
@@ -23,10 +23,15 @@ namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition
         /// <param name="endX">0-100 percent of end by X</param>
         /// <param name="startY">0-100 percent of start by Y</param>
         /// <param name="endY">0-100 percent of end by Y</param>
+        /// <param name="fullScreen">FullScreen capture mode</param>
         /// <returns></returns>
-        public static Image CaptureScreenRelatively(float startX, float endX, float startY, float endY)
+        public static Image CaptureScreenRelatively(float startX, float endX, float startY, float endY, bool fullScreen)
         {
-            //return CaptureWindow(User32.GetDesktopWindow(), startX, endX, startY, endY);
+            if (fullScreen)
+            {
+                return CaptureWindow(User32.GetDesktopWindow(), startX, endX, startY, endY);
+            }
+
             return CaptureWindow(User32.GetForegroundWindow(), startX, endX, startY, endY);
         }
 

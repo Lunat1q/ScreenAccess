@@ -1,15 +1,18 @@
-﻿namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
+﻿using TiqSoft.ScreenAssistant.ScreenInfoRecognition.Recognizers.ApexLegends;
+
+namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
 {
     internal sealed class Havoc : UniqueLogicWeapon
     {
-        public Havoc(string name, double burstSeconds, string recognizedName) 
-            : base(name, burstSeconds, recognizedName, WeaponAL.Havoc)
+        public Havoc(string name, double burstSeconds, string recognizedName, int numOfMods) 
+            : base(name, burstSeconds, recognizedName, numOfMods)
         {
         }
 
         public override double AdjustMouse(int shotNumber)
         {
-            if (shotNumber > 6)
+            var notOffsettingDelay = this.GetModuleType(4) == WeaponModuleType.Legendary ? 0 : 6;
+            if (shotNumber > notOffsettingDelay)
             {
                 AdjustmentCoefficient = CalculateAdjustment(shotNumber, 40);
                 var horizontalOffset = Rnd.NextDouble() * 1 * 2 - 1;

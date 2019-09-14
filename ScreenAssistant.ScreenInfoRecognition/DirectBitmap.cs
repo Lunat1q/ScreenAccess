@@ -16,6 +16,10 @@ namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition
 
         protected GCHandle BitsHandle { get; }
 
+        public float GetMeaningfulPixelsCoefficient => (float)PixelsWithData / (Height * Width);
+
+        internal int PixelsWithData { get; set; }
+
         public DirectBitmap(int width, int height)
         {
             Width = width;
@@ -25,10 +29,10 @@ namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition
             Bitmap = new Bitmap(width, height, width * 4, PixelFormat.Format32bppPArgb, BitsHandle.AddrOfPinnedObject());
         }
 
-        public void SetPixel(int x, int y, Color colour)
+        public void SetPixel(int x, int y, Color color)
         {
             int index = x + (y * Width);
-            int col = colour.ToArgb();
+            int col = color.ToArgb();
 
             Bits[index] = col;
         }
@@ -53,6 +57,27 @@ namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition
             Disposed = true;
             Bitmap.Dispose();
             BitsHandle.Free();
+        }
+
+        public Color GetDominantColor()
+        {
+            long[] total = {0, 0, 0};
+            for (int i = 0; i < Width; i++)
+            {
+                for (int j = 0; j < Height; j++)
+                {
+                    int index = i + j * Width;
+                    var color = Color.FromArgb(Bits[index]);
+                    total[0] += color.R;
+                    total[1] += color.G;
+                    total[2] += color.B;
+                }
+            }
+
+            total[0] /= Width * Height;
+            total[1] /= Width * Height;
+            total[2] /= Width * Height;
+            return Color.FromArgb((int)total[0], (int)total[1], (int)total[2]);
         }
 
         public override int GetHashCode()

@@ -10,7 +10,7 @@ namespace TiqSoft.ScreenAssistant.Helpers
         {
             var type = typeof(WeaponAL);
             var memInfo = type.GetMember(weapon.ToString());
-            if (memInfo[0].GetCustomAttributes(typeof(WeaponNameAttribute), false).FirstOrDefault() is WeaponNameAttribute attribute)
+            if (memInfo[0].GetCustomAttributes(typeof(WeaponDataAttribute), false).FirstOrDefault() is WeaponDataAttribute attribute)
             {
                 return attribute.Name;
             }

@@ -3,10 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:TiqSoft.ScreenAssistant"
              xmlns:converters="clr-namespace:TiqSoft.ScreenAssistant.Helpers.Converters"
-             StartupUri="MainWindow.xaml">
+             Startup="AppStartup">
     <Application.Resources>
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-        <converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
-        <converters:InverseBooleanConverterWeak x:Key="InverseBooleanConverterWeak" />
+        <ResourceDictionary >
+            <ResourceDictionary.MergedDictionaries >
+                <ResourceDictionary Source="Converters.xaml"/>
+                <ResourceDictionary Source="WeaponTemplates.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

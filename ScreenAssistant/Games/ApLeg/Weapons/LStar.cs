@@ -2,10 +2,10 @@
 
 namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
 {
-    internal class LStar : UniqueLogicWeapon
+    internal sealed class LStar : UniqueLogicWeapon
     {
-        public LStar(string name, double burstSeconds, string recognizedName) 
-            : base(name, burstSeconds, recognizedName, WeaponAL.LStar)
+        public LStar(string name, double burstSeconds, string recognizedName, int numOfMods) 
+            : base(name, burstSeconds, recognizedName, numOfMods)
         {
         }
 
@@ -27,7 +27,7 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
                 horizontalOffset = Rnd.NextDouble() * 1 + 1.5;
             }
 
-            Debug.WriteLine($"{shotNumber}, {horizontalOffset:F2}");
+            //Debug.WriteLine($"{shotNumber}, {horizontalOffset:F2}");
 
             MoveMouse(horizontalOffset, verticalOffset);
 

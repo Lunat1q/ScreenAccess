@@ -1,5 +1,10 @@
 ﻿using System;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using TiqSoft.ScreenAssistant.Annotations;
 using TiqSoft.ScreenAssistant.Core;
+using TiqSoft.ScreenAssistant.ScreenInfoRecognition.Recognizers.ApexLegends;
 
 namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
 {
@@ -14,13 +19,16 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
         protected readonly double ShotsPerBurst;
         private readonly string _recognizedName;
         private float _sensitivityScale;
+        private ObservableCollection<WeaponModule> _installedModules;
+        private bool _isActive;
 
-        protected ApLegWeaponBase(string name, double burstSeconds, string recognizedName, WeaponAL weaponType) // recognized name is for test purpose
+        protected ApLegWeaponBase(string name, double burstSeconds, string recognizedName, int numberOfModules) // recognized name is for test purpose
         {
             _recognizedName = recognizedName;
-            WeaponType = weaponType;
+            NumberOfModules = numberOfModules;
             ShotsPerBurst = ShotsPerSecond * burstSeconds;
             Name = name;
+            InitializeModules();
         }
 
         public string Name { get; protected set; }
@@ -29,7 +37,16 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
 
         public double AdjustmentCoefficient { get; protected set; }
 
-        public WeaponAL WeaponType { get; }
+        public ObservableCollection<WeaponModule> InstalledModules
+        {
+            get => _installedModules;
+            private set
+            {
+                if (Equals(value, _installedModules)) return;
+                _installedModules = value;
+                OnPropertyChanged();
+            }
+        }
 
         public bool IsTheSameWeapon(string weaponName)
         {
@@ -37,6 +54,20 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
         }
 
         public abstract double AdjustMouse(int shotNumber);
+
+        private void InitializeModules()
+        {
+            InstalledModules = new ObservableCollection<WeaponModule>();
+            for (var i = 0; i < NumberOfModules; i++)
+            {
+                InstalledModules.Add(new WeaponModule());
+            }
+        }
+
+        public WeaponModuleType GetModuleType(int idx)
+        {
+            return idx < InstalledModules.Count ? InstalledModules[idx].Type : WeaponModuleType.None;
+        }
 
         public void SetOffsets(int deltaX, int deltaY)
         {
@@ -52,6 +83,21 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
 
         public abstract bool IsDefault();
 
+        public bool IsActive
+        {
+            get => _isActive;
+            set
+            {
+                if (value == _isActive) return;
+                _isActive = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int NumberOfModules { get; }
+
+        public event MouseMovedEvent MouseMoved;
+
         protected static double CalculateAdjustment(int shotNumber, double shotsPerBurst)
         {
             if (shotNumber > shotsPerBurst)
@@ -64,13 +110,30 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
 
         protected void MoveMouse(double horizontalOffset, double verticalOffset)
         {
-            int hOffset = AdjustmentCoefficient > 0.001 ? (int)horizontalOffset : 0;
-            MouseControl.Move((int)(hOffset * _sensitivityScale), (int)(verticalOffset * AdjustmentCoefficient * _sensitivityScale));
+            var hOffset = AdjustmentCoefficient > 0.001 ? horizontalOffset : 0;
+            var xDelta = (int)(hOffset * _sensitivityScale);
+            var yDelta = (int)(verticalOffset * AdjustmentCoefficient * _sensitivityScale);
+            MouseControl.Move(xDelta, yDelta);
+            OnMouseMoved(xDelta, yDelta);
         }
 
         public override string ToString()
         {
             return$"{Name} : {_recognizedName}";
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        protected virtual void OnMouseMoved(int xDelta, int yDelta)
+        {
+            var args = new MouseMovedEventArgs(xDelta, yDelta, -1);
+            MouseMoved?.Invoke(this, args);
         }
     }
 }

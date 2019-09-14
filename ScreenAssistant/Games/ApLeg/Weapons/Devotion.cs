@@ -1,9 +1,11 @@
-﻿namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
+﻿using TiqSoft.ScreenAssistant.ScreenInfoRecognition.Recognizers.ApexLegends;
+
+namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
 {
     internal sealed class Devotion : UniqueLogicWeapon
     {
-        public Devotion(string name, double burstSeconds, string recognizedName) 
-            : base(name, burstSeconds, recognizedName, WeaponAL.Devotion)
+        public Devotion(string name, double burstSeconds, string recognizedName, int numOfMods) 
+            : base(name, burstSeconds, recognizedName, numOfMods)
         {
         }
 
@@ -11,7 +13,8 @@
         {
             double horizontalOffset;
             double verticalOffset;
-            if (shotNumber < 15)
+            int warmUpShort = this.GetModuleType(4) != WeaponModuleType.Legendary ? 15 : 3;
+            if (shotNumber < warmUpShort)
             {
                 AdjustmentCoefficient = CalculateAdjustment(shotNumber, 20);
                 horizontalOffset = Rnd.NextDouble() * 1 + 1;

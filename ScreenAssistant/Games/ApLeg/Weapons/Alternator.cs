@@ -2,8 +2,8 @@
 {
     internal sealed class Alternator : UniqueLogicWeapon
     {
-        public Alternator(string name, double burstSeconds, string recognizedName)
-            : base(name, burstSeconds, recognizedName, WeaponAL.Alternator)
+        public Alternator(string name, double burstSeconds, string recognizedName, int numOfMods)
+            : base(name, burstSeconds, recognizedName, numOfMods)
         {
         }
 

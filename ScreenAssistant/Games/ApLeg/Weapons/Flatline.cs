@@ -4,8 +4,8 @@
     internal sealed class Flatline : UniqueLogicWeapon
     {
         // ReSharper disable once IdentifierTypo
-        public Flatline(string name, double burstSeconds, string recognizedName) 
-            : base(name, burstSeconds, recognizedName, WeaponAL.Flatline)
+        public Flatline(string name, double burstSeconds, string recognizedName, int numOfMods) 
+            : base(name, burstSeconds, recognizedName, numOfMods)
         {
         }
 
