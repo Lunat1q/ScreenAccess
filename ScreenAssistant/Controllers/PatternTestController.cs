@@ -21,7 +21,9 @@ namespace TiqSoft.ScreenAssistant.Controllers
         private const int CanvasHeight = 400;
         private const int CanvasWidth = 400;
         private const int ZoomFactor = 3;
-        private TextBlock _counterBlock;
+#pragma warning disable 649
+        private readonly TextBlock _counterBlock;
+#pragma warning restore 649
         private int _shotNumber = 0;
 
         public PatternTestController()
