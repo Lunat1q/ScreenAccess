@@ -47,7 +47,7 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg
             return new RegularAdjustmentWeapon(string.Empty, 2, "Default", 0);
         }
 
-        private static IWeapon CreateFromRecognizedString(string recognizedName, IWeapon currentWeapon, int offsetX, int offsetY, float sensitivityScale)
+        private IWeapon CreateFromRecognizedString(string recognizedName, IWeapon currentWeapon, int offsetX, int offsetY, float sensitivityScale)
         {
             var weaponName = recognizedName.FindMostSimilar(WeaponNamesToTypes.Keys);
 
@@ -105,8 +105,10 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg
                 case WeaponAL.G7Scout:
                     result = new G7Scout(inGameName, 2, recognizedName, numOfMods);
                     break;
-                case WeaponAL.Unknown:
                 case WeaponAL.Spitfire:
+                    result = new Spitfire(inGameName, recognizedName, numOfMods);
+                    break;
+                case WeaponAL.Unknown:
                 case WeaponAL.EVA8Auto:
                 case WeaponAL.Mozambique:
                 case WeaponAL.P2020:
@@ -116,9 +118,9 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg
                     throw new ArgumentOutOfRangeException();
             }
 
-
             result.SetOffsets(offsetX, offsetY);
             result.SetSensitivityScale(sensitivityScale);
+            OnWeaponCreated(result);
             return result;
         }
 
@@ -155,5 +157,12 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg
         }
 
         public string LockedToApplication { get; } = "r5apex";
+
+        public event WeaponCreatedEvent WeaponCreated;
+
+        protected virtual void OnWeaponCreated(IWeapon weapon)
+        {
+            WeaponCreated?.Invoke(this, new WeaponCreatedEventArgs(weapon));
+        }
     }
 }

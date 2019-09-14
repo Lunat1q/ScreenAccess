@@ -23,6 +23,11 @@ namespace TiqSoft.ScreenAssistant
             _controller = new MainLogicController(Settings, Dispatcher);
             DataContext = _controller;
             InitializeComponent();
+            if (_controller.PatternController.Canvas != null)
+            {
+                PatternControl.Children.Add(_controller.PatternController.Canvas);
+            }
+
             //GameSelector.ItemsSource = GamesHelper.GetListOfSupportedGames();
             //GameSelector.SelectedValue = Settings.SelectedGameName;
         }

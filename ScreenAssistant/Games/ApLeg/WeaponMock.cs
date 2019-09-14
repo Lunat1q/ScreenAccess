@@ -49,12 +49,20 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg
         public bool IsActive { get; set; }
 
         public int NumberOfModules { get; } = 5;
+
+        public event MouseMovedEvent MouseMoved;
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        protected virtual void OnMouseMoved(MouseMovedEventArgs args)
+        {
+            MouseMoved?.Invoke(this, args);
         }
     }
 }

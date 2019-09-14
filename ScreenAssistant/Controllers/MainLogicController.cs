@@ -32,6 +32,7 @@ namespace TiqSoft.ScreenAssistant.Controllers
         private readonly ScreenAssistantSettings _settings;
         private ImageTestController _testController;
         private bool _mouseCentered;
+        private PatternTestController _patternController;
 
         #region Properties
         private BindingController HotKeysController { get; }
@@ -73,6 +74,8 @@ namespace TiqSoft.ScreenAssistant.Controllers
             HotKeysController.Start(true);
             CurrentVersionInfo = Assembly.GetExecutingAssembly().GetName().Version.ToString();
             TestController = ImageTestController.Instance;
+            PatternController = PatternTestController.Instance;
+            PatternController.Dispatcher = dispatcher;
             this.SetGameFactory(GamesHelper.GetFactoryByGameName(logicSettings.SelectedGameName));
             logicSettings.PropertyChanged += LogicSettings_PropertyChanged;
         }
@@ -122,6 +125,7 @@ namespace TiqSoft.ScreenAssistant.Controllers
             }
             _weaponFactory = factory;
             TestController.WeaponFactory = _weaponFactory;
+            PatternController.WeaponFactory = _weaponFactory;
             _weaponFactory.Recognizer.FullScreenMode = this._settings.FullScreenMode;
             _weaponFactory.Recognizer.SetBrightness(this._settings.BrightnessScale);
             CreateDefaultWeapons();
@@ -154,6 +158,16 @@ namespace TiqSoft.ScreenAssistant.Controllers
             get => _testController;
             set {
                 _testController = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public PatternTestController PatternController
+        {
+            get => _patternController;
+            set
+            {
+                _patternController = value;
                 OnPropertyChanged();
             }
         }

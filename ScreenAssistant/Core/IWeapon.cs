@@ -21,5 +21,7 @@ namespace TiqSoft.ScreenAssistant.Core
         bool IsActive { get; set; }
 
         int NumberOfModules { get; }
+
+        event MouseMovedEvent MouseMoved;
     }
 }

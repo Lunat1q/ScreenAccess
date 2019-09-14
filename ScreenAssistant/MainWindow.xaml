@@ -11,15 +11,8 @@
         MinHeight="200" MinWidth="333"
         >
     <Grid>
-        <Grid Margin="5">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition />
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <Grid Grid.Row="0" Margin="5" MinHeight="35">
+        <StackPanel Orientation="Vertical" Margin="5">
+            <Grid Margin="5" MinHeight="35">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="2*"/>
                     <ColumnDefinition Width="2*"/>
@@ -34,17 +27,24 @@
                     <!--<TextBlock Text="C" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="{Binding MouseCentered, Converter={StaticResource BooleanToVisibilityConverter}}" Foreground="White" FontWeight="Bold"/>-->
                 </Grid>
             </Grid>
-            <Grid Grid.Row="1" Margin="5" MinHeight="35">
+            <Grid Margin="5" MinHeight="35">
                 <ListBox ItemsSource ="{Binding Weapons}" Background="{x:Null}" BorderBrush="{x:Null}" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalAlignment="Center"/>
             </Grid>
-            <Grid Grid.Row="3" Margin="5" Visibility="{Binding TestController.Running, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Grid Margin="5" Visibility="{Binding TestController.Running, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <TextBlock FontSize="16" FontWeight="Bold" Text="Test screen capture mode" HorizontalAlignment="Center" Foreground="#FFCC0000"/>
             </Grid>
-            <Grid Grid.Row="4" Margin="5,5,5,0" VerticalAlignment="Bottom" >
+            <StackPanel x:Name="PatternControl" Orientation="Vertical" Margin="5" Visibility="{Binding PatternController.Running, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <!--  -->
+                <TextBlock FontSize="16" FontWeight="Bold" Text="Test pattern capture mode" HorizontalAlignment="Center" Foreground="#FFCC0000"/>
+                <!--<Canvas Width="400" Height="400">
+                <TextBlock Text="TEST"/>
+                </Canvas>-->
+            </StackPanel>
+            <Grid Margin="5,5,5,0" VerticalAlignment="Bottom" >
                 <TextBlock Text="{Binding CurrentVersionInfo}" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontStyle="Italic" Foreground="#FF404040" FontSize="9" Margin="0,0,-1,0"/>
                 <Button Content="Settings" Margin="5,0,0,0" Padding="5,2" HorizontalAlignment="Left" Click="SettingsButton_Click" />
             </Grid>
-        </Grid>
+        </StackPanel>
         <Grid x:Name="ErrorPanel" Visibility="Collapsed">
             <Rectangle Fill="#72000000" />
             <TextBlock MaxWidth="300" x:Name="ErrorMessage" VerticalAlignment="Center" Foreground="White" FontWeight="Bold" FontSize="18" TextWrapping="Wrap" HorizontalAlignment="Center"/>

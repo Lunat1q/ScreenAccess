@@ -18,5 +18,7 @@ namespace TiqSoft.ScreenAssistant.Games
 
         //Leave empty if no lock needed
         string LockedToApplication { get; }
+
+        event WeaponCreatedEvent WeaponCreated;
     }
 }

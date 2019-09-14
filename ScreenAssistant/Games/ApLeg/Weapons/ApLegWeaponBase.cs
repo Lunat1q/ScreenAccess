@@ -96,6 +96,8 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
 
         public int NumberOfModules { get; }
 
+        public event MouseMovedEvent MouseMoved;
+
         protected static double CalculateAdjustment(int shotNumber, double shotsPerBurst)
         {
             if (shotNumber > shotsPerBurst)
@@ -109,7 +111,10 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
         protected void MoveMouse(double horizontalOffset, double verticalOffset)
         {
             var hOffset = AdjustmentCoefficient > 0.001 ? horizontalOffset : 0;
-            MouseControl.Move((int)(hOffset * _sensitivityScale), (int)(verticalOffset * AdjustmentCoefficient * _sensitivityScale));
+            var xDelta = (int)(hOffset * _sensitivityScale);
+            var yDelta = (int)(verticalOffset * AdjustmentCoefficient * _sensitivityScale);
+            MouseControl.Move(xDelta, yDelta);
+            OnMouseMoved(xDelta, yDelta);
         }
 
         public override string ToString()
@@ -123,6 +128,12 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        protected virtual void OnMouseMoved(int xDelta, int yDelta)
+        {
+            var args = new MouseMovedEventArgs(xDelta, yDelta, -1);
+            MouseMoved?.Invoke(this, args);
         }
     }
 }
