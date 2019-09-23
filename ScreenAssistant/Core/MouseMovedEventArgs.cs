@@ -4,9 +4,9 @@
     {
         public MouseMovedEventArgs(int x, int y, int shotNum)
         {
-            X = x;
-            Y = y;
-            ShotNum = shotNum;
+            this.X = x;
+            this.Y = y;
+            this.ShotNum = shotNum;
         }
 
         public int X { get; }

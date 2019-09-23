@@ -10,12 +10,12 @@
 
         public override double AdjustMouse(int shotNumber)
         {
-            AdjustmentCoefficient = CalculateAdjustment(shotNumber, 25);
+            this.AdjustmentCoefficient = CalculateAdjustment(shotNumber, 25);
             var horizontalOffset = -1 * (Rnd.NextDouble() * 1 + 2d);
             var verticalOffset = Rnd.NextDouble() + 4d;
-            MoveMouse(horizontalOffset, verticalOffset);
+            this.MoveMouse(horizontalOffset, verticalOffset);
 
-            return GetAdjustmentTime(1d);
+            return this.GetAdjustmentTime(1d);
         }
     }
 }

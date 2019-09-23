@@ -6,12 +6,12 @@
 
         protected RpsWeaponBased(string name, double rps, string recognizedName, int numberOfModules) : base(name, 0, recognizedName, numberOfModules)
         {
-            _rps = rps;
+            this._rps = rps;
         }
 
         protected double GetAdjustmentTime()
         {
-            return 1 / _rps;
+            return 1 / this._rps;
         }
 
         public override bool IsDefault()

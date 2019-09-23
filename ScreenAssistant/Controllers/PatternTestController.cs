@@ -29,24 +29,24 @@ namespace TiqSoft.ScreenAssistant.Controllers
         public PatternTestController()
         {
 #if DEBUG
-            HotKeysController = new BindingController();
-            HotKeysController.BindUpToAction(KeyModifier.Ctrl, 'P', Toggle);
-            HotKeysController.BindUpToAction(KeyModifier.Ctrl, 'N', NewRecording);
-            HotKeysController.Start(true);
-            Canvas = new Canvas { Width = CanvasHeight, Height = CanvasWidth };
-            _counterBlock = new TextBlock();
-            NewRecording();
+            this.HotKeysController = new BindingController();
+            this.HotKeysController.BindUpToAction(KeyModifier.Ctrl, 'P', this.Toggle);
+            this.HotKeysController.BindUpToAction(KeyModifier.Ctrl, 'N', this.NewRecording);
+            this.HotKeysController.Start(true);
+            this.Canvas = new Canvas { Width = CanvasHeight, Height = CanvasWidth };
+            this._counterBlock = new TextBlock();
+            this.NewRecording();
 #endif
         }
 
         private void NewRecording()
         {
-            Canvas.Children.Clear();
-            Canvas.Children.Add(_counterBlock);
-            _shotNumber = 0;
-            _counterBlock.Text = _shotNumber.ToString();
-            _prevX = CanvasWidth / 2;
-            _prevY = CanvasHeight / 2;
+            this.Canvas.Children.Clear();
+            this.Canvas.Children.Add(this._counterBlock);
+            this._shotNumber = 0;
+            this._counterBlock.Text = this._shotNumber.ToString();
+            this._prevX = CanvasWidth / 2;
+            this._prevY = CanvasHeight / 2;
             var xAxis = new Line
             {
                 Width = 2,
@@ -58,8 +58,8 @@ namespace TiqSoft.ScreenAssistant.Controllers
                 Y1 = 0,
                 Y2 = CanvasHeight
             };
-            Canvas.Children.Add(xAxis);
-            Canvas.SetLeft(xAxis, _prevX - 1);
+            this.Canvas.Children.Add(xAxis);
+            Canvas.SetLeft(xAxis, this._prevX - 1);
             Canvas.SetTop(xAxis, 0);
             var yAxis = new Line
             {
@@ -72,9 +72,9 @@ namespace TiqSoft.ScreenAssistant.Controllers
                 Y1 = 0,
                 Y2 = 0
             };
-            Canvas.Children.Add(yAxis);
+            this.Canvas.Children.Add(yAxis);
             Canvas.SetLeft(yAxis, 0);
-            Canvas.SetTop(yAxis, _prevY - 1);
+            Canvas.SetTop(yAxis, this._prevY - 1);
         }
 
         public static PatternTestController Instance => _instance ?? (_instance = new PatternTestController());
@@ -87,12 +87,12 @@ namespace TiqSoft.ScreenAssistant.Controllers
 
         public bool Running
         {
-            get => _running;
+            get => this._running;
             set
             {
-                if (value == _running) return;
-                _running = value;
-                OnPropertyChanged();
+                if (value == this._running) return;
+                this._running = value;
+                this.OnPropertyChanged();
             }
         }
 
@@ -100,35 +100,35 @@ namespace TiqSoft.ScreenAssistant.Controllers
 
         private void Toggle()
         {
-            Running = !Running;
-            if (Running)
+            this.Running = !this.Running;
+            if (this.Running)
             {
-                if (WeaponFactory != null)
+                if (this.WeaponFactory != null)
                 {
-                    WeaponFactory.WeaponCreated += WeaponFactoryOnWeaponCreated;
+                    this.WeaponFactory.WeaponCreated += this.WeaponFactoryOnWeaponCreated;
                 }
             }
             else
             {
-                if (WeaponFactory != null)
+                if (this.WeaponFactory != null)
                 {
-                    WeaponFactory.WeaponCreated -= WeaponFactoryOnWeaponCreated;
+                    this.WeaponFactory.WeaponCreated -= this.WeaponFactoryOnWeaponCreated;
                 }
             }
         }
 
         private void WeaponFactoryOnWeaponCreated(object sender, WeaponCreatedEventArgs args)
         {
-            args.Weapon.MouseMoved += WeaponOnMouseMoved;
+            args.Weapon.MouseMoved += this.WeaponOnMouseMoved;
         }
 
         private void WeaponOnMouseMoved(object sender, MouseMovedEventArgs args)
         {
-            var x = _prevX - args.X * ZoomFactor;
-            var y = _prevY - args.Y * ZoomFactor;
-            Dispatcher.Invoke(() =>
+            var x = this._prevX - args.X * ZoomFactor;
+            var y = this._prevY - args.Y * ZoomFactor;
+            this.Dispatcher.Invoke(() =>
             {
-                _counterBlock.Text = (++_shotNumber).ToString();
+                this._counterBlock.Text = (++this._shotNumber).ToString();
                 var point = new Ellipse
                 {
                     Width = 4,
@@ -137,12 +137,12 @@ namespace TiqSoft.ScreenAssistant.Controllers
                     StrokeThickness = 2,
                     Fill = Brushes.Fuchsia
                 };
-                Canvas.Children.Add(point);
+                this.Canvas.Children.Add(point);
                 Canvas.SetLeft(point, x);
                 Canvas.SetTop(point, y);
             });
-            _prevY = y;
-            _prevX = x;
+            this._prevY = y;
+            this._prevX = x;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -150,7 +150,7 @@ namespace TiqSoft.ScreenAssistant.Controllers
         [NotifyPropertyChangedInvocator]
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

@@ -20,26 +20,23 @@ namespace TiqSoft.ScreenAssistant
 
         public MainWindow()
         {
-            _controller = new MainLogicController(Settings, Dispatcher);
-            DataContext = _controller;
-            InitializeComponent();
-            if (_controller.PatternController.Canvas != null)
+            this._controller = new MainLogicController(Settings, this.Dispatcher);
+            this.DataContext = this._controller;
+            this.InitializeComponent();
+            if (this._controller.PatternController.Canvas != null)
             {
-                PatternControl.Children.Add(_controller.PatternController.Canvas);
+                this.PatternControl.Children.Add(this._controller.PatternController.Canvas);
             }
-
-            //GameSelector.ItemsSource = GamesHelper.GetListOfSupportedGames();
-            //GameSelector.SelectedValue = Settings.SelectedGameName;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            _controller.Start();
+            this._controller.Start();
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            _controller.Stop();
+            this._controller.Stop();
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -49,22 +46,13 @@ namespace TiqSoft.ScreenAssistant
 
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
-            //new ScreenAssistantSettingsBuilder(Settings).ShowDialog();
             Settings.OpenAutoUISettingsDialog();
         }
-
-        private void GameSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var cb = (ComboBox)sender;
-            var game = (Game)cb.SelectedItem;
-            _controller.SetGameFactory(GamesHelper.GetFactoryByGameName(game.Name));
-            Settings.SelectedGameName = game.Name;
-        }
-
+        
         public void ShowLauncherError()
         {
-            ErrorPanel.Visibility = Visibility.Visible;
-            ErrorMessage.Text = "Please restart via TiQ Launcher";
+            this.ErrorPanel.Visibility = Visibility.Visible;
+            this.ErrorMessage.Text = "Please restart via TiQ Launcher";
 
             Task.Run(async () =>
             {

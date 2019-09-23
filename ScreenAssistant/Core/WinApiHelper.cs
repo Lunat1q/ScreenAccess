@@ -44,7 +44,7 @@ namespace TiqSoft.ScreenAssistant.Core
 
             public override string ToString()
             {
-                return $"x:{X} y:{Y}";
+                return $"x:{this.X} y:{this.Y}";
             }
         }
 

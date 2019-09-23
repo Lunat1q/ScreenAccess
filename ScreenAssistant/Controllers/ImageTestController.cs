@@ -15,10 +15,10 @@ namespace TiqSoft.ScreenAssistant.Controllers
         public ImageTestController()
         {
 #if DEBUG
-            HotKeysController = new BindingController();
-            HotKeysController.BindUpToAction(KeyModifier.Ctrl, 'Y', Toggle);
-            HotKeysController.BindUpToAction(KeyModifier.Ctrl, 'T', MakeTestScreenShots);
-            HotKeysController.Start(true);
+            this.HotKeysController = new BindingController();
+            this.HotKeysController.BindUpToAction(KeyModifier.Ctrl, 'Y', this.Toggle);
+            this.HotKeysController.BindUpToAction(KeyModifier.Ctrl, 'T', this.MakeTestScreenShots);
+            this.HotKeysController.Start(true);
 #endif
         }
 
@@ -26,9 +26,9 @@ namespace TiqSoft.ScreenAssistant.Controllers
 
         private void MakeTestScreenShots()
         {
-            if (Running)
+            if (this.Running)
             {
-                WeaponFactory?.Recognizer.TestWeapons();
+                this.WeaponFactory?.Recognizer.TestWeapons();
             }
         }
 
@@ -38,18 +38,18 @@ namespace TiqSoft.ScreenAssistant.Controllers
 
         public bool Running
         {
-            get => _running;
+            get => this._running;
             set
             {
-                if (value == _running) return;
-                _running = value;
-                OnPropertyChanged();
+                if (value == this._running) return;
+                this._running = value;
+                this.OnPropertyChanged();
             }
         }
 
         private void Toggle()
         {
-            Running = !Running;
+            this.Running = !this.Running;
         }
         
         public event PropertyChangedEventHandler PropertyChanged;
@@ -57,7 +57,7 @@ namespace TiqSoft.ScreenAssistant.Controllers
         [NotifyPropertyChangedInvocator]
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

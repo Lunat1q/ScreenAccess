@@ -36,8 +36,8 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg
 
         public ApLegFactory()
         {
-            IntRecognizer = new ApLegWeaponTypeScreenRecognizer();
-            Recognizer = IntRecognizer;
+            this.IntRecognizer = new ApLegWeaponTypeScreenRecognizer();
+            this.Recognizer = this.IntRecognizer;
         }
 
         private ApLegWeaponTypeScreenRecognizer IntRecognizer { get; }
@@ -47,7 +47,7 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg
             return new RegularAdjustmentWeapon(string.Empty, 2, "Default", 0);
         }
 
-        private IWeapon CreateFromRecognizedString(string recognizedName, IWeapon currentWeapon, int offsetX, int offsetY, float sensitivityScale)
+        private IWeapon CreateFromRecognizedString(string recognizedName, IWeapon currentWeapon,float sensitivityScale)
         {
             var weaponName = recognizedName.FindMostSimilar(WeaponNamesToTypes.Keys);
 
@@ -118,9 +118,8 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg
                     throw new ArgumentOutOfRangeException();
             }
 
-            result.SetOffsets(offsetX, offsetY);
             result.SetSensitivityScale(sensitivityScale);
-            OnWeaponCreated(result);
+            this.OnWeaponCreated(result);
             return result;
         }
 
@@ -131,9 +130,9 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg
             return CreateDefaultWeapon();
         }
 
-        public IWeapon FromRecognizedString(string weaponString, IWeapon currentWeapon, int offsetX, int offsetY, float sensitivityScale)
+        public IWeapon FromRecognizedString(string weaponString, IWeapon currentWeapon, float sensitivityScale)
         {
-            return CreateFromRecognizedString(weaponString, currentWeapon, offsetX, offsetY, sensitivityScale);
+            return this.CreateFromRecognizedString(weaponString, currentWeapon, sensitivityScale);
         }
 
         public int NumberOfWeapons => 2;
@@ -142,7 +141,7 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg
         {
             if (weapon.IsDefault()) return;
             var apexWeapon = (ApLegWeaponBase)weapon;
-            var modulesState = IntRecognizer.GetModulesState(weapon.NumberOfModules);
+            var modulesState = this.IntRecognizer.GetModulesState(weapon.NumberOfModules);
             for (var i = 0; i < weapon.NumberOfModules; i++)
             {
                 /*
@@ -162,7 +161,7 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg
 
         protected virtual void OnWeaponCreated(IWeapon weapon)
         {
-            WeaponCreated?.Invoke(this, new WeaponCreatedEventArgs(weapon));
+            this.WeaponCreated?.Invoke(this, new WeaponCreatedEventArgs(weapon));
         }
     }
 }

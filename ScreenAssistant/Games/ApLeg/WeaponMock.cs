@@ -11,11 +11,11 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg
 
         public string Name
         {
-            get => _name;
+            get => this._name;
             set
             {
-                _name = value;
-                OnPropertyChanged();
+                this._name = value;
+                this.OnPropertyChanged();
             }
         }
 
@@ -30,12 +30,7 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg
         {
             return 0;
         }
-
-        public void SetOffsets(int deltaX, int deltaY)
-        {
-            // ignore
-        }
-
+        
         public void SetSensitivityScale(float sensitivityScale)
         {
             // ignore
@@ -57,12 +52,12 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         protected virtual void OnMouseMoved(MouseMovedEventArgs args)
         {
-            MouseMoved?.Invoke(this, args);
+            this.MouseMoved?.Invoke(this, args);
         }
     }
 }

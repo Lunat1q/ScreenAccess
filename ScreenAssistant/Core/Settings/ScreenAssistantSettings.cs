@@ -22,8 +22,6 @@ namespace TiqSoft.ScreenAssistant.Core.Settings
         private static readonly SettingsController<ScreenAssistantSettings> SettingsController;
         internal static ScreenAssistantSettings Settings => SettingsController.Settings;
 
-        private int _deltaX = 2;
-        private int _deltaY = 3;
         private float _sensitivityScale = 1;
         private float _brightnessScale = 1;
         private bool _useUniqueWeaponLogic = true;
@@ -35,38 +33,7 @@ namespace TiqSoft.ScreenAssistant.Core.Settings
         {
             SettingsController = new SettingsController<ScreenAssistantSettings>(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
         }
-
-        [PropertyMember, PropertyGroup(RecoilGroup)]
-        [DisplayName("Average X Offset")]
-        [SliderLimits(1, 10, 0, 1, 1)]
-        [DefaultValue(2)]
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        public int DeltaX
-        {
-            get => _deltaX;
-            set
-            {
-                if (value == _deltaX) return;
-                _deltaX = value;
-                OnPropertyChanged();
-            }
-        }
-
-        [PropertyMember, PropertyGroup(RecoilGroup)]
-        [DisplayName("Average Y Offset")]
-        [SliderLimits(1, 10, 0, 1, 1)]
-        [DefaultValue(3)]
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        public int DeltaY
-        {
-            get => _deltaY;
-            set
-            {
-                if (value == _deltaY) return;
-                _deltaY = value;
-                OnPropertyChanged();
-            }
-        }
+        
 
         [PropertyMember, PropertyGroup(RecoilGroup)]
         [DisplayName("Sensitivity adjustment")]
@@ -75,12 +42,12 @@ namespace TiqSoft.ScreenAssistant.Core.Settings
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public float SensitivityScale
         {
-            get => _sensitivityScale;
+            get => this._sensitivityScale;
             set
             {
-                if (value.Equals(_sensitivityScale)) return;
-                _sensitivityScale = value;
-                OnPropertyChanged();
+                if (value.Equals(this._sensitivityScale)) return;
+                this._sensitivityScale = value;
+                this.OnPropertyChanged();
             }
         }
 
@@ -91,12 +58,12 @@ namespace TiqSoft.ScreenAssistant.Core.Settings
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public float BrightnessScale
         {
-            get => _brightnessScale;
+            get => this._brightnessScale;
             set
             {
-                if (value.Equals(_brightnessScale)) return;
-                _brightnessScale = value;
-                OnPropertyChanged();
+                if (value.Equals(this._brightnessScale)) return;
+                this._brightnessScale = value;
+                this.OnPropertyChanged();
             }
         }
 
@@ -106,12 +73,12 @@ namespace TiqSoft.ScreenAssistant.Core.Settings
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public bool UseUniqueWeaponLogic
         {
-            get => _useUniqueWeaponLogic;
+            get => this._useUniqueWeaponLogic;
             set
             {
-                if (value == _useUniqueWeaponLogic) return;
-                _useUniqueWeaponLogic = value;
-                OnPropertyChanged();
+                if (value == this._useUniqueWeaponLogic) return;
+                this._useUniqueWeaponLogic = value;
+                this.OnPropertyChanged();
             }
         }
 
@@ -120,12 +87,12 @@ namespace TiqSoft.ScreenAssistant.Core.Settings
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public bool LockToGameWindow
         {
-            get => _lockToGameWindow;
+            get => this._lockToGameWindow;
             set
             {
-                if (value == _lockToGameWindow) return;
-                _lockToGameWindow = value;
-                OnPropertyChanged();
+                if (value == this._lockToGameWindow) return;
+                this._lockToGameWindow = value;
+                this.OnPropertyChanged();
             }
         }
 
@@ -134,12 +101,12 @@ namespace TiqSoft.ScreenAssistant.Core.Settings
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public bool FullScreenMode
         {
-            get => _fullScreenMode;
+            get => this._fullScreenMode;
             set
             {
-                if (value == _fullScreenMode) return;
-                _fullScreenMode = value;
-                OnPropertyChanged();
+                if (value == this._fullScreenMode) return;
+                this._fullScreenMode = value;
+                this.OnPropertyChanged();
             }
         }
 
@@ -150,12 +117,12 @@ namespace TiqSoft.ScreenAssistant.Core.Settings
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public string SelectedGameName
         {
-            get => _selectedGameName;
+            get => this._selectedGameName;
             set
             {
-                if (value == _selectedGameName) return;
-                _selectedGameName = value;
-                OnPropertyChanged();
+                if (value == this._selectedGameName) return;
+                this._selectedGameName = value;
+                this.OnPropertyChanged();
             }
         }
 
@@ -177,7 +144,7 @@ namespace TiqSoft.ScreenAssistant.Core.Settings
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
