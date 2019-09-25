@@ -49,16 +49,11 @@ namespace TiqSoft.ScreenAssistant
             Settings.OpenAutoUISettingsDialog();
         }
         
-        public void ShowLauncherError()
+        public async Task ShowLauncherError()
         {
             this.ErrorPanel.Visibility = Visibility.Visible;
-            this.ErrorMessage.Text = "Please restart via TiQ Launcher";
-
-            Task.Run(async () =>
-            {
-                await Task.Delay(10000);
-                Environment.Exit(0);
-            });
+            this.ErrorMessage.Text = "Please restart via TiQ Launcher or wait for 5 seconds";
+            await Task.Delay(5000);
         }
     }
 }

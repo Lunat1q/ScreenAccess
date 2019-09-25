@@ -21,7 +21,13 @@ namespace TiqLauncher.ScreenAssistant
 
         static void Main(string[] args)
         {
-
+            for (var i = 0; i != args.Length; ++i)
+            {
+                if (args[i] == "/restart")
+                {
+                    Thread.Sleep(2000);
+                }
+            }
             PrepareBinaries();
 //#if !DEBUG
             var lastName = Properties.Settings.Default.ScreenAssistantName;
