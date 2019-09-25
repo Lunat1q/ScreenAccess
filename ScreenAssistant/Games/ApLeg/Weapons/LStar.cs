@@ -13,7 +13,7 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
         {
             double horizontalOffset;
             var verticalOffset = Rnd.NextDouble() * (2) + 5;
-            AdjustmentCoefficient = CalculateAdjustment(shotNumber, 30);
+            this.AdjustmentCoefficient = CalculateAdjustment(shotNumber, 30);
             if (shotNumber < 7)
             {
                 horizontalOffset = Rnd.NextDouble() * 1 + 1.5;
@@ -29,9 +29,9 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
 
             //Debug.WriteLine($"{shotNumber}, {horizontalOffset:F2}");
 
-            MoveMouse(horizontalOffset, verticalOffset);
+            this.MoveMouse(horizontalOffset, verticalOffset);
 
-            return GetAdjustmentTime(1d);
+            return this.GetAdjustmentTime(1d);
         }
     }
 }

@@ -6,7 +6,7 @@ namespace TiqSoft.ScreenAssistant.Games
     {
         public WeaponCreatedEventArgs(IWeapon weapon)
         {
-            Weapon = weapon;
+            this.Weapon = weapon;
         }
 
         public IWeapon Weapon { get; }

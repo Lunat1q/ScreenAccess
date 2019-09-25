@@ -52,8 +52,8 @@ namespace TiqSoft.ScreenAssistant.Games
     {
         public Game(string name, Type factoryType)
         {
-            FactoryType = factoryType;
-            Name = name;
+            this.FactoryType = factoryType;
+            this.Name = name;
         }
 
         public string Name { get; }

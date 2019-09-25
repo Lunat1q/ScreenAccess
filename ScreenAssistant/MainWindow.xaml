@@ -47,7 +47,7 @@
         </StackPanel>
         <Grid x:Name="ErrorPanel" Visibility="Collapsed">
             <Rectangle Fill="#72000000" />
-            <TextBlock MaxWidth="300" x:Name="ErrorMessage" VerticalAlignment="Center" Foreground="White" FontWeight="Bold" FontSize="18" TextWrapping="Wrap" HorizontalAlignment="Center"/>
+            <TextBlock MaxWidth="300" x:Name="ErrorMessage" VerticalAlignment="Center" Foreground="White" FontWeight="Bold" FontSize="18" TextAlignment="Center" TextWrapping="Wrap" HorizontalAlignment="Center"/>
         </Grid>
     </Grid>
 </Window>

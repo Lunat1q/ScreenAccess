@@ -11,12 +11,12 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg
 
         public WeaponModuleType Type
         {
-            get => _type;
+            get => this._type;
             set
             {
-                if (value == _type) return;
-                _type = value;
-                OnPropertyChanged();
+                if (value == this._type) return;
+                this._type = value;
+                this.OnPropertyChanged();
             }
         }
 
@@ -25,7 +25,7 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

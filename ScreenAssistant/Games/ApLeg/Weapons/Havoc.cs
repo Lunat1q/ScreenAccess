@@ -14,13 +14,13 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
             var notOffsettingDelay = this.GetModuleType(4) == WeaponModuleType.Legendary ? 0 : 6;
             if (shotNumber > notOffsettingDelay)
             {
-                AdjustmentCoefficient = CalculateAdjustment(shotNumber, 40);
+                this.AdjustmentCoefficient = CalculateAdjustment(shotNumber, 40);
                 var horizontalOffset = Rnd.NextDouble() * 1 * 2 - 1;
                 var verticalOffset = Rnd.NextDouble() + 5.5d;
-                MoveMouse(horizontalOffset, verticalOffset);
+                this.MoveMouse(horizontalOffset, verticalOffset);
             }
 
-            return GetAdjustmentTime(1d);
+            return this.GetAdjustmentTime(1d);
         }
     }
 }

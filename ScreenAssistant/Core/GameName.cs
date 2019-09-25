@@ -6,7 +6,7 @@ namespace TiqSoft.ScreenAssistant.Core
     {
         public GameNameAttribute(string name)
         {
-            Name = name;
+            this.Name = name;
         }
 
         public string Name { get; }

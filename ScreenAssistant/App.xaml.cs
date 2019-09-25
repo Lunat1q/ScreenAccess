@@ -1,4 +1,8 @@
-﻿using System.Windows;
+﻿using System;
+using System.Diagnostics;
+using System.IO;
+using System.Reflection;
+using System.Windows;
 
 namespace TiqSoft.ScreenAssistant
 {
@@ -7,7 +11,10 @@ namespace TiqSoft.ScreenAssistant
     /// </summary>
     public partial class App : Application
     {
-        void AppStartup(object sender, StartupEventArgs e)
+        private static string CurrentDirectory => Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) ?? throw new InvalidOperationException();
+        private const string LauncherName = "TiqLauncher.ScreenAssistant.exe";
+
+        async void AppStartup(object sender, StartupEventArgs e)
         {
 #pragma warning disable 219
             var viaLauncher = false;
@@ -25,7 +32,16 @@ namespace TiqSoft.ScreenAssistant
 #if !DEBUG
             if (!viaLauncher)
             {
-                mainWindow.ShowLauncherError();
+                await mainWindow.ShowLauncherError();
+                var launcherPath = Path.Combine(CurrentDirectory, LauncherName);
+                var startInfo = new ProcessStartInfo(launcherPath)
+                {
+                    UseShellExecute = false,
+                    Arguments = "/restart"
+                };
+                var p = new Process { StartInfo = startInfo };
+                p.Start();
+                Environment.Exit(0);
             }
 #endif
         }

@@ -11,9 +11,7 @@ namespace TiqSoft.ScreenAssistant.Core
         bool IsTheSameWeapon(string weaponName);
 
         double AdjustMouse(int shotNumber);
-
-        void SetOffsets(int deltaX, int deltaY);
-
+        
         void SetSensitivityScale(float sensitivityScale);
 
         bool IsDefault();

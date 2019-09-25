@@ -39,24 +39,24 @@ namespace TiqSoft.ScreenAssistant.Controllers
 
         public bool MouseDown
         {
-            get => _mouseDown;
+            get => this._mouseDown;
             set
             {
-                if (value == _mouseDown) return;
-                _mouseDown = value;
-                OnPropertyChanged();
+                if (value == this._mouseDown) return;
+                this._mouseDown = value;
+                this.OnPropertyChanged();
             }
         }
 
         public bool MouseCentered
         {
-            get => _mouseCentered;
+            get => this._mouseCentered;
             set
             {
 #if DEBUG
-                if (value == _mouseCentered) return;
-                _mouseCentered = value;
-                OnPropertyChanged();
+                if (value == this._mouseCentered) return;
+                this._mouseCentered = value;
+                this.OnPropertyChanged();
 #else
                 _mouseCentered = value;
 #endif
@@ -67,46 +67,38 @@ namespace TiqSoft.ScreenAssistant.Controllers
 
         public MainLogicController(ScreenAssistantSettings logicSettings, Dispatcher dispatcher)
         {
-            _dispatcher = dispatcher;
-            _settings = logicSettings;
-            HotKeysController = new BindingController();
-            HotKeysController.BindUpToAction(KeyModifier.Ctrl, 'K', Toggle);
-            HotKeysController.Start(true);
-            CurrentVersionInfo = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            TestController = ImageTestController.Instance;
-            PatternController = PatternTestController.Instance;
-            PatternController.Dispatcher = dispatcher;
+            this._dispatcher = dispatcher;
+            this._settings = logicSettings;
+            this.HotKeysController = new BindingController();
+            this.HotKeysController.BindUpToAction(KeyModifier.Ctrl, 'K', this.Toggle);
+            this.HotKeysController.Start(true);
+            this.CurrentVersionInfo = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            this.TestController = ImageTestController.Instance;
+            this.PatternController = PatternTestController.Instance;
+            this.PatternController.Dispatcher = dispatcher;
             this.SetGameFactory(GamesHelper.GetFactoryByGameName(logicSettings.SelectedGameName));
-            logicSettings.PropertyChanged += LogicSettings_PropertyChanged;
+            logicSettings.PropertyChanged += this.LogicSettings_PropertyChanged;
         }
 
         private void LogicSettings_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             var settings = (ScreenAssistantSettings)sender;
-            if (e.PropertyName.Equals(nameof(_settings.SelectedGameName)))
+            if (e.PropertyName.Equals(nameof(this._settings.SelectedGameName)))
             {
                 this.SetGameFactory(GamesHelper.GetFactoryByGameName(settings.SelectedGameName));
             }
-            else if (e.PropertyName.Equals(nameof(_settings.FullScreenMode)) && _weaponFactory?.Recognizer != null)
+            else if (e.PropertyName.Equals(nameof(this._settings.FullScreenMode)) && this._weaponFactory?.Recognizer != null)
             {
-                _weaponFactory.Recognizer.FullScreenMode = this._settings.FullScreenMode;
+                this._weaponFactory.Recognizer.FullScreenMode = this._settings.FullScreenMode;
             }
-            else if (e.PropertyName.Equals(nameof(_settings.BrightnessScale)))
+            else if (e.PropertyName.Equals(nameof(this._settings.BrightnessScale)))
             {
-                _weaponFactory?.Recognizer?.SetBrightness(this._settings.BrightnessScale);
+                this._weaponFactory?.Recognizer?.SetBrightness(this._settings.BrightnessScale);
             }
-            else if (e.PropertyName.Equals(nameof(_settings.DeltaY)) || e.PropertyName.Equals(nameof(_settings.DeltaX)))
+            else if (e.PropertyName.Equals(nameof(this._settings.SensitivityScale)))
             {
-                if (Weapons == null) return;
-                foreach (var weapon in Weapons)
-                {
-                    weapon.SetOffsets(this._settings.DeltaX, this._settings.DeltaY);
-                }
-            }
-            else if (e.PropertyName.Equals(nameof(_settings.SensitivityScale)))
-            {
-                if (Weapons == null) return;
-                foreach (var weapon in Weapons)
+                if (this.Weapons == null) return;
+                foreach (var weapon in this.Weapons)
                 {
                     weapon.SetSensitivityScale(this._settings.SensitivityScale);
                 }
@@ -119,77 +111,78 @@ namespace TiqSoft.ScreenAssistant.Controllers
 
         public void SetGameFactory(IWeaponFactory factory)
         {
-            if (Enabled || Working)
+            if (this.Enabled || this.Working)
             {
-                Stop();
+                this.Stop();
             }
-            _weaponFactory = factory;
-            TestController.WeaponFactory = _weaponFactory;
-            PatternController.WeaponFactory = _weaponFactory;
-            _weaponFactory.Recognizer.FullScreenMode = this._settings.FullScreenMode;
-            _weaponFactory.Recognizer.SetBrightness(this._settings.BrightnessScale);
-            CreateDefaultWeapons();
+
+            this._weaponFactory = factory;
+            this.TestController.WeaponFactory = this._weaponFactory;
+            this.PatternController.WeaponFactory = this._weaponFactory;
+            this._weaponFactory.Recognizer.FullScreenMode = this._settings.FullScreenMode;
+            this._weaponFactory.Recognizer.SetBrightness(this._settings.BrightnessScale);
+            this.CreateDefaultWeapons();
         }
         
         public bool Enabled
         {
-            get => _enabled;
+            get => this._enabled;
             set
             {
-                if (value == _enabled) return;
-                _enabled = value;
-                OnPropertyChanged();
+                if (value == this._enabled) return;
+                this._enabled = value;
+                this.OnPropertyChanged();
             }
         }
 
         public bool Working
         {
-            get => _working;
+            get => this._working;
             set
             {
-                if (value == _working) return;
-                _working = value;
-                OnPropertyChanged();
+                if (value == this._working) return;
+                this._working = value;
+                this.OnPropertyChanged();
             }
         }
 
         public ImageTestController TestController
         {
-            get => _testController;
+            get => this._testController;
             set {
-                _testController = value;
-                OnPropertyChanged();
+                this._testController = value;
+                this.OnPropertyChanged();
             }
         }
 
         public PatternTestController PatternController
         {
-            get => _patternController;
+            get => this._patternController;
             set
             {
-                _patternController = value;
-                OnPropertyChanged();
+                this._patternController = value;
+                this.OnPropertyChanged();
             }
         }
 
         public double AdjustmentCoefficient
         {
-            get => _adjustmentCoefficient;
+            get => this._adjustmentCoefficient;
             set
             {
-                if (value.Equals(_adjustmentCoefficient)) return;
-                _adjustmentCoefficient = value;
-                OnPropertyChanged();
+                if (value.Equals(this._adjustmentCoefficient)) return;
+                this._adjustmentCoefficient = value;
+                this.OnPropertyChanged();
             }
         }
 
         public ObservableCollection<IWeapon> Weapons
         {
-            get => _weapons;
+            get => this._weapons;
             set
             {
-                _weapons = value;
-                OnPropertyChanged();
+                this._weapons = value;
+                this.OnPropertyChanged();
             }
         }
 
@@ -200,44 +193,43 @@ namespace TiqSoft.ScreenAssistant.Controllers
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 #endregion
 
         private void Toggle()
         {
-            if (Enabled)
+            if (this.Enabled)
             {
-                Stop();
+                this.Stop();
             }
             else
             {
-                Start();
+                this.Start();
             }
         }
 
         public void Start()
         {
-            Enabled = true;
-            _weaponFactory.Recognizer.FullScreenMode = _settings.FullScreenMode;
-            _mouseTaskCts = new CancellationTokenSource();
-            Task.Run(() => CheckForMouse(_mouseTaskCts.Token));
-            Task.Run(() => CheckForMousePos(_mouseTaskCts.Token));
-            _mainTaskCts = new CancellationTokenSource();
-            Task.Run(() => StartProcessingInput(_mainTaskCts.Token));
-            _weaponRecognitionCts = new CancellationTokenSource();
-            Task.Run(() => StartWeaponRecognition(_weaponRecognitionCts.Token));
-            Task.Run(() => StartActiveElementRecognition(_weaponRecognitionCts.Token));
+            this.Enabled = true;
+            this._weaponFactory.Recognizer.FullScreenMode = this._settings.FullScreenMode;
+            this._mouseTaskCts = new CancellationTokenSource();
+            Task.Run(() => this.CheckForMouse(this._mouseTaskCts.Token));
+            Task.Run(() => this.CheckForMousePos(this._mouseTaskCts.Token));
+            this._mainTaskCts = new CancellationTokenSource();
+            Task.Run(() => this.StartProcessingInput(this._mainTaskCts.Token));
+            this._weaponRecognitionCts = new CancellationTokenSource();
+            Task.Run(() => this.StartWeaponRecognition(this._weaponRecognitionCts.Token));
+            Task.Run(() => this.StartActiveElementRecognition(this._weaponRecognitionCts.Token));
         }
 
         private void CreateDefaultWeapons()
         {
-            Weapons = new ObservableCollection<IWeapon>();
-            for (var i = 0; i < _weaponFactory.NumberOfWeapons; i++)
+            this.Weapons = new ObservableCollection<IWeapon>();
+            for (var i = 0; i < this._weaponFactory.NumberOfWeapons; i++)
             {
-                var newWeapon = _weaponFactory.Default();
-                newWeapon.SetOffsets(_settings.DeltaX, _settings.DeltaY);
-                Weapons.Add(newWeapon);
+                var newWeapon = this._weaponFactory.Default();
+                this.Weapons.Add(newWeapon);
             }
         }
 
@@ -245,33 +237,30 @@ namespace TiqSoft.ScreenAssistant.Controllers
         {
             try
             {
-                CreateDefaultWeapons();
+                this.CreateDefaultWeapons();
                 while (true)
                 {
-                    if (_settings.UseUniqueWeaponLogic && CheckWindowLock())
+                    if (this._settings.UseUniqueWeaponLogic && this.CheckWindowLock())
                     {
-                        for (var i = 1; i <= _weaponFactory.NumberOfWeapons; i++)
+                        for (var i = 1; i <= this._weaponFactory.NumberOfWeapons; i++)
                         {
-                            var weaponRecognizedName = _weaponFactory.Recognizer.GetWeaponFromScreen(i);
+                            var weaponRecognizedName = this._weaponFactory.Recognizer.GetWeaponFromScreen(i);
                             if (!weaponRecognizedName.Empty())
                             {
-                                var currentWeapon = Weapons[i - 1];
-                                var newDetectedWeapon = _weaponFactory.FromRecognizedString(
+                                var currentWeapon = this.Weapons[i - 1];
+                                var newDetectedWeapon = this._weaponFactory.FromRecognizedString(
                                     weaponRecognizedName,
                                     currentWeapon,
-                                    _settings.DeltaX,
-                                    _settings.DeltaY,
-                                    _settings.SensitivityScale
+                                    this._settings.SensitivityScale
                                 );
 
                                 if (!newDetectedWeapon.IsDefault() && !currentWeapon.Equals(newDetectedWeapon))
                                 {
                                     currentWeapon.IsActive = true;
-                                    currentWeapon.SetOffsets(_settings.DeltaX, _settings.DeltaY);
                                     var i1 = i;
-                                    _dispatcher.Invoke(() =>
+                                    this._dispatcher.Invoke(() =>
                                         {
-                                            return Weapons[i1 - 1] = newDetectedWeapon;
+                                            return this.Weapons[i1 - 1] = newDetectedWeapon;
                                         }
                                     );
                                 }
@@ -288,15 +277,13 @@ namespace TiqSoft.ScreenAssistant.Controllers
             }
             finally
             {
-                CreateDefaultWeapons();
+                this.CreateDefaultWeapons();
             }
         }
 
         private bool CheckWindowLock()
         {
-            return !_settings.LockToGameWindow ||
-                   _weaponFactory.LockedToApplication.Empty() ||
-                   _weaponFactory.LockedToApplication.Equals(WinApiHelper.GetActiveProcessName())
+            return !this._settings.LockToGameWindow || this._weaponFactory.LockedToApplication.Empty() || this._weaponFactory.LockedToApplication.Equals(WinApiHelper.GetActiveProcessName())
                 ;
         }
 
@@ -307,17 +294,17 @@ namespace TiqSoft.ScreenAssistant.Controllers
             {
                 while (true)
                 {
-                    if (_settings.UseUniqueWeaponLogic && CheckWindowLock())
+                    if (this._settings.UseUniqueWeaponLogic && this.CheckWindowLock())
                     {
-                        var activeWeapon = _weaponFactory.Recognizer.GetActiveWeapon();
+                        var activeWeapon = this._weaponFactory.Recognizer.GetActiveWeapon();
                         
-                        for (var i = 0; i < Weapons.Count; i++)
+                        for (var i = 0; i < this.Weapons.Count; i++)
                         {
-                            var weapon = Weapons[i];
+                            var weapon = this.Weapons[i];
                             weapon.IsActive = (i + 1) == activeWeapon;
                             if (weapon.IsActive && currentActiveWeapon == activeWeapon)
                             {
-                                _weaponFactory.WeaponPostProcess(weapon);
+                                this._weaponFactory.WeaponPostProcess(weapon);
                             }
                         }
 
@@ -333,7 +320,7 @@ namespace TiqSoft.ScreenAssistant.Controllers
             }
             finally
             {
-                Weapons[0].IsActive = true;
+                this.Weapons[0].IsActive = true;
             }
         }
         
@@ -341,25 +328,24 @@ namespace TiqSoft.ScreenAssistant.Controllers
         {
             try
             {
-                
-                Working = true;
+                this.Working = true;
                 var simShots = 0;
-                while (Working)
+                while (this.Working)
                 {
-                    if (MouseDown && MouseCentered && CheckWindowLock())
+                    if (this.MouseDown && this.MouseCentered && this.CheckWindowLock())
                     {
-                        var weapon = Weapons.FirstOrDefault(x => x.IsActive);
+                        var weapon = this.Weapons.FirstOrDefault(x => x.IsActive);
                         if (weapon != null)
                         {
                             var delay = weapon.AdjustMouse(simShots);
-                            AdjustmentCoefficient = weapon.AdjustmentCoefficient;
+                            this.AdjustmentCoefficient = weapon.AdjustmentCoefficient;
                             await Task.Delay((int)(delay * 1000), token);
                         }
                         simShots++;
                     }
                     else
                     {
-                        AdjustmentCoefficient = 1;
+                        this.AdjustmentCoefficient = 1;
                         simShots = 0;
                     }
                     await Task.Delay(16, token);
@@ -372,7 +358,7 @@ namespace TiqSoft.ScreenAssistant.Controllers
             }
             finally
             {
-                Working = false;
+                this.Working = false;
             }
         }
 
@@ -382,7 +368,7 @@ namespace TiqSoft.ScreenAssistant.Controllers
             {
                 while (true)
                 {
-                    MouseDown = KeyStatesHook.IsLeftMouseDown();
+                    this.MouseDown = KeyStatesHook.IsLeftMouseDown();
                     await Task.Delay(10, token);
                 }
             }
@@ -392,7 +378,7 @@ namespace TiqSoft.ScreenAssistant.Controllers
             }
             finally
             {
-                MouseDown = false;
+                this.MouseDown = false;
             }
         }
 
@@ -404,7 +390,7 @@ namespace TiqSoft.ScreenAssistant.Controllers
             {
                 while (true)
                 {
-                    MouseCentered = WinApiHelper.IsCursorAtTheCenter();
+                    this.MouseCentered = WinApiHelper.IsCursorAtTheCenter();
                     await Task.Delay(340, token);
                 }
             }
@@ -414,17 +400,17 @@ namespace TiqSoft.ScreenAssistant.Controllers
             }
             finally
             {
-                MouseDown = false;
+                this.MouseDown = false;
             }
         }
 
         public void Stop()
         {
-            Enabled = false;
-            Working = false;
-            _mouseTaskCts.Cancel();
-            _weaponRecognitionCts.Cancel();
-            _mainTaskCts.Cancel();
+            this.Enabled = false;
+            this.Working = false;
+            this._mouseTaskCts.Cancel();
+            this._weaponRecognitionCts.Cancel();
+            this._mainTaskCts.Cancel();
         }
     }
 }

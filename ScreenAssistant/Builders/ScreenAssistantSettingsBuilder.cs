@@ -14,7 +14,6 @@ namespace TiqSoft.ScreenAssistant.Builders
         internal ScreenAssistantSettingsBuilder(object settingsClass) : base(settingsClass)
         {
         }
-
         protected override UIElement CreatePropertyUiElement(TextBlock labelBlock, PropertyInfo prop)
         {
             if (prop.Name.Equals(nameof(ScreenAssistantSettings.SelectedGameName)))

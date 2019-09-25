@@ -16,21 +16,21 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
             int warmUpShort = this.GetModuleType(4) != WeaponModuleType.Legendary ? 15 : 3;
             if (shotNumber < warmUpShort)
             {
-                AdjustmentCoefficient = CalculateAdjustment(shotNumber, 20);
+                this.AdjustmentCoefficient = CalculateAdjustment(shotNumber, 20);
                 horizontalOffset = Rnd.NextDouble() * 1 + 1;
                 verticalOffset = Rnd.NextDouble() * (2) + 5;
             }
             else
             {
-                AdjustmentCoefficient = CalculateAdjustment(shotNumber, 80);
+                this.AdjustmentCoefficient = CalculateAdjustment(shotNumber, 80);
                 var hAdj = shotNumber > 25 ? -1.5d : 1.5d; 
                 horizontalOffset = hAdj * (Rnd.NextDouble() * 0.5 + 1);
                 verticalOffset = Rnd.NextDouble() * 0.5 + 2d;
             }
 
-            MoveMouse(horizontalOffset, verticalOffset);
+            this.MoveMouse(horizontalOffset, verticalOffset);
 
-            return GetAdjustmentTime(1d);
+            return this.GetAdjustmentTime(1d);
         }
     }
 }

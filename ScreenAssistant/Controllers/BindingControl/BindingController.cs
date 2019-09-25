@@ -11,39 +11,39 @@ namespace TiqSoft.ScreenAssistant.Controllers.BindingControl
 
         public BindingController()
         {
-            Hook = new KeyboardHook();
-            Listener = new KeyListener();
-            Hook.EventDispatcher.EventReceived += evt => Listener.Listen(evt);
+            this.Hook = new KeyboardHook();
+            this.Listener = new KeyListener();
+            this.Hook.EventDispatcher.EventReceived += evt => this.Listener.Listen(evt);
         }
 
         public void BindPressToAction(KeyModifier modifiers, char key, Action action)
         {
-            Listener.BindKeyPress(modifiers, key, action);
+            this.Listener.BindKeyPress(modifiers, key, action);
         }
 
         public void BindDownToAction(KeyModifier modifiers, char key, Action action)
         {
-            Listener.BindKeyDown(modifiers, key, action);
+            this.Listener.BindKeyDown(modifiers, key, action);
         }
 
         public void BindUpToAction(KeyModifier modifiers, char key, Action action)
         {
-            Listener.BindKeyUp(modifiers, key, action);
+            this.Listener.BindKeyUp(modifiers, key, action);
         }
 
         public void BindMouseDownToAction(MouseButtons btn, Action action)
         {
-            Listener.BindMouseDown(btn, action);
+            this.Listener.BindMouseDown(btn, action);
         }
 
         public void BindMouseUpToAction(MouseButtons btn, Action action)
         {
-            Listener.BindMouseUp(btn, action);
+            this.Listener.BindMouseUp(btn, action);
         }
 
         public void Start(bool keyBoardOnly = false)
         {
-            Hook.Start();
+            this.Hook.Start();
             if (!keyBoardOnly)
             {
                 
@@ -52,7 +52,7 @@ namespace TiqSoft.ScreenAssistant.Controllers.BindingControl
 
         public void Stop()
         {
-            Hook.Stop();
+            this.Hook.Stop();
         }
     }
 }

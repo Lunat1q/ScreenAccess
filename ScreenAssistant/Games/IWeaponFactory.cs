@@ -10,7 +10,7 @@ namespace TiqSoft.ScreenAssistant.Games
 
         IWeapon Default();
 
-        IWeapon FromRecognizedString(string weaponString, IWeapon currentWeapon, int offsetX, int offsetY, float sensitivityScale);
+        IWeapon FromRecognizedString(string weaponString, IWeapon currentWeapon, float sensitivityScale);
 
         void WeaponPostProcess(IWeapon weapon);
 

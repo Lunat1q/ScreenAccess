@@ -18,30 +18,30 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
 
         public override double AdjustMouse(int shotNumber)
         {
-            AdjustmentCoefficient = CalculateAdjustment(shotNumber, 1);
-            var fromLastShot = DateTime.Now - _lastShot;
-            _lastShot = DateTime.Now;
+            this.AdjustmentCoefficient = CalculateAdjustment(shotNumber, 1);
+            var fromLastShot = DateTime.Now - this._lastShot;
+            this._lastShot = DateTime.Now;
             var msFromLastShot = fromLastShot.TotalMilliseconds;
             if (msFromLastShot < 150)
             {
-                _fastShots++;
+                this._fastShots++;
             }
             else if (msFromLastShot < 400)
             {
-                _fastShots--;
+                this._fastShots--;
             }
             else
             {
-                _fastShots = 0;
+                this._fastShots = 0;
             }
 
-            var fastShotAdjustment = 1 - CalculateAdjustment(_fastShots, 12);
+            var fastShotAdjustment = 1 - CalculateAdjustment(this._fastShots, 12);
 
             var verticalOffset = (9d + -5d * fastShotAdjustment) * Math.Min(Math.Abs(1 - msFromLastShot / 600), 1);
             var horizontalOffset = (2.5d + 2d * fastShotAdjustment) * Math.Min(Math.Abs(1 - msFromLastShot / 300), 1);
-            MoveMouse(horizontalOffset, verticalOffset);
+            this.MoveMouse(horizontalOffset, verticalOffset);
             //Debug.WriteLine($"{_fastShots}: {verticalOffset:N2}, fsAdj: {fastShotAdjustment}");
-            return GetAdjustmentTime(1d); 
+            return this.GetAdjustmentTime(1d); 
         }
     }
 }

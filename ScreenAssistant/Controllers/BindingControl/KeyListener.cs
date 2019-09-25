@@ -9,11 +9,11 @@ namespace TiqSoft.ScreenAssistant.Controllers.BindingControl
     {
         public KeyListener()
         {
-            BindingsKeyPress = new Dictionary<KeyEventArguments, Action>(new KeysComparer());
-            BindingsKeyDown = new Dictionary<KeyEventArguments, Action>(new KeysComparer());
-            BindingsKeyUp = new Dictionary<KeyEventArguments, Action>(new KeysComparer());
-            BindingsMouseDown = new Dictionary<MouseButtons, Action>();
-            BindingsMouseUp = new Dictionary<MouseButtons, Action>();
+            this.BindingsKeyPress = new Dictionary<KeyEventArguments, Action>(new KeysComparer());
+            this.BindingsKeyDown = new Dictionary<KeyEventArguments, Action>(new KeysComparer());
+            this.BindingsKeyUp = new Dictionary<KeyEventArguments, Action>(new KeysComparer());
+            this.BindingsMouseDown = new Dictionary<MouseButtons, Action>();
+            this.BindingsMouseUp = new Dictionary<MouseButtons, Action>();
         }
 
         private Dictionary<MouseButtons, Action> BindingsMouseUp { get; }
@@ -24,59 +24,59 @@ namespace TiqSoft.ScreenAssistant.Controllers.BindingControl
 
         public void BindKeyPress(KeyModifier modifiers, char key, Action action)
         {
-            BindingsKeyPress.Add(new KeyEventArguments{ KeyPressed =  key, Modifiers = modifiers }, action);
+            this.BindingsKeyPress.Add(new KeyEventArguments{ KeyPressed =  key, Modifiers = modifiers }, action);
         }
 
         public void BindKeyDown(KeyModifier modifiers, char key, Action action)
         {
-            BindingsKeyDown.Add(new KeyEventArguments{ KeyPressed =  key, Modifiers = modifiers }, action);
+            this.BindingsKeyDown.Add(new KeyEventArguments{ KeyPressed =  key, Modifiers = modifiers }, action);
         }
 
         public void BindKeyUp(KeyModifier modifiers, char key, Action action)
         {
-            BindingsKeyUp.Add(new KeyEventArguments{ KeyPressed =  key, Modifiers = modifiers }, action);
+            this.BindingsKeyUp.Add(new KeyEventArguments{ KeyPressed =  key, Modifiers = modifiers }, action);
         }
 
         public void BindMouseDown(MouseButtons btn,Action action)
         {
-            BindingsMouseDown.Add(btn, action);
+            this.BindingsMouseDown.Add(btn, action);
         }
 
         public void BindMouseUp(MouseButtons btn, Action action)
         {
-            BindingsMouseUp.Add(btn, action);
+            this.BindingsMouseUp.Add(btn, action);
         }
 
         private void HandleEvent(KeyPressEvent eve)
         {
             if (eve.Keys == null) return;
-            BindingsKeyPress.TryGetValue(eve.Keys, out var act);
+            this.BindingsKeyPress.TryGetValue(eve.Keys, out var act);
             act?.Invoke();
         }
 
         private void HandleEvent(KeyDownEvent eve)
         {
             if (eve.Keys == null) return;
-            BindingsKeyDown.TryGetValue(eve.Keys, out var act);
+            this.BindingsKeyDown.TryGetValue(eve.Keys, out var act);
             act?.Invoke();
         }
 
         private void HandleEvent(KeyUpEvent eve)
         {
             if (eve.Keys == null) return;
-            BindingsKeyUp.TryGetValue(eve.Keys, out var act);
+            this.BindingsKeyUp.TryGetValue(eve.Keys, out var act);
             act?.Invoke();
         }
 
         private void HandleEvent(MouseDownEvent eve)
         {
-            BindingsMouseDown.TryGetValue(eve.Button, out var act);
+            this.BindingsMouseDown.TryGetValue(eve.Button, out var act);
             act?.Invoke();
         }
 
         private void HandleEvent(MouseDownUp eve)
         {
-            BindingsMouseUp.TryGetValue(eve.Button, out var act);
+            this.BindingsMouseUp.TryGetValue(eve.Button, out var act);
             act?.Invoke();
         }
 
