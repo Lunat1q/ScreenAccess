@@ -37,7 +37,7 @@ namespace TiqSoft.ScreenAssistant
             if (!viaLauncher)
             {
                 await mainWindow.ShowLauncherError();
-                var launcherPath = Path.Combine(CurrentDirectory, LauncherName);
+                var launcherPath = Path.Combine(CurrentDirectory, LAUNCHER_NAME);
                 var startInfo = new ProcessStartInfo(launcherPath)
                 {
                     UseShellExecute = false,
