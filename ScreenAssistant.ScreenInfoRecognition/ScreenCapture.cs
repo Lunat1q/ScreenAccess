@@ -30,7 +30,8 @@ namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition
         {
             if (fullScreen)
             {
-                return CaptureWindowFromGraphics(User32.GetForegroundWindow(), startX, endX, startY, endY);
+                return CaptureWindow(User32.GetDesktopWindow(), startX, endX, startY, endY);
+                //return CaptureWindowFromGraphics(User32.GetForegroundWindow(), startX, endX, startY, endY);
             }
 
             return CaptureWindow(User32.GetForegroundWindow(), startX, endX, startY, endY);
@@ -63,7 +64,7 @@ namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition
             IntPtr hOld = GDI32.SelectObject(hdcDest, hBitmap);
             // bitblt over
             GDI32.BitBlt(hdcDest, 0, 0, (int)((endX - startX) * width / 100), (int)((endY - startY) * height / 100), 
-                hdcSrc, (int)(startX * width / 100), (int)(startY * height / 100), GDI32.SRCCOPY);
+                hdcSrc, (int)(startX * width / 100), (int)(startY * height / 100), GDI32.SRCCOPY | GDI32.CAPTUREBLT);
             // restore selection
             GDI32.SelectObject(hdcDest, hOld);
             // clean up 
@@ -137,6 +138,7 @@ namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition
         /// </summary>
         private class GDI32
         {
+            public const int CAPTUREBLT = 0x40000000;
 
             public const int SRCCOPY = 0x00CC0020; // BitBlt dwRop parameter
             [DllImport("gdi32.dll")]
