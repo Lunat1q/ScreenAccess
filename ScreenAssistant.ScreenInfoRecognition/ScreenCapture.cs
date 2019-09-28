@@ -123,7 +123,7 @@ namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition
         /// <summary>
         /// Helper class containing User32 API functions
         /// </summary>
-        private class User32
+        public class User32
         {
             [StructLayout(LayoutKind.Sequential)]
             public struct RECT
