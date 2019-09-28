@@ -77,6 +77,7 @@ namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition.Recognizers.ApexLegends
 
         public string TestWeapons()
         {
+            this._logger?.NewSnapshot();
             var w1Img = GetWeapon1Image(FullScreenMode);
             var w2Img = GetWeapon2Image(FullScreenMode);
             w1Img.SaveTestImage();
