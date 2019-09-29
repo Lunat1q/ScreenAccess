@@ -240,7 +240,7 @@ namespace TiqSoft.ScreenAssistant.Controllers
                 this.CreateDefaultWeapons();
                 while (true)
                 {
-                    if (this._settings.UseUniqueWeaponLogic && this.CheckWindowLock())
+                    if (this.CheckWindowLock())
                     {
                         for (var i = 1; i <= this._weaponFactory.NumberOfWeapons; i++)
                         {
@@ -294,7 +294,7 @@ namespace TiqSoft.ScreenAssistant.Controllers
             {
                 while (true)
                 {
-                    if (this._settings.UseUniqueWeaponLogic && this.CheckWindowLock())
+                    if (this.CheckWindowLock())
                     {
                         var activeWeapon = this._weaponFactory.Recognizer.GetActiveWeapon();
                         

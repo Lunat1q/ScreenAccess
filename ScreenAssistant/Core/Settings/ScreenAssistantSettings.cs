@@ -24,7 +24,6 @@ namespace TiqSoft.ScreenAssistant.Core.Settings
 
         private float _sensitivityScale = 1;
         private float _brightnessScale = 1;
-        private bool _useUniqueWeaponLogic = true;
         private bool _lockToGameWindow = true;
         private bool _fullScreenMode;
         private string _selectedGameName = "Apex Legends";
@@ -63,21 +62,6 @@ namespace TiqSoft.ScreenAssistant.Core.Settings
             {
                 if (value.Equals(this._brightnessScale)) return;
                 this._brightnessScale = value;
-                this.OnPropertyChanged();
-            }
-        }
-
-        [PropertyMember, PropertyGroup(RecoilGroup)]
-        [DisplayName("Unique weapon logic")]
-        [DefaultValue(true)]
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        public bool UseUniqueWeaponLogic
-        {
-            get => this._useUniqueWeaponLogic;
-            set
-            {
-                if (value == this._useUniqueWeaponLogic) return;
-                this._useUniqueWeaponLogic = value;
                 this.OnPropertyChanged();
             }
         }
