@@ -9,7 +9,7 @@ using TiqSoft.ScreenAssistant.ScreenInfoRecognition.Recognizers.ApexLegends;
 
 namespace TiqSoft.ScreenAssistant.Games.ApLeg
 {
-    [GameName("Apex Legends")]
+    [GameName(GameNameAttribute.KnownGames.ApLeg)]
     // ReSharper disable once UnusedMember.Global
     internal class ApLegFactory : IWeaponFactory
     {

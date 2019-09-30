@@ -10,5 +10,10 @@ namespace TiqSoft.ScreenAssistant.Core
         }
 
         public string Name { get; }
+
+        public static class KnownGames
+        {
+            public const string ApLeg = "Apex Legends";
+        }
     }
 }
