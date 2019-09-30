@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -18,9 +20,11 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg
 
         private const string STUDIO_NAME = "Respawn";
         private const string GAME_FOLDER_NAME = "Apex";
-        private const string EXTRA_FOLDER_NAME = "local";
+        private const string LOCAL_FOLDER_NAME = "local";
+        private const string PROFILE_FOLDER_NAME = "profile";
         private const string CONFIG_FILE_NAME = "settings.cfg";
         private const string VIDEO_CONFIG_FILE_NAME = "videoconfig.txt";
+        private const string PROFILE_CONFIG_FILE_NAME = "profile.cfg";
         
         public void UpdateSettings(ScreenAssistantSettings settings)
         {
@@ -34,9 +38,13 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg
                 return;
             }
 
-            path = Path.Combine(path, STUDIO_NAME, GAME_FOLDER_NAME, EXTRA_FOLDER_NAME);
-            var settingsFilePath = Path.Combine(path, CONFIG_FILE_NAME);
-            var videoConfigFilePath = Path.Combine(path, VIDEO_CONFIG_FILE_NAME);
+            var gameSettingsFolderPath = Path.Combine(path, STUDIO_NAME, GAME_FOLDER_NAME);
+
+            var localPath = Path.Combine(gameSettingsFolderPath, LOCAL_FOLDER_NAME);
+            var profilePath = Path.Combine(gameSettingsFolderPath, PROFILE_FOLDER_NAME);
+            var settingsFilePath = Path.Combine(localPath, CONFIG_FILE_NAME);
+            var videoConfigFilePath = Path.Combine(localPath, VIDEO_CONFIG_FILE_NAME);
+            var profileConfigFilePath = Path.Combine(profilePath, PROFILE_CONFIG_FILE_NAME);
             IEnumerable<string> settingsFromFiles = null;
             if (File.Exists(settingsFilePath))
             {
@@ -47,7 +55,13 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg
             {
                 var videoSettings = File.ReadAllLines(videoConfigFilePath);
                 var videoSettingsFiltered = videoSettings.Skip(2).Take(videoSettings.Length - 3);
-                settingsFromFiles = settingsFromFiles?.Union(videoSettings.Skip(2).Take(videoSettings.Length - 3)) ?? videoSettingsFiltered;
+                settingsFromFiles = settingsFromFiles?.Union(videoSettingsFiltered) ?? videoSettingsFiltered;
+            }
+
+            if (File.Exists(profileConfigFilePath))
+            {
+                var profileSettings = File.ReadAllLines(profileConfigFilePath);
+                settingsFromFiles = settingsFromFiles?.Union(profileSettings) ?? profileSettings;
             }
 
             var recognizedConfig = ReadConfig(settingsFromFiles);
@@ -68,7 +82,11 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg
 
             public float MouseSensitivity { get; private set; } = 5;
 
+            public float AdsScalar0 { get; private set; }
+
             public bool IsFullScreen { get; private set; }
+
+            public float FovScale { get; set; }
 
             public LinkedList<ConfigRow> UnknownRows { get; }
 
@@ -132,22 +150,36 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg
 
             private bool UpdateWellKnowsSettings(ConfigRow row)
             {
-                switch (row.Command)
+                try
                 {
-                    case "mouse_sensitivity":
-                        this.MouseSensitivity = Convert.ToSingle(row.Args.First.Value);
-                        return true;
-                    case "setting.fullscreen":
-                        this.IsFullScreen = Convert.ToByte(row.Args.First.Value) == 1;
-                        return true;
-                    default:
-                        return false;
+
+                    switch (row.Command)
+                    {
+                        case "mouse_sensitivity":
+                            this.MouseSensitivity = float.Parse(row.Args.First.Value, NumberStyles.Any, CultureInfo.InvariantCulture);
+                            return true;
+                        case "mouse_zoomed_sensitivity_scalar_0":
+                            this.AdsScalar0 = float.Parse(row.Args.First.Value, NumberStyles.Any, CultureInfo.InvariantCulture);
+                            return true;
+                        case "setting.fullscreen":
+                            this.IsFullScreen = Convert.ToByte(row.Args.First.Value) == 1;
+                            return true;
+                        case "cl_fovScale":
+                            this.FovScale = float.Parse(row.Args.First.Value, NumberStyles.Any, CultureInfo.InvariantCulture);
+                            return true;
+                    }
                 }
+                catch (Exception e)
+                {
+                    Debug.WriteLine($"Failed to recognize {row.Command} command with arg: {row.Args.First.Value}, message: {e.Message}");
+                }
+
+                return false;
             }
 
             public void UpdateSettings(ScreenAssistantSettings settings)
             {
-                settings.SensitivityScale = 5 / this.MouseSensitivity;
+                settings.SensitivityScale = 5 / (this.MouseSensitivity * this.AdsScalar0);
                 settings.FullScreenMode = this.IsFullScreen;
             }
         }

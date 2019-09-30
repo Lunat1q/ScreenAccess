@@ -25,7 +25,7 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
                 this.AdjustmentCoefficient = CalculateAdjustment(shotNumber, 80);
                 var hAdj = shotNumber > 25 ? -1.5d : 1.5d; 
                 horizontalOffset = hAdj * (Rnd.NextDouble() * 0.5 + 1);
-                verticalOffset = Rnd.NextDouble() * 0.5 + 2d;
+                verticalOffset = Rnd.NextDouble() * 0.5 + 1.8d;
             }
 
             this.MoveMouse(horizontalOffset, verticalOffset);

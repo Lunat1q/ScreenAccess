@@ -15,7 +15,7 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
             if (shotNumber > notOffsettingDelay)
             {
                 this.AdjustmentCoefficient = CalculateAdjustment(shotNumber, 40);
-                var horizontalOffset = Rnd.NextDouble() * 1 * 2 - 1;
+                var horizontalOffset = Rnd.NextDouble() * 2 - 1;
                 var verticalOffset = Rnd.NextDouble() + 5.5d;
                 this.MoveMouse(horizontalOffset, verticalOffset);
             }

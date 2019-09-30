@@ -1,6 +1,9 @@
 ﻿using System.ComponentModel;
+using System.Globalization;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Threading;
@@ -16,13 +19,15 @@ namespace TiqSoft.ScreenAssistant.Controllers
     {
         private static PatternTestController _instance;
         private bool _running;
-        private int _prevX;
-        private int _prevY;
-        private const int CanvasHeight = 400;
-        private const int CanvasWidth = 400;
-        private const int ZoomFactor = 3;
+        private float _prevX;
+        private float _prevY;
+        private const int CANVAS_HEIGHT = 400;
+        private const int CANVAS_WIDTH = 400;
+        private float _zoomFactor = 3;
 #pragma warning disable 649
         private readonly TextBlock _counterBlock;
+        private readonly TextBlock _zoomFactorBlock;
+        private StackPanel _panel;
 #pragma warning restore 649
         private int _shotNumber = 0;
 
@@ -33,42 +38,64 @@ namespace TiqSoft.ScreenAssistant.Controllers
             this.HotKeysController.BindUpToAction(KeyModifier.Ctrl, 'P', this.Toggle);
             this.HotKeysController.BindUpToAction(KeyModifier.Ctrl, 'N', this.NewRecording);
             this.HotKeysController.Start(true);
-            this.Canvas = new Canvas { Width = CanvasHeight, Height = CanvasWidth };
+            this.Canvas = new Canvas { Width = CANVAS_HEIGHT, Height = CANVAS_WIDTH };
+            this.Canvas.MouseWheel += this.CanvasOnMouseWheel;
             this._counterBlock = new TextBlock();
+            this._zoomFactorBlock = new TextBlock { HorizontalAlignment = HorizontalAlignment.Right, VerticalAlignment = VerticalAlignment.Bottom};
+            this._panel = new StackPanel { Orientation = Orientation.Vertical };
+            this._panel.Children.Add(this._counterBlock);
+            this._panel.Children.Add(this._zoomFactorBlock);
             this.NewRecording();
 #endif
+        }
+
+        private void CanvasOnMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            this._zoomFactor += e.Delta > 0 ? 0.1f : -0.1f;
+            if (this._zoomFactor < 1)
+            {
+                this._zoomFactor = 1;
+            }
+
+            this.UpdateZoomFactor();
+        }
+
+        private void UpdateZoomFactor()
+        {
+            this._zoomFactorBlock.Text = this._zoomFactor.ToString("N1");
         }
 
         private void NewRecording()
         {
             this.Canvas.Children.Clear();
-            this.Canvas.Children.Add(this._counterBlock);
+            this.Canvas.Children.Add(this._panel);
+            this.UpdateZoomFactor();
             this._shotNumber = 0;
             this._counterBlock.Text = this._shotNumber.ToString();
-            this._prevX = CanvasWidth / 2;
-            this._prevY = CanvasHeight / 2;
+            this._prevX = CANVAS_WIDTH / 2;
+            this._prevY = CANVAS_HEIGHT / 2;
             var xAxis = new Line
             {
                 Width = 2,
-                Height = CanvasHeight,
+                Height = CANVAS_HEIGHT,
                 Stroke = Brushes.DimGray,
                 StrokeThickness = 2,
                 X1 = 0,
                 X2 = 0,
                 Y1 = 0,
-                Y2 = CanvasHeight
+                Y2 = CANVAS_HEIGHT
             };
             this.Canvas.Children.Add(xAxis);
             Canvas.SetLeft(xAxis, this._prevX - 1);
             Canvas.SetTop(xAxis, 0);
             var yAxis = new Line
             {
-                Width = CanvasWidth,
+                Width = CANVAS_WIDTH,
                 Height = 2,
                 Stroke = Brushes.DimGray,
                 StrokeThickness = 2,
                 X1 = 0,
-                X2 = CanvasWidth,
+                X2 = CANVAS_WIDTH,
                 Y1 = 0,
                 Y2 = 0
             };
@@ -124,8 +151,8 @@ namespace TiqSoft.ScreenAssistant.Controllers
 
         private void WeaponOnMouseMoved(object sender, MouseMovedEventArgs args)
         {
-            var x = this._prevX - args.X * ZoomFactor;
-            var y = this._prevY - args.Y * ZoomFactor;
+            var x = this._prevX - args.X * this._zoomFactor;
+            var y = this._prevY - args.Y * this._zoomFactor;
             this.Dispatcher.Invoke(() =>
             {
                 this._counterBlock.Text = (++this._shotNumber).ToString();
