@@ -1,4 +1,6 @@
-﻿using System.Reflection;
+﻿using System;
+using System.IO;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -11,9 +13,12 @@ namespace TiqSoft.ScreenAssistant.Builders
 {
     internal class ScreenAssistantSettingsBuilder : SettingsAutoUI
     {
-        internal ScreenAssistantSettingsBuilder(object settingsClass) : base(settingsClass)
+        private readonly ScreenAssistantSettings _settingsClass;
+        internal ScreenAssistantSettingsBuilder(ScreenAssistantSettings settingsClass) : base(settingsClass)
         {
+            this._settingsClass = settingsClass;
         }
+
         protected override UIElement CreatePropertyUiElement(TextBlock labelBlock, PropertyInfo prop)
         {
             if (prop.Name.Equals(nameof(ScreenAssistantSettings.SelectedGameName)))
@@ -40,6 +45,27 @@ namespace TiqSoft.ScreenAssistant.Builders
             cb.SetBinding(Selector.SelectedValueProperty, valueBinding);
 
             return cb;
+        }
+
+
+        protected override void AfterBuild(Grid grid)
+        {
+            var label = CreateLabel("Detect settings from config:");
+            var autoDetect = CreateButton("Detect");
+            autoDetect.Click += AutoDetectOnClick;
+            grid.RowDefinitions.Add(new RowDefinition());
+            Grid.SetColumn(autoDetect, 1);
+            Grid.SetRow(autoDetect, grid.RowDefinitions.Count - 1);
+            Grid.SetRow(label, grid.RowDefinitions.Count - 1);
+            grid.Children.Add(autoDetect);
+            grid.Children.Add(label);
+        }
+
+        private void AutoDetectOnClick(object sender, RoutedEventArgs e)
+        {
+            var settingsReader = GamesHelper.GetSettingsReaderByGameName(this._settingsClass.SelectedGameName);
+            settingsReader.UpdateSettings(this._settingsClass);
+            this.Close();
         }
     }
 }
