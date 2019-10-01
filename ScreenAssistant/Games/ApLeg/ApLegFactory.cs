@@ -112,6 +112,7 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg
                 case WeaponAL.EVA8Auto:
                 case WeaponAL.Mozambique:
                 case WeaponAL.P2020:
+                case WeaponAL.ChargedRifle:
                     result = new RegularAdjustmentWeapon(inGameName, 2, recognizedName, numOfMods);
                     break;
                 default:
