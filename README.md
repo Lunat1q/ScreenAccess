@@ -16,19 +16,8 @@ If you really like this project, feel free to buy pizza🍕 or 🍻 for devs.
 - [x] 1920x1080
 
 
-#### Current Apex Legends weapon with unique anti-recoil logic:
-- [x] Alternator
-- [x] Devotion
-- [x] Flatline
-- [x] Havoc
-- [x] Hemlok
-- [x] Prowler
-- [x] R99
-- [x] R301
-- [x] RE45
-- [x] L-Star
-
-Other weapon have generic logic or no correction at all for weapons like `Longbow`, `Peacekeeper`, `Wingman`...
+#### All weapons that require an anti-recoil logic are supported now!
+##### Some weapons are not `laser-like` explicitly for the safety purpose, if you want anti-recoil to be more precise `(and you are not affraid of bad)`, please fork the project and change weapon logic in dedicated file.
 
 #### Extra Info:
 
