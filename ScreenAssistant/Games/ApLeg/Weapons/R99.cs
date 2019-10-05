@@ -11,7 +11,7 @@
         {
             this.AdjustmentCoefficient = CalculateAdjustment(shotNumber, 16);
             var horizontalOffset = Rnd.NextDouble() * -1 - 1;
-            var verticalOffset = Rnd.NextDouble() * 2 + 6;
+            var verticalOffset = Rnd.NextDouble() + 7.5;
             this.MoveMouse(horizontalOffset, verticalOffset);
 
             return this.GetAdjustmentTime(1d);
