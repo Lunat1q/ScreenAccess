@@ -17,7 +17,7 @@ If you really like this project, feel free to buy pizza🍕 or 🍻 for devs.
 
 
 #### All weapons that require an anti-recoil logic are supported now!
-##### Some weapons are not `laser-like` explicitly for the safety purpose, if you want anti-recoil to be more precise `(and you are not affraid of bad)`, please fork the project and change weapon logic in dedicated file.
+##### Some weapons are not `laser-like` explicitly for the safety purpose, if you want anti-recoil to be more precise `(and you are not affraid of ban)`, please fork the project and change weapon logic in dedicated file.
 
 #### Extra Info:
 
