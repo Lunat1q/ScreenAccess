@@ -25,3 +25,6 @@ If you really like this project, feel free to buy pizza🍕 or 🍻 for devs.
 
 - [UnknownCheats thread](https://www.unknowncheats.me/forum/apex-legends/334760-apex-legends-recoil.html)
 
+#### Is it safe to use? 
+No idea, but I use it, and I've made everything possible from my side to make it as safe as possible.
+
