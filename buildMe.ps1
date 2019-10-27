@@ -25,5 +25,7 @@ if (!(Test-Path $vsPath))
 	}
 }
 
-Start-Process -FilePath $vsPath -ArgumentList "/t:Build /p:Configuration=Release"
+nuget restore
+
+Start-Process -FilePath $vsPath -ArgumentList "/Restore /t:Build /p:Configuration=Release build.proj"
 explorer .\TiqLauncher.ScreenAssistant\bin\Release

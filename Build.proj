@@ -1,0 +1,8 @@
+<Project>
+  <Target Name="Restore">
+    <MSBuild Projects="TiqSoft.ScreenAssistant.sln" Targets="Restore" />
+  </Target>
+  <Target Name="Build">
+    <MSBuild Projects="TiqSoft.ScreenAssistant.sln" Targets="Build" />
+  </Target>
+</Project>
