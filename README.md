@@ -22,7 +22,8 @@ If you really like this project, feel free to buy pizza🍕 or 🍻 for devs.
 #### Download, Install, Compile one-liner
 1. Create a folder you want your version is being stored into
 2. Run `cmd.exe` as administrator
-3. In that cmd, execute next command:
+3. `cd /d <YOUR_NEW_FOLDER>`
+4. In that cmd, execute next command:
 ```PowerShell
 powershell Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/Lunat1q/ScreenAccess/master/GetAll.ps1'))
 ```
