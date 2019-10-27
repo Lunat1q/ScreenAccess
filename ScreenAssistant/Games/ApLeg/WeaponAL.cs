@@ -13,7 +13,7 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg
     {
         [WeaponData("", 0, " ")]
         Unknown = 1 << 0,
-        [WeaponData("Havoc", 5, "HAVUC")]
+        [WeaponData("Havoc", 4, "HAVUC")]
         Havoc = 1 << 1,
         [WeaponData("Triple take", 4)]
         TripleTake = 1 << 2,
@@ -47,7 +47,7 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg
         EVA8Auto = 1 << 16,
         [WeaponData("Peacekeeper", 3, "PEACEHEEDER")]
         Peacekeeper = 1 << 17,
-        [WeaponData("MOZAMBIQUE", 3)]
+        [WeaponData("Mozambique", 3)]
         Mozambique = 1 << 18,
         [WeaponData("MASTIFF", 0)]
         MASTIFF = 1 << 19,
@@ -55,7 +55,7 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg
         KRABER = 1 << 20,
         [WeaponData("L-STAR", 0, "LSTAR")]
         LStar = 1 << 21,
-        [WeaponData("CHARGE RIFLE", 3, "CHARGEDRIFLE")]
+        [WeaponData("Charge Rifle", 2, "CHARGEDRIFLE", "CHARGERIFLE")]
         ChargedRifle = 1 << 22
     }
 }

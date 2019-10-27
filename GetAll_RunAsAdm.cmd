@@ -1,0 +1,1 @@
+powershell .\GetAll.ps1
