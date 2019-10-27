@@ -9,6 +9,7 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.We
 
 choco install git.install -y
 choco install visualstudio2019buildtools -y
+choco install nuget.commandline -y
 
 if (!($cloned))
 {
