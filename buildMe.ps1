@@ -25,6 +25,8 @@ if (!(Test-Path $vsPath))
 	}
 }
 
+git pull
+
 nuget restore
 
 Start-Process -FilePath $vsPath -ArgumentList "/Restore /p:Configuration=Release build.proj" -Wait

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Threading.Tasks;
 using IronOcr;
 using TiqSoft.ScreenAssistant.ScreenInfoRecognition.Logger;
 
@@ -75,7 +76,7 @@ namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition.Recognizers.ApexLegends
             return db;
         }
 
-        public string TestWeapons()
+        public async Task<string> TestWeapons()
         {
             this._logger?.NewSnapshot();
             var w1Img = GetWeapon1Image(FullScreenMode);
@@ -92,7 +93,7 @@ namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition.Recognizers.ApexLegends
                 db.ToBitmap().SaveTestImage();
             }
 
-            return WeaponImageToString(w1Img) + WeaponImageToString(w2Img);
+            return (await WeaponImageToString(w1Img)) + (await WeaponImageToString(w2Img));
         }
 
         public int GetActiveWeapon()
@@ -106,31 +107,31 @@ namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition.Recognizers.ApexLegends
             this._brightnessAdj = brightnessScale;
         }
 
-        public string GetWeaponFromScreen(int no)
+        public async Task<string> GetWeaponFromScreen(int no)
         {
             switch (no)
             {
                 case 1:
                     _logger?.NewSnapshot();
-                    return GetWeapon1FromScreen(FullScreenMode);
+                    return await GetWeapon1FromScreen(FullScreenMode);
                 case 2:
-                    return GetWeapon2FromScreen(FullScreenMode);
+                    return await GetWeapon2FromScreen(FullScreenMode);
                 default:
                     throw new ArgumentOutOfRangeException(nameof(no));
             }
         }
 
-        private string GetWeapon1FromScreen(bool fullScreen)
+        private async Task<string> GetWeapon1FromScreen(bool fullScreen)
         {
-            return WeaponImageToString(GetWeapon1Image(fullScreen));
+            return await WeaponImageToString(GetWeapon1Image(fullScreen));
         }
 
-        private string GetWeapon2FromScreen(bool fullScreen)
+        private async Task<string> GetWeapon2FromScreen(bool fullScreen)
         {
-            return WeaponImageToString(GetWeapon2Image(fullScreen));
+            return await WeaponImageToString(GetWeapon2Image(fullScreen));
         }
 
-        private string WeaponImageToString(Image img)
+        private async Task<string> WeaponImageToString(Image img)
         {
             var result = "";
             try
@@ -147,6 +148,7 @@ namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition.Recognizers.ApexLegends
                     var pixelsCoefficient = db.GetMeaningfulPixelsCoefficient;
                     if (pixelsCoefficient < 0.6 && pixelsCoefficient > 0.01)
                     {
+                        await Task.Delay(1500);
                         var ocr = new AdvancedOcr
                         {
                             CleanBackgroundNoise = true,
@@ -227,9 +229,9 @@ namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition.Recognizers.ApexLegends
 
     public interface IWeaponRecognizer
     {
-        string GetWeaponFromScreen(int no);
+        Task<string> GetWeaponFromScreen(int no);
 
-        string TestWeapons();
+        Task<string> TestWeapons();
 
         int GetActiveWeapon();
 

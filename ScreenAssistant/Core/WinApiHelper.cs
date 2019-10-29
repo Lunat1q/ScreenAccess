@@ -11,7 +11,7 @@ namespace TiqSoft.ScreenAssistant.Core
     {
         private static IntPtr _prevPoint;
         private static string _prevProcess = string.Empty;
-        private static Dictionary<IntPtr, WindowInfo> _windowsCache = new Dictionary<IntPtr, WindowInfo>(); 
+        private static readonly Dictionary<IntPtr, WindowInfo> _windowsCache = new Dictionary<IntPtr, WindowInfo>(); 
 
 
         [DllImport("user32.dll")]

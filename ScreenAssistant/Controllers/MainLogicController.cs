@@ -244,10 +244,10 @@ namespace TiqSoft.ScreenAssistant.Controllers
                     {
                         for (var i = 1; i <= this._weaponFactory.NumberOfWeapons; i++)
                         {
-                            var weaponRecognizedName = this._weaponFactory.Recognizer.GetWeaponFromScreen(i);
+                            var weaponRecognizedName = await this._weaponFactory.Recognizer.GetWeaponFromScreen(i);
+                            var currentWeapon = this.Weapons[i - 1];
                             if (!weaponRecognizedName.Empty())
                             {
-                                var currentWeapon = this.Weapons[i - 1];
                                 var newDetectedWeapon = this._weaponFactory.FromRecognizedString(
                                     weaponRecognizedName,
                                     currentWeapon,
@@ -264,11 +264,23 @@ namespace TiqSoft.ScreenAssistant.Controllers
                                         }
                                     );
                                 }
+                                else
+                                {
+                                    currentWeapon.Refresh();
+                                }
+                            }
+                            else if (currentWeapon.IsActive && !currentWeapon.IsDefault() && currentWeapon.PossiblyOutdated()) //attempt to auto-reset a weapon
+                            {
+                                this._dispatcher.Invoke(() =>
+                                    {
+                                        return this.Weapons[i - 1] = this._weaponFactory.Default();
+                                    }
+                                );
                             }
                         }
                     }
 
-                    await Task.Delay(3000, token);
+                    await Task.Delay(500, token);
                 }
             }
             catch (TaskCanceledException)

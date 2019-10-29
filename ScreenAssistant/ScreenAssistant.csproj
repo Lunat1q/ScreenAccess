@@ -18,12 +18,13 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
+    <DebugType>none</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DebugSymbols>false</DebugSymbols>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>icon.ico</ApplicationIcon>
@@ -31,7 +32,7 @@
     <RootNamespace>TiqSoft.ScreenAssistant</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Costura.Fody" Version="3.3.3.0" >	
+    <PackageReference Include="Costura.Fody" Version="3.3.3.0">	
       <HintPath Condition="Exists('..\packages\Costura.Fody.3.3.3\lib\')">..\packages\Costura.Fody.3.3.3\lib\net40\Costura.dll</HintPath>
       <HintPath Condition="Exists('..\..\packages\Costura.Fody.3.3.3\lib\')">..\..\packages\Costura.Fody.3.3.3\lib\net40\Costura.dll</HintPath>
 	</PackageReference>

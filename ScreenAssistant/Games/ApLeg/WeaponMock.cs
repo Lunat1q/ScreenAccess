@@ -59,5 +59,15 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg
         {
             this.MouseMoved?.Invoke(this, args);
         }
+
+        public bool PossiblyOutdated()
+        {
+            return false;
+        }
+
+        public void Refresh()
+        {
+           // nothing
+        }
     }
 }
