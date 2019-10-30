@@ -44,6 +44,11 @@ if (!(Test-Path $vsPath))
 
 nuget restore
 
-Start-Process -FilePath $vsPath -ArgumentList "/Restore /p:Configuration=Release build.proj" -Wait 60000
-Start-Process -FilePath $vsPath -ArgumentList "/t:Build /p:Configuration=Release build.proj" -Wait 60000
-explorer .\TiqLauncher.ScreenAssistant\bin\Release
+$restoreProc = Start-Process -FilePath $vsPath -ArgumentList "/Restore /p:Configuration=Release build.proj"
+$restoreProc | Wait-Process -Timeout 60 -ErrorAction SilentlyContinue
+$buildProc = Start-Process -FilePath $vsPath -ArgumentList "/t:Build /p:Configuration=Release build.proj"
+$buildProc | Wait-Process -Timeout 120 -ErrorAction SilentlyContinue
+if (Test-Path "TiqLauncher.ScreenAssistant\bin\Release")
+{
+	explorer .\TiqLauncher.ScreenAssistant\bin\Release
+}
