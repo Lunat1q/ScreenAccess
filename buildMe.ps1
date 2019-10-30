@@ -4,6 +4,8 @@ function Test-RegistryValue($path, $name)
     $key -and $null -ne $key.GetValue($name, $null)
 }
 
+git pull
+
 $vsPath = "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin\MSBuild.exe"
 if (!(Test-Path $vsPath))
 {
@@ -34,8 +36,6 @@ if (!(Test-Path $vsPath))
 		}
 	}
 }
-
-git pull
 
 nuget restore
 

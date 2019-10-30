@@ -1,1 +1,1 @@
-powershell .\buildMe.ps1
+powershell Set-ExecutionPolicy Bypass -Scope Process -Force; .\buildMe.ps1
