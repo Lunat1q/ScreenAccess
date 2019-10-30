@@ -17,7 +17,7 @@ choco install netfx-4.6.2-devpack -y
 
 if (!($cloned))
 {
-	git clone "https://github.com/Lunat1q/ScreenAccess"
+	git clone "https://github.com/Lunat1q/ScreenAccess" -b "weapons_test"
 	cd "ScreenAccess"
 }
 
