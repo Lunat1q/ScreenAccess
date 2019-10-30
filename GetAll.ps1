@@ -11,7 +11,6 @@ choco install git.install -y
 choco install visualstudio2019buildtools -y --package-parameters "--includeRecommended --passive --locale en-US"
 choco install nuget.commandline -y
 choco install dotnetcore-sdk -y
-choco install netfx-4.5-devpack -y
 choco install netfx-4.5.2-devpack -y
 choco install netfx-4.6.2-devpack -y
 
