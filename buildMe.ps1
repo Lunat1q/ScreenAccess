@@ -30,7 +30,7 @@ if (!(Test-Path $vsPath))
 		{
 			$vsPath = $vsToolsPath
 		}
-		else if (Test-Path $vsToolsPath)
+		elseif (Test-Path $vsToolsPath)
 		{
 			$vsPath = $vsToolsPath32
 		}
