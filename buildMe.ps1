@@ -25,9 +25,14 @@ if (!(Test-Path $vsPath))
 	else
 	{
 		$vsToolsPath = "C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\MSBuild\Current\Bin\MSBuild.exe"
+		$vsToolsPath32 = "C:\Program Files\Microsoft Visual Studio\2019\BuildTools\MSBuild\Current\Bin\MSBuild.exe"
 		if (Test-Path $vsToolsPath)
 		{
 			$vsPath = $vsToolsPath
+		}
+		else if (Test-Path $vsToolsPath)
+		{
+			$vsPath = $vsToolsPath32
 		}
 		else
 		{

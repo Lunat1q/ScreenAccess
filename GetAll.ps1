@@ -27,6 +27,8 @@ if (!($cloned))
 	}
 }
 
+git pull
+
 git submodule init
 git submodule update
 & ".\buildMe_Adm.cmd"
