@@ -11,28 +11,29 @@ If you really like this project, feel free to buy pizza🍕 or 🍻 for devs.
 <p align="center"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=SH4N4548RNR2E&source=url"><img src="https://www.paypalobjects.com/en_US/RU/i/btn/btn_donateCC_LG.gif" /></a></p>
 
 
-
 #### Currently tested resolutions: 
 - [x] 1920x1080
+- [x] 1440p
 
 
-#### Current Apex Legends weapon with unique anti-recoil logic:
-- [x] Alternator
-- [x] Devotion
-- [x] Flatline
-- [x] Havoc
-- [x] Hemlok
-- [x] Prowler
-- [x] R99
-- [x] R301
-- [x] RE45
-- [x] L-Star
+#### All weapons that require an anti-recoil logic are supported now!
+##### Some weapons are not `laser-like` explicitly for the safety purpose, if you want anti-recoil to be more precise `(and you are not affraid of ban)`, please fork the project and change weapon logic in dedicated file.
 
-Other weapon have generic logic or no correction at all for weapons like `Longbow`, `Peacekeeper`, `Wingman`...
+#### Download, Install, Compile one-liner
+1. Create a folder you want your version is being stored into
+2. Run `cmd.exe` as administrator
+3. `cd /d "<YOUR_NEW_FOLDER_PATH>"`
+4. In that cmd, execute next command:
+```PowerShell
+powershell Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/Lunat1q/ScreenAccess/master/GetAll.ps1'))
+```
 
 #### Extra Info:
 
 - Current version will create admin only access folder inside current directory after build, do not open it, because it will compromise the EAC protection. If you still did it - delete compiled sources and rebuild.
 
 - [UnknownCheats thread](https://www.unknowncheats.me/forum/apex-legends/334760-apex-legends-recoil.html)
+
+#### Is it safe to use? 
+No idea, but I use it, and I've made everything possible from my side to make it as safe as possible.
 
