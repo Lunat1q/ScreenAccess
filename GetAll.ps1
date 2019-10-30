@@ -9,6 +9,8 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.We
 
 choco install git.install -y
 choco install visualstudio2019buildtools -y --package-parameters "--passive --locale en-US --add Microsoft.VisualStudio.Workload.ManagedDesktopBuildTools;includeRecommended;Microsoft.VisualStudio.Workload.NetCoreBuildTools;Microsoft.VisualStudio.Workload.MSBuildTools"
+choco install visualstudio2019-workload-netcorebuildtools -y
+choco install visualstudio2019-workload-manageddesktopbuildtools -y
 choco install nuget.commandline -y
 choco install dotnetcore-sdk -y
 choco install netfx-4.5.2-devpack -y
