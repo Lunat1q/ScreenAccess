@@ -16,7 +16,7 @@ if (!(Test-Path $vsPath))
 		$vs17Path = [System.IO.Path]::Combine($vs17Path, "MSBuild\15.0\Bin\amd64\MSBuild.exe");
 	}
 	
-	if ($vs17Path -and Test-Path $vs17Path)
+	if ($vs17Path -and (Test-Path $vs17Path))
 	{
 		$vsPath = $vs17Path
 	}
