@@ -10,8 +10,8 @@ namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition
 
         public WeaponDataAttribute(string name, int numberOfMods, params string[] extraRecognitionNames)
         {
-            Name = name;
-            NumberOfMods = numberOfMods;
+            this.Name = name;
+            this.NumberOfMods = numberOfMods;
             this.ExtraRecognitionNames = extraRecognitionNames ?? new string[0];
         }
     }
