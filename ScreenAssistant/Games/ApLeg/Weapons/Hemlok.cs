@@ -2,7 +2,6 @@
 // ReSharper disable IdentifierTypo
 
 using System;
-using System.Diagnostics;
 
 namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
 {

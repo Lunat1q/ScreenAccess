@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using TiqSoft.ScreenAssistant.ScreenInfoRecognition;
-using TiqUtils.Wpf.Screen;
 
 namespace TiqSoft.ScreenAssistant.Core
 {

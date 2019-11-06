@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-
-namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
+﻿namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
 {
     internal sealed class LStar : UniqueLogicWeapon
     {

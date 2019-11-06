@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Media;
-using TiqSoft.ScreenAssistant.Games.ApLeg;
 using TiqSoft.ScreenAssistant.ScreenInfoRecognition.Recognizers.ApexLegends;
 
 namespace TiqSoft.ScreenAssistant.Helpers.Converters
