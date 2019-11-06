@@ -11,7 +11,7 @@ namespace TiqSoft.ScreenAssistant.Core
     {
         private static IntPtr _prevPoint;
         private static string _prevProcess = string.Empty;
-        private static readonly Dictionary<IntPtr, WindowInfo> _windowsCache = new Dictionary<IntPtr, WindowInfo>(); 
+        private static readonly Dictionary<IntPtr, WindowInfo> WindowsCache = new Dictionary<IntPtr, WindowInfo>(); 
 
 
         [DllImport("user32.dll")]
@@ -65,12 +65,12 @@ namespace TiqSoft.ScreenAssistant.Core
         {
             var pos = GetCursorPosition();
             var currentWindowId = GetForegroundWindow();
-            if (!_windowsCache.TryGetValue(currentWindowId, out var windowInfo))
+            if (!WindowsCache.TryGetValue(currentWindowId, out var windowInfo))
             {
                 var windowRect = new ScreenCapture.User32.RECT();
                 ScreenCapture.User32.GetWindowRect(currentWindowId, ref windowRect);
                 windowInfo = new WindowInfo(windowRect); //, (ushort)DpiHelper.GetDpiForWindow(currentWindowId));
-                _windowsCache.Add(currentWindowId, windowInfo);
+                WindowsCache.Add(currentWindowId, windowInfo);
             }
 
             return windowInfo.IsCursorAtTheCenter(pos);
@@ -78,7 +78,7 @@ namespace TiqSoft.ScreenAssistant.Core
 
         private class WindowInfo // DPI was not required after all
         {
-            private const int OFFSET_FRACTION = 20;
+            private const int OffsetFraction = 20;
             // private const ushort DEFAULT_DPI = 96;
 
             private readonly ushort _offsetLimitX;
@@ -91,8 +91,8 @@ namespace TiqSoft.ScreenAssistant.Core
             {
                 var height = rect.bottom - rect.top;
                 var width = rect.right - rect.left;
-                this._offsetLimitX = (ushort)(width / OFFSET_FRACTION);
-                this._offsetLimitY = (ushort)(height / OFFSET_FRACTION);
+                this._offsetLimitX = (ushort)(width / OffsetFraction);
+                this._offsetLimitY = (ushort)(height / OffsetFraction);
                 this._windowCenterX = (ushort)(rect.left + width / 2);
                 this._windowCenterY = (ushort)(rect.top + height / 2);
                 //this._dpi = dpi;

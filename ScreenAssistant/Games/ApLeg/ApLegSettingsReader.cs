@@ -18,13 +18,13 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg
     {
         private static readonly Guid FolderIdSavedGames = new Guid("4C5C32FF-BB9D-43b0-B5B4-2D72E54EAAA4");
 
-        private const string STUDIO_NAME = "Respawn";
-        private const string GAME_FOLDER_NAME = "Apex";
-        private const string LOCAL_FOLDER_NAME = "local";
-        private const string PROFILE_FOLDER_NAME = "profile";
-        private const string CONFIG_FILE_NAME = "settings.cfg";
-        private const string VIDEO_CONFIG_FILE_NAME = "videoconfig.txt";
-        private const string PROFILE_CONFIG_FILE_NAME = "profile.cfg";
+        private const string StudioName = "Respawn";
+        private const string GameFolderName = "Apex";
+        private const string LocalFolderName = "local";
+        private const string ProfileFolderName = "profile";
+        private const string ConfigFileName = "settings.cfg";
+        private const string VideoConfigFileName = "videoconfig.txt";
+        private const string ProfileConfigFileName = "profile.cfg";
         
         public void UpdateSettings(ScreenAssistantSettings settings)
         {
@@ -38,13 +38,13 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg
                 return;
             }
 
-            var gameSettingsFolderPath = Path.Combine(path, STUDIO_NAME, GAME_FOLDER_NAME);
+            var gameSettingsFolderPath = Path.Combine(path, StudioName, GameFolderName);
 
-            var localPath = Path.Combine(gameSettingsFolderPath, LOCAL_FOLDER_NAME);
-            var profilePath = Path.Combine(gameSettingsFolderPath, PROFILE_FOLDER_NAME);
-            var settingsFilePath = Path.Combine(localPath, CONFIG_FILE_NAME);
-            var videoConfigFilePath = Path.Combine(localPath, VIDEO_CONFIG_FILE_NAME);
-            var profileConfigFilePath = Path.Combine(profilePath, PROFILE_CONFIG_FILE_NAME);
+            var localPath = Path.Combine(gameSettingsFolderPath, LocalFolderName);
+            var profilePath = Path.Combine(gameSettingsFolderPath, ProfileFolderName);
+            var settingsFilePath = Path.Combine(localPath, ConfigFileName);
+            var videoConfigFilePath = Path.Combine(localPath, VideoConfigFileName);
+            var profileConfigFilePath = Path.Combine(profilePath, ProfileConfigFileName);
             IEnumerable<string> settingsFromFiles = null;
             if (File.Exists(settingsFilePath))
             {

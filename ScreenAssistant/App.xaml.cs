@@ -14,7 +14,7 @@ namespace TiqSoft.ScreenAssistant
         // ReSharper disable once UnusedMember.Local
         private static string CurrentDirectory => Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) ?? throw new InvalidOperationException();
         // ReSharper disable once UnusedMember.Local
-        private const string LAUNCHER_NAME = "TiqLauncher.ScreenAssistant.exe";
+        private const string LauncherName = "TiqLauncher.ScreenAssistant.exe";
 
 #pragma warning disable 1998
         async void AppStartup(object sender, StartupEventArgs e)
