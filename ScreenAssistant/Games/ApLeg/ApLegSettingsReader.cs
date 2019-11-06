@@ -179,7 +179,7 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg
 
             public void UpdateSettings(ScreenAssistantSettings settings)
             {
-                settings.SensitivityScale = 5 / (this.MouseSensitivity * this.AdsScalar0);
+                settings.SensitivityScale = 5 / Math.Max((this.MouseSensitivity * this.AdsScalar0), 0.001f);
                 settings.FullScreenMode = this.IsFullScreen;
             }
         }

@@ -188,14 +188,14 @@ namespace TiqSoft.ScreenAssistant.Controllers
 
 #endregion
 
-#region INotify
+        #region INotify
         public event PropertyChangedEventHandler PropertyChanged;
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-#endregion
+        #endregion
 
         private void Toggle()
         {
@@ -242,42 +242,23 @@ namespace TiqSoft.ScreenAssistant.Controllers
                 {
                     if (this.CheckWindowLock())
                     {
+                        var weaponFound = false;
                         for (var i = 1; i <= this._weaponFactory.NumberOfWeapons; i++)
                         {
                             var weaponRecognizedName = await this._weaponFactory.Recognizer.GetWeaponFromScreen(i);
                             var currentWeapon = this.Weapons[i - 1];
                             if (!weaponRecognizedName.Empty())
                             {
-                                var newDetectedWeapon = this._weaponFactory.FromRecognizedString(
-                                    weaponRecognizedName,
-                                    currentWeapon,
-                                    this._settings.SensitivityScale
-                                );
-
-                                if (!newDetectedWeapon.IsDefault() && !currentWeapon.Equals(newDetectedWeapon))
-                                {
-                                    currentWeapon.IsActive = true;
-                                    var i1 = i;
-                                    this._dispatcher.Invoke(() =>
-                                        {
-                                            return this.Weapons[i1 - 1] = newDetectedWeapon;
-                                        }
-                                    );
-                                }
-                                else
-                                {
-                                    currentWeapon.Refresh();
-                                }
+                                this.UpdateWeaponFromRecognizedName(weaponRecognizedName, currentWeapon, i);
+                                weaponFound = true;
                             }
                             else if (currentWeapon.IsActive && !currentWeapon.IsDefault() && currentWeapon.PossiblyOutdated()) //attempt to auto-reset a weapon
                             {
-                                this._dispatcher.Invoke(() =>
-                                    {
-                                        return this.Weapons[i - 1] = this._weaponFactory.Default();
-                                    }
-                                );
+                                this.SetWeapon(i, this._weaponFactory.Default());
                             }
                         }
+
+                        this.RefreshWeapons(weaponFound);
                     }
 
                     await Task.Delay(500, token);
@@ -291,6 +272,37 @@ namespace TiqSoft.ScreenAssistant.Controllers
             {
                 this.CreateDefaultWeapons();
             }
+        }
+
+        private void UpdateWeaponFromRecognizedName(string weaponRecognizedName, IWeapon currentWeapon, int i)
+        {
+            var newDetectedWeapon = this._weaponFactory.FromRecognizedString(
+                weaponRecognizedName,
+                currentWeapon,
+                this._settings.SensitivityScale
+            );
+
+            if (!newDetectedWeapon.IsDefault() && !currentWeapon.Equals(newDetectedWeapon))
+            {
+                currentWeapon.IsActive = true;
+                this.SetWeapon(i, newDetectedWeapon);
+            }
+        }
+
+        private void RefreshWeapons(bool weaponFound)
+        {
+            if (weaponFound)
+            {
+                foreach (var weapon in this.Weapons)
+                {
+                    weapon.Refresh();
+                }
+            }
+        }
+
+        private void SetWeapon(int i1, IWeapon newDetectedWeapon)
+        {
+            this._dispatcher.Invoke(() => { return this.Weapons[i1 - 1] = newDetectedWeapon; });
         }
 
         private bool CheckWindowLock()
