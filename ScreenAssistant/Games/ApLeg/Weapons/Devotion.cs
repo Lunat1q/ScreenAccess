@@ -13,12 +13,18 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
         {
             double horizontalOffset;
             double verticalOffset;
-            int warmUpShort = this.GetModuleType(4) != WeaponModuleType.Legendary ? 15 : 3;
+            var warmUpShort = 15;
+            var extraVerticalAdjustment = 1;
+            if (this.GetModuleType(4) != WeaponModuleType.Legendary)
+            {
+                warmUpShort = 0;
+                extraVerticalAdjustment = 3;
+            }
             if (shotNumber < warmUpShort)
             {
                 this.AdjustmentCoefficient = CalculateAdjustment(shotNumber, 20);
                 horizontalOffset = Rnd.NextDouble() * 1 + 1;
-                verticalOffset = Rnd.NextDouble() * (2) + 5;
+                verticalOffset = Rnd.NextDouble() * 1 + extraVerticalAdjustment + 5;
             }
             else
             {
