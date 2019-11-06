@@ -45,6 +45,11 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
             }
         }
 
+        public virtual void SetModule(int id, WeaponModuleType moduleType)
+        {
+            this.InstalledModules[id].Type = moduleType;
+        }
+
         public bool IsTheSameWeapon(string weaponName)
         {
             return this.Name.Equals(weaponName, StringComparison.OrdinalIgnoreCase);

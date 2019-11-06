@@ -2,41 +2,70 @@
 
 namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
 {
-    internal sealed class Devotion : UniqueLogicWeapon
+    internal sealed class Devotion : RpsWeaponBased
     {
-        public Devotion(string name, double burstSeconds, string recognizedName, int numOfMods) 
-            : base(name, burstSeconds, recognizedName, numOfMods)
+        private const double DevotionRps = 18d;
+        private const double DevotionChargedRps = 25d;
+        private bool _isCharged = false;
+        public Devotion(string name, string recognizedName, int numOfMods) 
+            : base(name, DevotionRps, recognizedName, numOfMods)
         {
+        }
+
+        public override void SetModule(int id, WeaponModuleType moduleType)
+        {
+            base.SetModule(id, moduleType);
+            if (id == 4)
+            {
+                this._isCharged = moduleType == WeaponModuleType.Legendary;
+                this.Rps = this._isCharged ? DevotionChargedRps : DevotionRps;
+            }
         }
 
         public override double AdjustMouse(int shotNumber)
         {
             double horizontalOffset;
             double verticalOffset;
-            var warmUpShort = 15;
-            var extraVerticalAdjustment = 1;
-            if (this.GetModuleType(4) != WeaponModuleType.Legendary)
+            this.AdjustmentCoefficient = CalculateAdjustment(shotNumber, 80);
+            if (shotNumber <= 10)
             {
-                warmUpShort = 0;
-                extraVerticalAdjustment = 3;
+                horizontalOffset = 0;
+                verticalOffset = Rnd.NextDouble() + 7;
             }
-            if (shotNumber < warmUpShort)
+            else if (shotNumber <= 15)
             {
-                this.AdjustmentCoefficient = CalculateAdjustment(shotNumber, 20);
-                horizontalOffset = Rnd.NextDouble() * 1 + 1;
-                verticalOffset = Rnd.NextDouble() * 1 + extraVerticalAdjustment + 5;
+                verticalOffset = Rnd.NextDouble() + 2;
+                horizontalOffset = Rnd.NextDouble() + 4;
+            }
+            else if (shotNumber <= 18)
+            {
+                verticalOffset = 0;
+                horizontalOffset = Rnd.NextDouble() + 3;
+            }
+            else if (shotNumber <= 20)
+            {
+                verticalOffset = Rnd.NextDouble() + 2;
+                horizontalOffset = 0;
+            }
+            else if (shotNumber <= 22)
+            {
+                verticalOffset = Rnd.NextDouble() + 2;
+                horizontalOffset = -1 * (Rnd.NextDouble() + 1);
+            }
+            else if (shotNumber <= 25)
+            {
+                verticalOffset = Rnd.NextDouble() + 2;
+                horizontalOffset = 0;
             }
             else
             {
-                this.AdjustmentCoefficient = CalculateAdjustment(shotNumber, 80);
-                var hAdj = shotNumber > 25 ? -1.5d : 1.5d; 
-                horizontalOffset = hAdj * (Rnd.NextDouble() * 0.5 + 1);
-                verticalOffset = Rnd.NextDouble() * 0.5 + 1.8d;
+                verticalOffset = Rnd.NextDouble() + 2;
+                horizontalOffset = -1 * (Rnd.NextDouble() + 2);
             }
 
             this.MoveMouse(horizontalOffset, verticalOffset);
 
-            return this.GetAdjustmentTime(1d);
+            return this.GetAdjustmentTime();
         }
     }
 }

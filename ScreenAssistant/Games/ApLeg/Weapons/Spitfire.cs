@@ -2,9 +2,9 @@
 {
     internal sealed class Spitfire : RpsWeaponBased
     {
-        private const double Rps = 12.5;
+        private const double SpitfireRps = 12.5;
         public Spitfire(string name, string recognizedName, int numOfMods) 
-            : base(name, Rps, recognizedName, numOfMods)
+            : base(name, SpitfireRps, recognizedName, numOfMods)
         {
         }
 

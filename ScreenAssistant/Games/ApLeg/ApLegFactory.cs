@@ -77,7 +77,7 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg
                     result = new Havoc(inGameName, 2, recognizedName, numOfMods);
                     break;
                 case WeaponAL.Devotion:
-                    result = new Devotion(inGameName, 2, recognizedName, numOfMods);
+                    result = new Devotion(inGameName, recognizedName, numOfMods);
                     break;
                 case WeaponAL.LStar:
                     result = new LStar(inGameName, 2, recognizedName, numOfMods);
@@ -151,7 +151,7 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg
                 */
                 if (modulesState[i] != WeaponModuleType.None || apexWeapon.InstalledModules[i].Type == WeaponModuleType.Common) 
                 {
-                    apexWeapon.InstalledModules[i].Type = modulesState[i];
+                    apexWeapon.SetModule(i, modulesState[i]);
                 }
             }
         }
