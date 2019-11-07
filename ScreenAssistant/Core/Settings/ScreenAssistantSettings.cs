@@ -29,9 +29,9 @@ namespace TiqSoft.ScreenAssistant.Core.Settings
         private bool _lockToGameWindow = true;
         private bool _fullScreenMode;
         private string _selectedGameName = "Apex Legends";
-        private char _startKey;
-        private KeyModifier _startModifier;
-        private bool _muteSound;
+        private char _startKey = 'K';
+        private KeyModifier _startModifier = KeyModifier.Ctrl;
+        private bool _muteSound = true;
 
         static ScreenAssistantSettings()
         {
