@@ -1,10 +1,6 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using TiqSoft.ScreenAssistant.Builders;
 using TiqSoft.ScreenAssistant.Controllers;
-using TiqSoft.ScreenAssistant.Games;
 using TiqUtils.Wpf.UIBuilders;
 using static TiqSoft.ScreenAssistant.Core.Settings.ScreenAssistantSettings;
 

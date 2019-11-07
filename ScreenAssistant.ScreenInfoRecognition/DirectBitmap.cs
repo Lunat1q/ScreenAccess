@@ -16,31 +16,31 @@ namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition
 
         protected GCHandle BitsHandle { get; }
 
-        public float GetMeaningfulPixelsCoefficient => (float)PixelsWithData / (Height * Width);
+        public float GetMeaningfulPixelsCoefficient => (float) this.PixelsWithData / (this.Height * this.Width);
 
         internal int PixelsWithData { get; set; }
 
         public DirectBitmap(int width, int height)
         {
-            Width = width;
-            Height = height;
-            Bits = new int[width * height];
-            BitsHandle = GCHandle.Alloc(Bits, GCHandleType.Pinned);
-            Bitmap = new Bitmap(width, height, width * 4, PixelFormat.Format32bppPArgb, BitsHandle.AddrOfPinnedObject());
+            this.Width = width;
+            this.Height = height;
+            this.Bits = new int[width * height];
+            this.BitsHandle = GCHandle.Alloc(this.Bits, GCHandleType.Pinned);
+            this.Bitmap = new Bitmap(width, height, width * 4, PixelFormat.Format32bppPArgb, this.BitsHandle.AddrOfPinnedObject());
         }
 
         public void SetPixel(int x, int y, Color color)
         {
-            int index = x + (y * Width);
+            int index = x + (y * this.Width);
             int col = color.ToArgb();
 
-            Bits[index] = col;
+            this.Bits[index] = col;
         }
 
         public Color GetPixel(int x, int y)
         {
-            int index = x + (y * Width);
-            int col = Bits[index];
+            int index = x + (y * this.Width);
+            int col = this.Bits[index];
             Color result = Color.FromArgb(col);
 
             return result;
@@ -48,41 +48,41 @@ namespace TiqSoft.ScreenAssistant.ScreenInfoRecognition
 
         internal Bitmap ToBitmap()
         {
-            return (Bitmap)Bitmap.Clone();
+            return (Bitmap) this.Bitmap.Clone();
         }
 
         public void Dispose()
         {
-            if (Disposed) return;
-            Disposed = true;
-            Bitmap.Dispose();
-            BitsHandle.Free();
+            if (this.Disposed) return;
+            this.Disposed = true;
+            this.Bitmap.Dispose();
+            this.BitsHandle.Free();
         }
 
         public Color GetDominantColor()
         {
             long[] total = {0, 0, 0};
-            for (int i = 0; i < Width; i++)
+            for (int i = 0; i < this.Width; i++)
             {
-                for (int j = 0; j < Height; j++)
+                for (int j = 0; j < this.Height; j++)
                 {
-                    int index = i + j * Width;
-                    var color = Color.FromArgb(Bits[index]);
+                    int index = i + j * this.Width;
+                    var color = Color.FromArgb(this.Bits[index]);
                     total[0] += color.R;
                     total[1] += color.G;
                     total[2] += color.B;
                 }
             }
 
-            total[0] /= Width * Height;
-            total[1] /= Width * Height;
-            total[2] /= Width * Height;
+            total[0] /= this.Width * this.Height;
+            total[1] /= this.Width * this.Height;
+            total[2] /= this.Width * this.Height;
             return Color.FromArgb((int)total[0], (int)total[1], (int)total[2]);
         }
 
         public override int GetHashCode()
         {
-            return Bits.Aggregate(Bits.Length, (current, t) => unchecked(current * 31 + t));
+            return this.Bits.Aggregate(this.Bits.Length, (current, t) => unchecked(current * 31 + t));
         }
     }
 }

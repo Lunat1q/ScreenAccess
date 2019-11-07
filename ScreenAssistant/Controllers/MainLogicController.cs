@@ -2,6 +2,7 @@
 using GlobalHook.Event;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -70,7 +71,7 @@ namespace TiqSoft.ScreenAssistant.Controllers
             this._dispatcher = dispatcher;
             this._settings = logicSettings;
             this.HotKeysController = new BindingController();
-            this.HotKeysController.BindUpToAction(KeyModifier.Ctrl, 'K', this.Toggle);
+            this.SetToggleBinding();
             this.HotKeysController.Start(true);
             this.CurrentVersionInfo = Assembly.GetExecutingAssembly().GetName().Version.ToString();
             this.TestController = ImageTestController.Instance;
@@ -103,6 +104,17 @@ namespace TiqSoft.ScreenAssistant.Controllers
                     weapon.SetSensitivityScale(this._settings.SensitivityScale);
                 }
             }
+            else if (e.PropertyName.Equals(nameof(this._settings.StartModifier)) ||
+                     e.PropertyName.Equals(nameof(this._settings.StartKey)))
+            {
+                this.SetToggleBinding();
+            }
+        }
+
+        private void SetToggleBinding()
+        {
+            this.HotKeysController.UnBindKeyUpAction(this.Toggle);
+            this.HotKeysController.BindUpToAction(this._settings.StartModifier, this._settings.StartKey, this.Toggle);
         }
 
         public MainLogicController() : this(new ScreenAssistantSettings(), null)
@@ -188,23 +200,37 @@ namespace TiqSoft.ScreenAssistant.Controllers
 
 #endregion
 
-#region INotify
+        #region INotify
         public event PropertyChangedEventHandler PropertyChanged;
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-#endregion
+        #endregion
 
         private void Toggle()
         {
             if (this.Enabled)
             {
+                if (this._settings.MuteSound.Not())
+                {
+                    using (var p = new System.Media.SoundPlayer(Resources.off))
+                    {
+                        p.Play();
+                    }
+                }
                 this.Stop();
             }
             else
             {
+                if (this._settings.MuteSound.Not())
+                {
+                    using (var p = new System.Media.SoundPlayer(Resources.on))
+                    {
+                        p.Play();
+                    }
+                }
                 this.Start();
             }
         }
@@ -242,33 +268,22 @@ namespace TiqSoft.ScreenAssistant.Controllers
                 {
                     if (this.CheckWindowLock())
                     {
+                        var weaponFound = false;
                         for (var i = 1; i <= this._weaponFactory.NumberOfWeapons; i++)
                         {
-                            var weaponRecognizedName = this._weaponFactory.Recognizer.GetWeaponFromScreen(i);
+                            var weaponRecognizedName = await this._weaponFactory.Recognizer.GetWeaponFromScreen(i);
+                            var currentWeapon = this.Weapons[i - 1];
                             if (!weaponRecognizedName.Empty())
                             {
-                                var currentWeapon = this.Weapons[i - 1];
-                                var newDetectedWeapon = this._weaponFactory.FromRecognizedString(
-                                    weaponRecognizedName,
-                                    currentWeapon,
-                                    this._settings.SensitivityScale
-                                );
-
-                                if (!newDetectedWeapon.IsDefault() && !currentWeapon.Equals(newDetectedWeapon))
-                                {
-                                    currentWeapon.IsActive = true;
-                                    var i1 = i;
-                                    this._dispatcher.Invoke(() =>
-                                        {
-                                            return this.Weapons[i1 - 1] = newDetectedWeapon;
-                                        }
-                                    );
-                                }
+                                this.UpdateWeaponFromRecognizedName(weaponRecognizedName, currentWeapon, i - 1);
+                                weaponFound = true;
                             }
                         }
+
+                        this.RefreshWeapons(weaponFound);
                     }
 
-                    await Task.Delay(3000, token);
+                    await Task.Delay(500, token);
                 }
             }
             catch (TaskCanceledException)
@@ -281,9 +296,47 @@ namespace TiqSoft.ScreenAssistant.Controllers
             }
         }
 
+        private void UpdateWeaponFromRecognizedName(string weaponRecognizedName, IWeapon currentWeapon, int i)
+        {
+            var newDetectedWeapon = this._weaponFactory.FromRecognizedString(
+                weaponRecognizedName,
+                currentWeapon,
+                this._settings.SensitivityScale
+            );
+
+            if (!newDetectedWeapon.IsDefault() && !currentWeapon.Equals(newDetectedWeapon))
+            {
+                currentWeapon.IsActive = true;
+                this.SetWeapon(i, newDetectedWeapon);
+            }
+        }
+
+        private void RefreshWeapons(bool weaponFound)
+        {
+            for (var i = 0; i < this.Weapons.Count; i++)
+            {
+                var weapon = this.Weapons[i];
+                if (weaponFound)
+                {
+                    weapon.Refresh();
+                }
+                else if (!weapon.IsDefault() && weapon.PossiblyOutdated()) //attempt to auto-reset a weapon
+                {
+                    this.SetWeapon(i, this._weaponFactory.Default());
+                }
+            }
+        }
+
+        private void SetWeapon(int i1, IWeapon newDetectedWeapon)
+        {
+            this._dispatcher.Invoke(() => { return this.Weapons[i1] = newDetectedWeapon; });
+        }
+
         private bool CheckWindowLock()
         {
-            return !this._settings.LockToGameWindow || this._weaponFactory.LockedToApplication.Empty() || this._weaponFactory.LockedToApplication.Equals(WinApiHelper.GetActiveProcessName())
+            return !this._settings.LockToGameWindow || 
+                   this._weaponFactory.LockedToApplication.Empty() || 
+                   this._weaponFactory.LockedToApplication.Equals(WinApiHelper.GetActiveProcessName())
                 ;
         }
 

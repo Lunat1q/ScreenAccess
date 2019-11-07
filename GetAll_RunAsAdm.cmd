@@ -1,1 +1,1 @@
-powershell .\GetAll.ps1
+powershell Set-ExecutionPolicy Bypass -Scope Process -Force; .\GetAll.ps1

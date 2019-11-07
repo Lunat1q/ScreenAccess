@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TiqSoft.ScreenAssistant.ScreenInfoRecognition</RootNamespace>
     <AssemblyName>ScreenAssistant.ScreenInfoRecognition</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
@@ -55,6 +55,7 @@
     <Compile Include="ImageUtils.cs" />
     <Compile Include="Logger\DebugLogger.cs" />
     <Compile Include="Recognizers\ApexLegends\WeaponModuleType.cs" />
+    <Compile Include="Recognizers\SmartLimitedCache.cs" />
     <Compile Include="WeaponDataAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScreenCapture.cs" />
@@ -63,6 +64,11 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\TiqUtils\TiqUtils\TiqUtils.csproj">
+      <Project>{add36afd-5e81-40e7-93f8-381cf03c5fd2}</Project>
+      <Name>TiqUtils</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

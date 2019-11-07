@@ -1,5 +1,4 @@
 ﻿using TiqSoft.ScreenAssistant.Core;
-using TiqSoft.ScreenAssistant.ScreenInfoRecognition;
 using TiqSoft.ScreenAssistant.ScreenInfoRecognition.Recognizers.ApexLegends;
 
 namespace TiqSoft.ScreenAssistant.Games

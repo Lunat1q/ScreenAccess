@@ -19,6 +19,7 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
         private float _sensitivityScale;
         private ObservableCollection<WeaponModule> _installedModules;
         private bool _isActive;
+        private DateTime _lastDetection;
 
         protected ApLegWeaponBase(string name, double burstSeconds, string recognizedName, int numberOfModules) // recognized name is for test purpose
         {
@@ -42,6 +43,11 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
                 this._installedModules = value;
                 this.OnPropertyChanged();
             }
+        }
+
+        public virtual void SetModule(int id, WeaponModuleType moduleType)
+        {
+            this.InstalledModules[id].Type = moduleType;
         }
 
         public bool IsTheSameWeapon(string weaponName)
@@ -123,6 +129,16 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
         {
             var args = new MouseMovedEventArgs(xDelta, yDelta, -1);
             this.MouseMoved?.Invoke(this, args);
+        }
+
+        public bool PossiblyOutdated()
+        {
+            return this._lastDetection < DateTime.Now.AddSeconds(-30);
+        }
+
+        public void Refresh()
+        {
+            this._lastDetection = DateTime.Now;
         }
     }
 }

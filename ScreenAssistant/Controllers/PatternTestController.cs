@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,8 +20,8 @@ namespace TiqSoft.ScreenAssistant.Controllers
         private bool _running;
         private float _prevX;
         private float _prevY;
-        private const int CANVAS_HEIGHT = 400;
-        private const int CANVAS_WIDTH = 400;
+        private const int CanvasHeight = 400;
+        private const int CanvasWidth = 400;
         private float _zoomFactor = 3;
 #pragma warning disable 649
         private readonly TextBlock _counterBlock;
@@ -38,7 +37,7 @@ namespace TiqSoft.ScreenAssistant.Controllers
             this.HotKeysController.BindUpToAction(KeyModifier.Ctrl, 'P', this.Toggle);
             this.HotKeysController.BindUpToAction(KeyModifier.Ctrl, 'N', this.NewRecording);
             this.HotKeysController.Start(true);
-            this.Canvas = new Canvas { Width = CANVAS_HEIGHT, Height = CANVAS_WIDTH };
+            this.Canvas = new Canvas { Width = CanvasHeight, Height = CanvasWidth };
             this.Canvas.MouseWheel += this.CanvasOnMouseWheel;
             this._counterBlock = new TextBlock();
             this._zoomFactorBlock = new TextBlock { HorizontalAlignment = HorizontalAlignment.Right, VerticalAlignment = VerticalAlignment.Bottom};
@@ -72,30 +71,30 @@ namespace TiqSoft.ScreenAssistant.Controllers
             this.UpdateZoomFactor();
             this._shotNumber = 0;
             this._counterBlock.Text = this._shotNumber.ToString();
-            this._prevX = CANVAS_WIDTH / 2;
-            this._prevY = CANVAS_HEIGHT / 2;
+            this._prevX = CanvasWidth / 2;
+            this._prevY = CanvasHeight / 2;
             var xAxis = new Line
             {
                 Width = 2,
-                Height = CANVAS_HEIGHT,
+                Height = CanvasHeight,
                 Stroke = Brushes.DimGray,
                 StrokeThickness = 2,
                 X1 = 0,
                 X2 = 0,
                 Y1 = 0,
-                Y2 = CANVAS_HEIGHT
+                Y2 = CanvasHeight
             };
             this.Canvas.Children.Add(xAxis);
             Canvas.SetLeft(xAxis, this._prevX - 1);
             Canvas.SetTop(xAxis, 0);
             var yAxis = new Line
             {
-                Width = CANVAS_WIDTH,
+                Width = CanvasWidth,
                 Height = 2,
                 Stroke = Brushes.DimGray,
                 StrokeThickness = 2,
                 X1 = 0,
-                X2 = CANVAS_WIDTH,
+                X2 = CanvasWidth,
                 Y1 = 0,
                 Y2 = 0
             };

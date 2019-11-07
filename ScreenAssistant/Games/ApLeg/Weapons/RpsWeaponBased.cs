@@ -2,16 +2,16 @@
 {
     internal abstract class RpsWeaponBased : ApLegWeaponBase
     {
-        private readonly double _rps;
+        protected double Rps { get; set; }
 
         protected RpsWeaponBased(string name, double rps, string recognizedName, int numberOfModules) : base(name, 0, recognizedName, numberOfModules)
         {
-            this._rps = rps;
+            this.Rps = rps;
         }
 
         protected double GetAdjustmentTime()
         {
-            return 1 / this._rps;
+            return 1 / this.Rps;
         }
 
         public override bool IsDefault()

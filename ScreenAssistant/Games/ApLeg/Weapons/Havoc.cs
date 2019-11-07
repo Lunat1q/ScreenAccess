@@ -11,7 +11,7 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
 
         public override double AdjustMouse(int shotNumber)
         {
-            var notOffsettingDelay = this.GetModuleType(4) == WeaponModuleType.Legendary ? 0 : 6;
+            var notOffsettingDelay = this.GetModuleType(3) == WeaponModuleType.Legendary ? 0 : 6;
             if (shotNumber > notOffsettingDelay)
             {
                 this.AdjustmentCoefficient = CalculateAdjustment(shotNumber, 40);
