@@ -24,7 +24,7 @@ if (!($cloned))
 	}
 	else
 	{
-		git clone "https://github.com/Lunat1q/ScreenAccess" -b "weapons_test"
+		git clone "https://github.com/Lunat1q/ScreenAccess"
 		cd "ScreenAccess"
 	}
 }
@@ -34,4 +34,3 @@ git pull
 git submodule init
 git submodule update
 & ".\buildMe_Adm.cmd"
-
