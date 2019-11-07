@@ -213,10 +213,24 @@ namespace TiqSoft.ScreenAssistant.Controllers
         {
             if (this.Enabled)
             {
+                if (this._settings.MuteSound.Not())
+                {
+                    using (var p = new System.Media.SoundPlayer(Resources.off))
+                    {
+                        p.Play();
+                    }
+                }
                 this.Stop();
             }
             else
             {
+                if (this._settings.MuteSound.Not())
+                {
+                    using (var p = new System.Media.SoundPlayer(Resources.on))
+                    {
+                        p.Play();
+                    }
+                }
                 this.Start();
             }
         }
@@ -320,7 +334,9 @@ namespace TiqSoft.ScreenAssistant.Controllers
 
         private bool CheckWindowLock()
         {
-            return !this._settings.LockToGameWindow || this._weaponFactory.LockedToApplication.Empty() || this._weaponFactory.LockedToApplication.Equals(WinApiHelper.GetActiveProcessName())
+            return !this._settings.LockToGameWindow || 
+                   this._weaponFactory.LockedToApplication.Empty() || 
+                   this._weaponFactory.LockedToApplication.Equals(WinApiHelper.GetActiveProcessName())
                 ;
         }
 

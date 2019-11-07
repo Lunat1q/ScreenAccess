@@ -50,8 +50,8 @@ namespace TiqSoft.ScreenAssistant.Builders
         {
             var label = CreateLabel("Detect settings from config:");
             var autoDetect = CreateButton("Detect");
-            autoDetect.Click += AutoDetectOnClick;
-            grid.RowDefinitions.Add(new RowDefinition());
+            autoDetect.Click += this.AutoDetectOnClick;
+            grid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
             Grid.SetColumn(autoDetect, 1);
             Grid.SetRow(autoDetect, grid.RowDefinitions.Count - 1);
             Grid.SetRow(label, grid.RowDefinitions.Count - 1);
