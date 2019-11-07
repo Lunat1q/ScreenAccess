@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using GlobalHook.Event;
 using Newtonsoft.Json;
 using TiqSoft.ScreenAssistant.Annotations;
 using TiqSoft.ScreenAssistant.Builders;
@@ -17,6 +18,7 @@ namespace TiqSoft.ScreenAssistant.Core.Settings
         #region Groups
         private const string RecoilGroup = "Recoil settings";
         private const string RecognitionGroup = "Recognition settings";
+        private const string ApplicationSettings = "Application settings";
         #endregion
 
         private static readonly SettingsController<ScreenAssistantSettings> SettingsController;
@@ -27,6 +29,8 @@ namespace TiqSoft.ScreenAssistant.Core.Settings
         private bool _lockToGameWindow = true;
         private bool _fullScreenMode;
         private string _selectedGameName = "Apex Legends";
+        private char _startKey;
+        private KeyModifier _startModifier;
 
         static ScreenAssistantSettings()
         {
@@ -106,6 +110,36 @@ namespace TiqSoft.ScreenAssistant.Core.Settings
             {
                 if (value == this._selectedGameName) return;
                 this._selectedGameName = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        [PropertyMember, PropertyGroup(ApplicationSettings)]
+        [DisplayName("Start/End key binding modifier:")]
+        [DefaultValue(KeyModifier.Ctrl)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public KeyModifier StartModifier
+        {
+            get => this._startModifier;
+            set
+            {
+                if (value == this._startModifier) return;
+                this._startModifier = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        [PropertyMember, PropertyGroup(ApplicationSettings)]
+        [DisplayName("Start/End key binding key:")]
+        [DefaultValue('K')]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public char StartKey
+        {
+            get => this._startKey;
+            set
+            {
+                if (value == this._startKey) return;
+                this._startKey = char.ToUpper(value);
                 this.OnPropertyChanged();
             }
         }

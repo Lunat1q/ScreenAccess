@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using GlobalHook;
 using GlobalHook.Event;
 
@@ -35,6 +36,20 @@ namespace TiqSoft.ScreenAssistant.Controllers.BindingControl
         public void BindKeyUp(KeyModifier modifiers, char key, Action action)
         {
             this.BindingsKeyUp.Add(new KeyEventArguments{ KeyPressed =  key, Modifiers = modifiers }, action);
+        }
+
+        public void UnBindKeyUp(KeyModifier modifiers, char key)
+        {
+            this.BindingsKeyUp.Remove(new KeyEventArguments {KeyPressed = key, Modifiers = modifiers});
+        }
+
+        public void UnBindKeyUpAction(Action action)
+        {
+            var key = this.BindingsKeyUp.FirstOrDefault(x => x.Value == action).Key;
+            if (key != null)
+            {
+                this.BindingsKeyUp.Remove(key);
+            }
         }
 
         public void BindMouseDown(MouseButtons btn,Action action)

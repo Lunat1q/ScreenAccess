@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Windows;
@@ -11,12 +12,12 @@ namespace TiqSoft.ScreenAssistant
     public partial class App : Application
     {
         // ReSharper disable once UnusedMember.Local
-        private static string CurrentDirectory => Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) ?? throw new InvalidOperationException();
+        private static string CurrentDirectory => Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location) ?? throw new InvalidOperationException();
         // ReSharper disable once UnusedMember.Local
         private const string LauncherName = "TiqLauncher.ScreenAssistant.exe";
 
 #pragma warning disable 1998
-        async void AppStartup(object sender, StartupEventArgs e)
+        public async void AppStartup(object sender, StartupEventArgs e)
 #pragma warning restore 1998
         {
 #pragma warning disable 219
@@ -36,7 +37,7 @@ namespace TiqSoft.ScreenAssistant
             if (!viaLauncher)
             {
                 await mainWindow.ShowLauncherError();
-                var launcherPath = Path.Combine(CurrentDirectory, LAUNCHER_NAME);
+                var launcherPath = Path.Combine(CurrentDirectory, LauncherName);
                 var startInfo = new ProcessStartInfo(launcherPath)
                 {
                     UseShellExecute = false,

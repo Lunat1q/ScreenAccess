@@ -31,6 +31,15 @@ namespace TiqSoft.ScreenAssistant.Controllers.BindingControl
             this.Listener.BindKeyUp(modifiers, key, action);
         }
 
+        public void UnBindKeyUp(KeyModifier modifiers, char key)
+        {
+            this.Listener.UnBindKeyUp(modifiers, key);
+        }
+        public void UnBindKeyUpAction(Action action)
+        {
+            this.Listener.UnBindKeyUpAction(action);
+        }
+
         public void BindMouseDownToAction(MouseButtons btn, Action action)
         {
             this.Listener.BindMouseDown(btn, action);
