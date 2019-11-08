@@ -168,7 +168,7 @@ namespace TiqSoft.ScreenAssistant.Core.Settings
             }
             else
             {
-                throw new NotImplementedException();
+                throw new NotImplementedException("Something went terribly wrong during the save process :'(");
             }
         }
 

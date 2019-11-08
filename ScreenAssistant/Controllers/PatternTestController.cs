@@ -20,15 +20,15 @@ namespace TiqSoft.ScreenAssistant.Controllers
         private bool _running;
         private float _prevX;
         private float _prevY;
-        private const int CanvasHeight = 400;
-        private const int CanvasWidth = 400;
+        private const float CanvasHeight = 400f;
+        private const float CanvasWidth = 400f;
         private float _zoomFactor = 3;
 #pragma warning disable 649
         private readonly TextBlock _counterBlock;
         private readonly TextBlock _zoomFactorBlock;
-        private StackPanel _panel;
+        private readonly StackPanel _panel;
 #pragma warning restore 649
-        private int _shotNumber = 0;
+        private int _shotNumber;
 
         public PatternTestController()
         {
@@ -159,9 +159,9 @@ namespace TiqSoft.ScreenAssistant.Controllers
                 {
                     Width = 4,
                     Height = 4,
-                    //Stroke = Brushes.Fuchsia,
                     StrokeThickness = 2,
-                    Fill = Brushes.Fuchsia
+                    Fill = Brushes.Fuchsia,
+                    ToolTip = $"{this._shotNumber} - X:{args.X} Y:{args.Y}"
                 };
                 this.Canvas.Children.Add(point);
                 Canvas.SetLeft(point, x);
