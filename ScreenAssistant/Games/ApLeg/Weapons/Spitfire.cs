@@ -1,6 +1,8 @@
-﻿namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
+﻿using TiqSoft.ScreenAssistant.Games.ApLeg.Weapons.Base;
+
+namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
 {
-    internal sealed class Spitfire : RpsWeaponBased
+    internal sealed class Spitfire : RpsWeaponBase
     {
         private const double SpitfireRps = 12.5;
         public Spitfire(string name, string recognizedName, int numOfMods) 

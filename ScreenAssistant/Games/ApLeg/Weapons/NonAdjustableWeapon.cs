@@ -1,9 +1,11 @@
-﻿namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
+﻿using TiqSoft.ScreenAssistant.Games.ApLeg.Weapons.Base;
+
+namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
 {
     internal sealed class NonAdjustableWeapon : ApLegWeaponBase
     {
-        public NonAdjustableWeapon(string name, double burstSeconds, string recognizedName, int numOfMods) 
-            : base(name, burstSeconds, recognizedName, numOfMods)
+        public NonAdjustableWeapon(string name, string recognizedName, int numOfMods) 
+            : base(name, recognizedName, numOfMods)
         {
             this.AdjustmentCoefficient = 0;
         }

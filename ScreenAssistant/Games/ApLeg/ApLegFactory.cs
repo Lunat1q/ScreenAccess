@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TiqSoft.ScreenAssistant.Core;
 using TiqSoft.ScreenAssistant.Games.ApLeg.Weapons;
+using TiqSoft.ScreenAssistant.Games.ApLeg.Weapons.Base;
 using TiqSoft.ScreenAssistant.Helpers;
 using TiqSoft.ScreenAssistant.ScreenInfoRecognition;
 using TiqSoft.ScreenAssistant.ScreenInfoRecognition.Recognizers.ApexLegends;
@@ -71,7 +72,7 @@ namespace TiqSoft.ScreenAssistant.Games.ApLeg
                 case WeaponAL.Peacekeeper:
                 case WeaponAL.TripleTake:
                 case WeaponAL.ChargedRifle:
-                    result = new NonAdjustableWeapon(inGameName, 0, recognizedName, numOfMods);
+                    result = new NonAdjustableWeapon(inGameName, recognizedName, numOfMods);
                     break;
                 case WeaponAL.Havoc:
                     result = new Havoc(inGameName, 2, recognizedName, numOfMods);

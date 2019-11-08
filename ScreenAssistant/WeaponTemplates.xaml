@@ -1,10 +1,9 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:TiqSoft.ScreenAssistant"
-                    xmlns:weapons="clr-namespace:TiqSoft.ScreenAssistant.Games.ApLeg.Weapons"
                     xmlns:apLeg="clr-namespace:TiqSoft.ScreenAssistant.Games.ApLeg"
-                    xmlns:core="clr-namespace:TiqSoft.ScreenAssistant.Core">
-    <DataTemplate DataType="{x:Type weapons:ApLegWeaponBase}">
+                    xmlns:core="clr-namespace:TiqSoft.ScreenAssistant.Core"
+                    xmlns:base="clr-namespace:TiqSoft.ScreenAssistant.Games.ApLeg.Weapons.Base">
+    <DataTemplate DataType="{x:Type base:ApLegWeaponBase}">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>

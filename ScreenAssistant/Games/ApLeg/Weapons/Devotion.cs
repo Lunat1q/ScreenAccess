@@ -1,8 +1,9 @@
-﻿using TiqSoft.ScreenAssistant.ScreenInfoRecognition.Recognizers.ApexLegends;
+﻿using TiqSoft.ScreenAssistant.Games.ApLeg.Weapons.Base;
+using TiqSoft.ScreenAssistant.ScreenInfoRecognition.Recognizers.ApexLegends;
 
 namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
 {
-    internal sealed class Devotion : RpsWeaponBased
+    internal sealed class Devotion : RpsWeaponBase
     {
         private const double DevotionRps = 18d;
         private const double DevotionChargedRps = 25d;

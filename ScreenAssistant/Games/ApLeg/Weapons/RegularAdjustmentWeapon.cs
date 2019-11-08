@@ -1,8 +1,9 @@
-﻿using TiqUtils.TypeSpecific;
+﻿using TiqSoft.ScreenAssistant.Games.ApLeg.Weapons.Base;
+using TiqUtils.TypeSpecific;
 
 namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
 {
-    internal sealed class RegularAdjustmentWeapon : ApLegWeaponBase
+    internal sealed class RegularAdjustmentWeapon : FireBurstRateWeaponBase
     {
         private const int DeltaX = 2;
         private const double DeltaYMin = 1.5;

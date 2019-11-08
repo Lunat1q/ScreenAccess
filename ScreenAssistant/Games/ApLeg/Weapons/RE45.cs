@@ -1,4 +1,6 @@
-﻿namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
+﻿using TiqSoft.ScreenAssistant.Games.ApLeg.Weapons.Base;
+
+namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
 {
     // ReSharper disable once InconsistentNaming
     internal sealed class RE45 : UniqueLogicWeapon

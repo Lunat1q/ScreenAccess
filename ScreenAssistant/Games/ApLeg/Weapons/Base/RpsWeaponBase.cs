@@ -1,10 +1,10 @@
-﻿namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons
+﻿namespace TiqSoft.ScreenAssistant.Games.ApLeg.Weapons.Base
 {
-    internal abstract class RpsWeaponBased : ApLegWeaponBase
+    internal abstract class RpsWeaponBase : ApLegWeaponBase
     {
         protected double Rps { get; set; }
 
-        protected RpsWeaponBased(string name, double rps, string recognizedName, int numberOfModules) : base(name, 0, recognizedName, numberOfModules)
+        protected RpsWeaponBase(string name, double rps, string recognizedName, int numberOfModules) : base(name, recognizedName, numberOfModules)
         {
             this.Rps = rps;
         }
