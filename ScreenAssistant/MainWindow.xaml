@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:TiqSoft.ScreenAssistant"
         xmlns:controllers="clr-namespace:TiqSoft.ScreenAssistant.Controllers"
         mc:Ignorable="d" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen"
-        Title="ScreenAssistant" d:DataContext="{controllers:MainLogicController}" 
+        Title="Screen Assistant" d:DataContext="{controllers:MainLogicController}" 
         Topmost="True" ResizeMode="CanMinimize" Closing="Window_Closing"
         MinHeight="200" MinWidth="333"
         >

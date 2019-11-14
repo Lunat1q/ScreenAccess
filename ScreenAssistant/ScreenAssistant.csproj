@@ -30,6 +30,7 @@
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <RootNamespace>TiqSoft.ScreenAssistant</RootNamespace>
+    <PackageId></PackageId>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Costura.Fody" Version="3.3.3.0">	

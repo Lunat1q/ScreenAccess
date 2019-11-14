@@ -1,15 +1,16 @@
 ﻿using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
+using static TiqSoft.ScreenAssistant.Properties.FuzzyStrings;
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("ScreenAssistant")]
-[assembly: AssemblyDescription("Provides an assist with screen information.")]
+[assembly: AssemblyTitle(AssemblyTitle)]
+[assembly: AssemblyDescription(AssemblyDescription)]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("TiqSoftware")]
-[assembly: AssemblyProduct("ScreenAssistant")]
+[assembly: AssemblyCompany(AssemblyDeveloper)]
+[assembly: AssemblyProduct(AssemblyProduct)]
 [assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

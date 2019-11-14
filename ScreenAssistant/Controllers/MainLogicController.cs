@@ -1,8 +1,6 @@
 ﻿using GlobalHook;
-using GlobalHook.Event;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -59,7 +57,7 @@ namespace TiqSoft.ScreenAssistant.Controllers
                 this._mouseCentered = value;
                 this.OnPropertyChanged();
 #else
-                _mouseCentered = value;
+                this._mouseCentered = value;
 #endif
             }
         } // no need for notification for now.

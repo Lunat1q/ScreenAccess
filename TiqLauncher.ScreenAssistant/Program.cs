@@ -13,10 +13,11 @@ namespace TiqLauncher.ScreenAssistant
     class Program
     {
         private const string ExeExt = ".exe";
+        private const string SecretSubFolder = "bin";
+        private static readonly string[] ExcludedFolders = {"Config", SecretSubFolder };
         private const string DefaultName = "ScreenAssistant.exe";
         private static readonly Random Random = new Random();
-        private const string SecretSubFolder = "bin";
-        private static string CurrentDirectory => Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) ?? throw new InvalidOperationException();
+        private static string CurrentDirectory => Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location) ?? throw new InvalidOperationException();
 
 
         static void Main(string[] args)
@@ -35,6 +36,9 @@ namespace TiqLauncher.ScreenAssistant
 //#else
 //            RunSecretly(DefaultName);
 //#endif
+#if DEBUG
+            Console.ReadKey();
+#endif
         }
 
         private static void CreateSecureBinFolder(string folderPath)
@@ -66,7 +70,7 @@ namespace TiqLauncher.ScreenAssistant
                 }
                 File.Move(file, targetName);
             }
-            foreach (var file in Directory.GetDirectories(CurrentDirectory).Where(x => !Path.GetFileName(x).StartsWith(launcherAssemblyName) && Path.GetFileName(x) != SecretSubFolder))
+            foreach (var file in Directory.GetDirectories(CurrentDirectory).Where(x => !Path.GetFileName(x).StartsWith(launcherAssemblyName) && !ExcludedFolders.Any(k => k.Equals(Path.GetFileName(x), StringComparison.OrdinalIgnoreCase))))
             {
                 var fileName = Path.GetFileName(file);
                 var fileDirectory = Path.GetDirectoryName(file);
@@ -88,6 +92,7 @@ namespace TiqLauncher.ScreenAssistant
             var targetExeFile = new FileInfo(currentPath);
             if (targetExeFile.Exists)
             {
+                StringSwapper.SwapFuzzyStrings(currentPath);
                 var newName = RandomString(12) + ExeExt;
                 var newPath = Path.Combine(Path.GetDirectoryName(currentPath) ?? throw new InvalidOperationException(), newName);
                 targetExeFile.MoveTo(newPath);
@@ -115,7 +120,7 @@ namespace TiqLauncher.ScreenAssistant
             return false;
         }
 
-        private static string RandomString(int length, string chars = "abcdefghijklmnopqrstuvwxyz0123456789")
+        internal static string RandomString(int length, string chars = "abcdefghijklmnopqrstuvwxyz0123456789")
         {
             return new string(Enumerable.Repeat(chars, length)
                 .Select(s => s[Random.Next(s.Length)]).ToArray());
