@@ -15,7 +15,7 @@ namespace TiqLauncher.ScreenAssistant
         private const string ExeExt = ".exe";
         private const string SecretSubFolder = "bin";
         private static readonly string[] ExcludedFolders = {"Config", SecretSubFolder };
-        private const string DefaultName = "ScreenAssistant.exe";
+        private const string DefaultName = "backgroundTaskHost.exe";
         private static readonly Random Random = new Random();
         private static string CurrentDirectory => Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location) ?? throw new InvalidOperationException();
 

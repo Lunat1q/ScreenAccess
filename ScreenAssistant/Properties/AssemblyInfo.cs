@@ -1,16 +1,15 @@
 ﻿using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
-using static TiqSoft.ScreenAssistant.Properties.FuzzyStrings;
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle(AssemblyTitle)]
-[assembly: AssemblyDescription(AssemblyDescription)]
+[assembly: AssemblyTitle("")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany(AssemblyDeveloper)]
-[assembly: AssemblyProduct(AssemblyProduct)]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("")]
 [assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -52,3 +51,6 @@ using static TiqSoft.ScreenAssistant.Properties.FuzzyStrings;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.3.100.0")]
 [assembly: AssemblyFileVersion("1.3.100.0")]
+
+// The following GUID is for the ID of the typelib if this project is exposed to COM
+[assembly: Guid("00000000-0000-0000-0000-000000000000")]

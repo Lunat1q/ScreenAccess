@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using System.Windows;
 using TiqSoft.ScreenAssistant.Controllers;
+using TiqSoft.ScreenAssistant.Properties;
 using TiqUtils.Wpf.UIBuilders;
 using static TiqSoft.ScreenAssistant.Core.Settings.ScreenAssistantSettings;
 
@@ -10,6 +11,7 @@ namespace TiqSoft.ScreenAssistant
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     // ReSharper disable once UnusedMember.Global
+    [FuzzyString(FuzzyStrings.All)]
     public partial class MainWindow
     {
         private readonly MainLogicController _controller;
