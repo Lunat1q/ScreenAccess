@@ -1,3 +1,5 @@
+t
+
 ### Anti Recoil system with weapon type built-in recognition based on OCR, currently support next games: Apex Legends
 
 <p align="center"><a href="https://discord.gg/CEyMbZN"><img src="https://discordapp.com/api/guilds/611077651184222226/widget.png?style=banner2"/></a></p>
