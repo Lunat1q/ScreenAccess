@@ -1,4 +1,4 @@
-t
+## This repo is in maintanence mode, that means that I will accept/review all incoming PRs from the community, yet I will not push changes myself.
 
 ### Anti Recoil system with weapon type built-in recognition based on OCR, currently support next games: Apex Legends
 
