@@ -36,7 +36,7 @@
       <HintPath Condition="Exists('..\packages\Costura.Fody.3.3.3\lib\')">..\packages\Costura.Fody.3.3.3\lib\net40\Costura.dll</HintPath>
       <HintPath Condition="Exists('..\..\packages\Costura.Fody.3.3.3\lib\')">..\..\packages\Costura.Fody.3.3.3\lib\net40\Costura.dll</HintPath>
 	</PackageReference>
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
